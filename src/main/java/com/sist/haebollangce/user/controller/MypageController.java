@@ -26,11 +26,15 @@ import com.sist.haebollangce.common.FileManager;
 import com.sist.haebollangce.user.dto.UserDTO;
 import com.sist.haebollangce.user.service.InterMypageService;
 
+import lombok.Getter;
+import lombok.Setter;
 import net.nurigo.java_sdk.api.Message;
 import net.nurigo.java_sdk.exceptions.CoolsmsException;
 
 @Controller
 @RequestMapping("mypage")
+@Getter
+@Setter
 public class MypageController {
 
 	@Autowired
