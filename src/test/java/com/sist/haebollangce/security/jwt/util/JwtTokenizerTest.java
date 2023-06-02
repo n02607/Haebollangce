@@ -1,29 +1,29 @@
 package com.sist.haebollangce.security.jwt.util;
 
-import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.security.Keys;
+//import io.jsonwebtoken.Claims;
+//import io.jsonwebtoken.Jwts;
+//import io.jsonwebtoken.security.Keys;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
+//import org.springframework.beans.factory.annotation.Autowired;
+//import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
+//
+//import java.nio.charset.StandardCharsets;
+//import java.util.Arrays;
+//import java.util.Date;
+//import java.util.List;
 
-import java.nio.charset.StandardCharsets;
-import java.util.Arrays;
-import java.util.Date;
-import java.util.List;
-
-//@SpringBootTest
-//public class JwtTokenizerTest {
+@SpringBootTest
+public class JwtTokenizerTest {
 //    @Autowired
 //    JwtTokenizer jwtTokenizer;
 //
 //    @Value("${jwt.secretKey}")
 //    String accessSecret;
 //    public final Long ACCESS_TOKEN_EXPIRE_COUNT = 30 * 60 * 1000L; // 30분
-//
-//    @Test
-//    public void createToken() throws Exception{ // JWT 토큰 생성.
+
+    @Test
+    public void createToken() throws Exception{ // JWT 토큰 생성.
 //        String email = "urstory@gmail.com";
 //
 //        // List<String> roles = List.of("ROLE_USER"); // [ "ROLE_USER" ]
@@ -52,8 +52,9 @@ import java.util.List;
 //                .compact(); // 결과에 서명까지 포함된 Jwtbuilder 리턴.
 //
 //        System.out.println(JwtToken);
-//    }
-//
+        System.out.println("CI Test");
+    }
+
 //    @Test
 //    public void parseToken() throws Exception{
 //        byte[] accessSecret = this.accessSecret.getBytes(StandardCharsets.UTF_8);
@@ -84,4 +85,4 @@ import java.util.List;
 //        System.out.println(claims.get("roles"));
 //        System.out.println(claims.get("userId"));
 //    }
-//}
+}
