@@ -26,15 +26,11 @@ import com.sist.haebollangce.common.FileManager;
 import com.sist.haebollangce.user.dto.UserDTO;
 import com.sist.haebollangce.user.service.InterMypageService;
 
-import lombok.Getter;
-import lombok.Setter;
 import net.nurigo.java_sdk.api.Message;
 import net.nurigo.java_sdk.exceptions.CoolsmsException;
 
 @Controller
 @RequestMapping("mypage")
-@Getter
-@Setter
 public class MypageController {
 
 	@Autowired
@@ -80,10 +76,7 @@ public class MypageController {
 		// 예치금 결제하기
 		int n = service.go_purchase(paraMap);
 
-		// 예치금을 보유예치금에 추가하기
-		int plus = service.plus_deposit(paraMap);
-
-		if (n == 1 && plus == 1) {
+		if (n == 1) {
 			mav.setViewName("mypage/mypageHome.tiles5");
 		}
 
