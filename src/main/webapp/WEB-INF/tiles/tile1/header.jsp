@@ -167,6 +167,11 @@
 	    font-size: 13px
 	}
 	
+	div.c-details {
+	    font-weight: 300;
+	    font-size: 13px
+	}
+	
 	.icon {
 	    width: 50px;
 	    height: 50px;

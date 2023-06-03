@@ -27,7 +27,7 @@
     				// 폼(form)을 전송(submit)
 	    			const frm = document.delFrm;
 	    			frm.method = "post";
-	    			frm.action = "<%= ctxPath%>/lounge/loungeDelEnd.action";
+	    			frm.action = "<%= ctxPath%>/lounge/loungeDelEnd";
 	    			frm.submit();
     			}
     		}

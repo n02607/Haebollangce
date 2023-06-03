@@ -5,14 +5,18 @@ import java.util.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.sist.haebollangce.lounge.model.LoungeBoardDTO;
+import com.sist.haebollangce.lounge.model.LoungeCommentDTO;
 import com.sist.haebollangce.lounge.service.InterLoungeService;
 
 
@@ -63,7 +67,7 @@ public class LoungeController {
 	
 		List<LoungeBoardDTO> lgboardList = null; // 글이 없을 수도 있으니까 default 값으로 null 설정
 	
-		// --- session 을 사용해 새로고침 할 때는 조회수 증가 없이 select 만 하게 하자
+		// --- session 을 사용해 새로고침 할 때는 조회수 증가 없이 select 만 하게 하자 (#69.)
 		HttpSession session = request.getSession();
 		session.setAttribute("readCountPermission", "yes");
 		/*
@@ -72,21 +76,86 @@ public class LoungeController {
 		반드시 웹브라우저에서 주소창에 "/lounge/loungeList" 이라고 입력해야만 얻어올 수 있다. 
 		*/
 		
-		// --- 페이징 처리 안한 검색어 없는 전체 글 목록 보기
-		lgboardList = service.lgboardListNoSearch();
+		String searchType = request.getParameter("searchType"); 
+		String searchWord = request.getParameter("searchWord"); 
 		
+		if(searchType == null) { searchType = ""; }
+		if(searchWord == null) { searchWord = ""; }
+		if(searchWord != null) { searchWord = searchWord.trim(); } // 공백제거
+		
+		Map<String, String> paraMap = new HashMap<>();
+		paraMap.put("searchType", searchType);
+		paraMap.put("searchWord", searchWord);
+
+		// --- #3-1. 페이징 처리 안한 검색어 있는 전체 글 목록 보기 (#102.)
+		lgboardList = service.lgboardListSearch(paraMap);
+				
+		// ""이 아닐때만 view 단에 보내주겠따.
+		// -- 아래는 검색대상 컬럼과 검색어를 유지시키기 위한 작업의 시작이다 --
+		if( !"".equals(searchType) && !"".equals(searchWord)) {
+			mav.addObject("paraMap", paraMap);
+		}
+				
 		mav.addObject("lgboardList", lgboardList);
 		mav.setViewName("lounge/loungeList.tiles1");
 		// => /WEB-INF/views/tiles1/lounge/loungeList.jsp view 단을 보여준다.  
 		
 		return mav;
-	}	
+	}
+	
+	
+	// === #11. 검색어 입력시 자동글 완성하기 (Ajax 로 처리) === (#108.)
+	@ResponseBody
+	@GetMapping(value = "/lgwordSearchShow", produces="text/plain;charset=UTF-8")
+	public String lgwordSearchShow(HttpServletRequest request) {
+		
+		String searchType = request.getParameter("searchType");
+		String searchWord = request.getParameter("searchWord");
+		
+		Map<String, String> paraMap = new HashMap<>();
+		paraMap.put("searchType", searchType);
+		paraMap.put("searchWord", searchWord);
+		
+		List<String> lgwordList = service.lgwordSearchShow(paraMap);
+		
+		// lgwordList 를 json 형식으로 만들어 넘기면 끝
+		JSONArray jsonArr = new JSONArray(); // []
+			
+		if(lgwordList != null) {
+			
+			for(String lgword : lgwordList) {
+				
+				JSONObject jsonObj = new JSONObject();
+				jsonObj.put("lgword", lgword);
+				jsonArr.put(jsonObj);
+				
+			}//end of for()--------------------
+			
+		}
+		return jsonArr.toString();
+	}
 	
 	
 	// === #4. 라운지 글 1개 보는 페이지 요청 ===
 	@GetMapping(value = "/loungeView")
 	public ModelAndView loungeView(ModelAndView mav, HttpServletRequest request) {
 	
+		// === #9-4. 답변글쓰기가 추가된 경우 시작 === //
+		String fk_seq = request.getParameter("fk_seq");
+		String groupno = request.getParameter("groupno");
+		String depthno = request.getParameter("depthno");
+		String content = request.getParameter("content");
+		
+		if(fk_seq == null) { // null 이라는 글자로 알아듣는 것을 방지해주기 위해 없다는 의미로 "" 처리를 해줘야 한다
+			fk_seq = "";
+		}
+		
+		mav.addObject("fk_seq", fk_seq);
+		mav.addObject("groupno", groupno);
+		mav.addObject("depthno", depthno);
+		mav.addObject("content", content); // -> 원글쓰기의 경우에는 위 4개의 값이 모두 null 일 것이다
+		// === 답변글쓰기가 추가된 경우 끝 ===================================================
+		
 		// --- 조회하고자 하는 글번호 받아오기 ---
 		String seq = request.getParameter("seq");
 		
@@ -228,7 +297,57 @@ public class LoungeController {
 		
 		return mav;
 	}
+	
+	
+	// === #9. 라운지 글에 댓글달기 요청 (Ajax 처리)  ===
+	@ResponseBody
+	@PostMapping(value = "/loungeaddComment", produces="text/plain;charset=UTF-8")
+	public String loungeaddComment(LoungeCommentDTO lgcommentdto, HttpServletRequest request) {
 		
+		// 댓글쓰기에 첨부파일이 없는 경우
+		int n = 0;
+		try {
+			n = service.loungeaddComment(lgcommentdto);
+			// 댓글쓰기(insert) 및 원게시물(tbl_board 테이블)에 댓글의 개수 증가(update 1씩 증가)하기 
+	       
+		} catch (Throwable e) {
+			e.printStackTrace();
+		}
+		
+		JSONObject jsonObj = new JSONObject();
+		jsonObj.put("n", n); // 정상이면 1, rollback 당하면 0 이 나올 것이다.
+		jsonObj.put("name", lgcommentdto.getName());
+		
+		return jsonObj.toString(); // "{"n":1, "name":"???"}" -> "{"n":1, "name":"용수진"}" by produces="text/plain;charset=UTF-8"
+								   // 또는 "{"n":0, "name":"용수진"}"
+	}
+	
+	
+	// === #10. 라운지 글에 댓글달기 요청 (Ajax 처리)  ===
+	@ResponseBody
+	@GetMapping(value = "/loungereadComment", produces="text/plain;charset=UTF-8")
+	public String loungeaddComment(HttpServletRequest request) {
+	
+		// 보고자하는 댓글들의 게시글번호 받아오기 
+		String parentSeq = request.getParameter("parentSeq");
+		
+		List<LoungeCommentDTO> lgcommentList = service.lggetCommentList(parentSeq);
+		
+		JSONArray jsonArr = new JSONArray(); // []
+		
+		if(lgcommentList != null) {
+			for(LoungeCommentDTO lgcmtvo : lgcommentList) {
+				
+				JSONObject jsonObj = new JSONObject();
+				jsonObj.put("name", lgcmtvo.getName());
+				jsonObj.put("content", lgcmtvo.getContent());
+				jsonObj.put("regdate", lgcmtvo.getRegDate());
+				
+				jsonArr.put(jsonObj);
+			}
+		}
+		return jsonArr.toString();
+	}	
 	
 	
 }

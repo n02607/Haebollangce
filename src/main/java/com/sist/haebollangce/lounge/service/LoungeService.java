@@ -1,5 +1,6 @@
 package com.sist.haebollangce.lounge.service;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -8,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import com.sist.haebollangce.lounge.model.InterLoungeDAO;
 import com.sist.haebollangce.lounge.model.LoungeBoardDTO;
+import com.sist.haebollangce.lounge.model.LoungeCommentDTO;
 
 @Service
 public class LoungeService implements InterLoungeService {
@@ -23,12 +25,20 @@ public class LoungeService implements InterLoungeService {
 		return n;
 	}
 
-	// --- #3-1. 페이징 처리 안한 검색어 없는 전체 글 목록 보기 ---
+	// --- #3-1. 페이징 처리 안한 검색어 있는 전체 글 목록 보기 ---
 	@Override
-	public List<LoungeBoardDTO> lgboardListNoSearch() {
-		List<LoungeBoardDTO> lgboardList = dao.lgboardListNoSearch();
+	public List<LoungeBoardDTO> lgboardListSearch(Map<String, String> paraMap) {
+		List<LoungeBoardDTO> lgboardList = dao.lgboardListSearch(paraMap);
 		return lgboardList;
 	}
+	
+	// === #11. 검색어 입력시 자동글 완성하기 (Ajax 로 처리) ===
+	@Override
+	public List<String> lgwordSearchShow(Map<String, String> paraMap) {
+		List<String> lgwordList = dao.lgwordSearchShow(paraMap);
+		return lgwordList;
+	}
+
 
 	// --- #4-1.글 조회수 증가와 함께 글 1개를 조회 해주는 것 ---
 	@Override
@@ -62,5 +72,45 @@ public class LoungeService implements InterLoungeService {
 		int n = dao.lgdel(paraMap);
 		return n;
 	}
+
+	// === #9. 댓글쓰기(transaction 처리) ===
+	// --- 댓글쓰기(insert) / 원게시물에 댓글수 증가(update)
+	@Override
+	public int loungeaddComment(LoungeCommentDTO lgcommentdto) throws Throwable {
+		
+		// 댓글쓰기가 원댓글쓰기인지 아니면 답변댓글쓰기인지를 구분하여  tbl_lounge_comment 테이블에 insert 를 해주어야 한다.
+	    // 원댓글쓰기 이라면 tbl_lounge_comment 테이블의 groupno 컬럼의 값은 groupno 컬럼의 최대값(max)+1 로 해서 insert 해야하고,
+	    // 답변댓글쓰기 이라면 넘겨받은 값(lgcommentdto)을 그대로 insert 해주어야 한다. 
+	    
+	    // --- #9-3. tbl_lounge_comment 테이블에서 groupno 컬럼의 최대값 알아오기 --- (#144.)
+		// -> 원댓글쓰기 : groupno 컬럼의 최대값(max)+1 로 해서 insert 해야한다
+	/*	if("".equals(lgcommentdto.getFk_seq())) { 
+			int groupno = dao.getGroupno_max() + 1;
+			lgcommentdto.setGroupno(String.valueOf(groupno));
+		}*/
+		
+		int n=0, m=0;
+		
+		// --- #9-1. tbl_lounge_comment 댓글쓰기(insert)--- 
+		n = dao.loungeaddComment(lgcommentdto); 
+		System.out.println("serevice 에서 n : " + n);
+		
+		if(n==1) {
+			
+			// --- #9-2. tbl_lounge_board 댓글수증가(update)--- 
+			m = dao.loungeupdateCount(lgcommentdto.getParentSeq()); 
+			System.out.println("serevice 에서 m : " + m);
+		}
+		
+		return m;
+	}
+
+	// === #10. 원 게시물에 딸린 댓글들을 조회 ===
+	@Override
+	public List<LoungeCommentDTO> lggetCommentList(String parentSeq) {
+		List<LoungeCommentDTO> lgcommentList = dao.lggetCommentList(parentSeq);
+		return lgcommentList;
+	}
+	
 	
 }

@@ -12,10 +12,94 @@
 
   	$(document).ready(function(){
 	
-
+  		lggoReadComment();  // 문자 시작되자마자 페이징 처리안한 댓글 읽어오기
      
   	});// end of $(document).ready(function(){})-------------------------------
 
+  	
+  	// === Function Declaration === //
+  	
+  	// == 댓글쓰기 ==
+  	function lgcgoAddWrite() {
+  		
+		const commentContent = $("input#commentContent").val().trim();
+  		
+  		if(commentContent == "") {
+  			alert("댓글 내용을 입력하세요.");
+  			return; // 종료
+  		}
+  		
+  		$.ajax({
+  			url:"<%= ctxPath%>/lounge/loungeaddComment",
+  			data:{"fk_userid":$("input#fk_userid").val(), 
+  			      "name":$("input#name").val(), 
+  			      "content":$("input#commentContent").val(),
+  			      "parentSeq":$("input#parentSeq").val()} ,
+  		
+		    type:"post",
+    		dataType:"json",
+    		success:function(json){
+    			console.log("~~~ 확인뇽 : " + JSON.stringify(json));
+    			// ~~~ 확인뇽 : {"name":"망나뇽수진","n":0}
+    			
+    			if(json.n == 0) {
+    				alert("댓글쓰기 실패");
+    			}
+    			else {
+    				lggoReadComment();	// 페이징 처리 안한 댓글 읽어오기
+				}
+    			$("input#commentContent").val(""); // 댓글이 써졌든 아니든 이제 댓글칸 비워주기 			
+    		},
+    		error: function(request, status, error){
+                alert("code: "+request.status+"\n"+"message: "+request.responseText+"\n"+"error: "+error);
+            }
+  			      
+  		});//end of $.ajax()----------------------------------
+  		
+  	}//end of function lgcgoAddWrite()----------------
+  	
+  	
+  	function lggoReadComment() {
+  		
+  		$.ajax({
+			url:'<%= ctxPath%>/lounge/loungereadComment',
+			data: {"parentSeq":"${requestScope.lgboarddto.seq}"},
+			dataType:"json",
+			success:function(json){
+				
+				let html = "";
+  				if(json.length > 0) {
+  					$.each(json, function(index, item){
+  						html += " <div class='d-flex flex-row mb-3'> " +
+  		                		" 	<img style='border: solid 3px #eee; border-radius: 100%; width:45px; height: 45px; vertical-align: top;' src='http://images.munto.kr/production-user/1684469607083-photo-g1p6z-101851-0?s=48x48' /> " + 
+  		  	              		" 	<div class='c-details'> " +
+  		  	                    " 		<h5 class='mb-1 ml-3 lounge_comment_userid'><span class='lounge_comment_name'>" + item.name + "</span></h5> " +
+  		  	                    " 		<div class='c-details'> " +
+  		  		                " 			<h6 class='mb-0 ml-3 lounge_comment_content'>" + item.content + "</h6> " +
+  		  	                	" 		</div> " +
+  		  	                	" 		<div class='c-details'> " +
+  		  	                	"			<small class='mb-0 ml-3' style='color:gray;'>" + item.regdate + "</small> " +
+  		  	                	"			<small type='button' class='mb-0 ml-2' style='color:gray;'>답글달기</small> " +
+  		  	                	" 		</div> " +
+  		  	                	" 	</div> "+ 
+  		  	              		" </div> " 
+  					});
+  				}
+  				else {
+  					html += " <div>댓글이 존재하지 않습니다.</div> "
+  				}
+  				$("div#lgcommentDisplay").html(html);
+  			},
+  			error: function(request, status, error){
+                alert("code: "+request.status+"\n"+"message: "+request.responseText+"\n"+"error: "+error);
+            }
+  			
+  		});//end of $.ajax()--------------------------------------
+  		
+  	}//end of function lggoReadComment()----------------
+  	
+  	
+  	
 </script>
 
 
@@ -64,42 +148,66 @@
 		                	<img style="border: solid 3px #eee; border-radius: 100%; width:45px; height: 45px; vertical-align: top;" src="https://blogpfthumb-phinf.pstatic.net/MjAyMzAzMjZfMTcg/MDAxNjc5ODA1Nzg5MTA1.q_8Sgd5xxiU_c6miUoEzA8hlH3NQxSN7b0MrRsFUFkwg.Blbzms8HupOJpb4xBiGh9sKEXI7dluwLxcNeyuo6Ry4g.PNG.jin970510/profileImage.png?type=w161" /> 
 		                </div>
 		                <div style="width:100%;">
-		                	<input type="hidden" name="fk_userid" id="fk_userid" value="${sessionScope.loginuser.userid}" /> 
+		                	<input type="hidden" name="fk_userid" id="fk_userid" value="sudin" /> 
+		                	<input type="hidden" name="name" id="name" value="망나뇽수진" /> 
+		                    
 		                    <div class=" c-details">
 		                    	<h6 class="mb-0 ml-2 lounge_comment_content align-items-center">
 				                    <input type="text" name="content" id="commentContent" style="border-radius:10px; border: solid 3px #eee; height: 35px; width:90%;" placeholder=" 답글입력.." /> 
+			                    	
+								   	<%-- === #143. 답변글쓰기가 추가된 경우 시작 === 
+								   	<input type="text" name="fk_seq" size="3" value="${requestScope.fk_seq}" /> 
+								   	<input type="text" name="groupno" size="3" value="${requestScope.groupno}" />   	
+								   	<input type="text" name="depthno" size="3" value="${requestScope.depthno}" />  
+								   	 ===        답변글쓰기가 추가된 경우 끝 === --%>
+   	
 			                    	<%-- 댓글에 달리는 원게시물의 글번호(즉, 부모글 글번호) --%>
-			                    	<input type="hidden" name="parentSeq" id="parentSeq" value="${requestScope.boardvo.seq}"/>&nbsp;
-			                    	<button type="button" class="btn btn-habol btn-sm" style="width:50px;">게시</button>
+			                    	<input type="hidden" name="parentSeq" id="parentSeq" value="${requestScope.lgboarddto.seq}"/>&nbsp;
+			                    	<button type="button" class="btn btn-habol btn-sm" style="width:50px;" onclick="lgcgoAddWrite()">게시</button>
 		                    	</h6>
 		                	</div>
 		                </div>
 		            </div>
 		        </form>
 		    <%--</c:if>--%>
+		    	<!-- 댓글쓰기끝 -->
 		    	
 		    	<hr style="border: solid 1px #eee;">
 		    	
 		    	<!-- 댓글보기 -->
-				<div class="d-flex flex-row">
-	                <div > 
-	                	<img style="border: solid 3px #eee; border-radius: 100%; width:45px; height: 45px; vertical-align: top;" src="http://images.munto.kr/production-user/1684469607083-photo-g1p6z-101851-0?s=48x48" /> 
-	                </div>
-	                <div class=" c-details">
-	                    <h6 class="mb-1 ml-3 lounge_comment_userid" ><span class="lounge_comment_userid">평일민주</span></h6>
-	                    <div class=" c-details">
-		                    <h6 class="mb-0 ml-3 lounge_comment_content">하 드디어 망나뇽 진화해따🐣 추카해여 쭉쭉 승승장구만 합시당🥳 코어는 걱정마시고 만간에 영등포를 또 함락시켜야겠구만유 영등포 활성화 1등공신 민우님,,,</h6>
-	                	</div>
-	                	<div class="c-details">
-	                		<small class="mb-0 ml-3" style="color:gray;">1일전</small>
-	                		<small type="button" class="mb-0 ml-2" style="color:gray;">답글달기</small>
-	                	</div>
-	                </div>  
-	            </div>
+				<div id="lgcommentDisplay"></div>
+	            <!-- 댓글보기 끝-->
+	            
 		    </div>
 	    </c:if>
 	</div>
 </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 <!-- lounge_content 시작 -->
 <div class="container mt-5 mb-5">
