@@ -4,9 +4,15 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 
+import com.sist.haebollangce.common.FileManager;
 import com.sist.haebollangce.lounge.model.InterLoungeDAO;
 import com.sist.haebollangce.lounge.model.LoungeBoardDTO;
 import com.sist.haebollangce.lounge.model.LoungeCommentDTO;
@@ -20,11 +26,18 @@ public class LoungeService implements InterLoungeService {
 
 	// === #2. 게시판 글쓰기 완료 요청 ===
 	@Override
-	public int loungeAdd(LoungeBoardDTO lgboarddto) throws Exception {
+	public int loungeAdd(LoungeBoardDTO lgboarddto) {
 		int n = dao.loungeAdd(lgboarddto);
 		return n;
 	}
-
+	
+	// === #2-1. 파일첨부가 있는 게시판 글쓰기 완료 요청 ===
+	@Override
+	public int loungeAdd_withFile(LoungeBoardDTO lgboarddto) {
+		int n = dao.loungeAdd_withFile(lgboarddto);
+		return n;
+	}
+	
 	// --- #3-1. 페이징 처리 안한 검색어 있는 전체 글 목록 보기 ---
 	@Override
 	public List<LoungeBoardDTO> lgboardListSearch(Map<String, String> paraMap) {
@@ -70,6 +83,20 @@ public class LoungeService implements InterLoungeService {
 	@Override
 	public int lgdel(Map<String, String> paraMap) {
 		int n = dao.lgdel(paraMap);
+		
+		// --- 파일첨부가 된 글이라면 글 삭제시 paraMap 에 담아온 파일정보로 DB 에서 파일을 삭제하고 글을 지운다  ---
+		if(n==1) {
+			String path = paraMap.get("path");
+			String fileName = paraMap.get("fileName");
+			
+			if(fileName != null && !"".equals(fileName)) {
+				try {
+					FileManager.doFileDelete(fileName, path);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+		}
 		return n;
 	}
 
@@ -84,10 +111,10 @@ public class LoungeService implements InterLoungeService {
 	    
 	    // --- #9-3. tbl_lounge_comment 테이블에서 groupno 컬럼의 최대값 알아오기 --- (#144.)
 		// -> 원댓글쓰기 : groupno 컬럼의 최대값(max)+1 로 해서 insert 해야한다
-	/*	if("".equals(lgcommentdto.getFk_seq())) { 
+		if("".equals(lgcommentdto.getFk_seq())) { 
 			int groupno = dao.getGroupno_max() + 1;
 			lgcommentdto.setGroupno(String.valueOf(groupno));
-		}*/
+		}
 		
 		int n=0, m=0;
 		
@@ -111,6 +138,6 @@ public class LoungeService implements InterLoungeService {
 		List<LoungeCommentDTO> lgcommentList = dao.lggetCommentList(parentSeq);
 		return lgcommentList;
 	}
-	
+
 	
 }

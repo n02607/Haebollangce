@@ -9,8 +9,11 @@ import com.sist.haebollangce.lounge.model.LoungeCommentDTO;
 public interface InterLoungeService {
 
 	// === #2. 게시판 글쓰기 완료 요청 ===
-	int loungeAdd(LoungeBoardDTO lgboarddto) throws Exception;
+	int loungeAdd(LoungeBoardDTO lgboarddto);
 
+	// === #2-1. 파일첨부가 있는 게시판 글쓰기 완료 요청 ===
+	int loungeAdd_withFile(LoungeBoardDTO lgboarddto);
+	
 	// --- #3-1. 페이징 처리 안한 검색어 있는 전체 글 목록 보기 ---
 	List<LoungeBoardDTO> lgboardListSearch(Map<String, String> paraMap);
 

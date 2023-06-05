@@ -1,8 +1,12 @@
 package com.sist.haebollangce.lounge.controller;
 
+import java.io.File;
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.*;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.json.JSONArray;
@@ -12,9 +16,13 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.sist.haebollangce.common.FileManager;
 import com.sist.haebollangce.lounge.model.LoungeBoardDTO;
 import com.sist.haebollangce.lounge.model.LoungeCommentDTO;
 import com.sist.haebollangce.lounge.service.InterLoungeService;
@@ -29,8 +37,8 @@ public class LoungeController {
 	private InterLoungeService service;
 	
 	// === 파일업로드 및 다운로드를 해주는 FileManager 클래스 의존객체 주입하기(DI : Dependency Injection) ===  
-	// @Autowired  
-	// private FileManager fileManager;
+	@Autowired  
+	private FileManager fileManager;
 	
 	
 	// === #1. 라운지 글 작성하는 form 페이지 요청 === (#51. aop 사용으로 수정 필요)
@@ -45,9 +53,60 @@ public class LoungeController {
 	
 	// === #2. 라운지 글쓰기 완료 요청 === (#54.)
 	@PostMapping(value = "/loungeAddEnd")
-	public ModelAndView loungeAddEnd(ModelAndView mav, LoungeBoardDTO lgboarddto) throws Exception {
+	public ModelAndView loungeAddEnd(ModelAndView mav, LoungeBoardDTO lgboarddto, MultipartHttpServletRequest mrequest) {
 		
-		int n = service.loungeAdd(lgboarddto);
+		// === #2-1. 첨부파일이 있는 경우 작업  ===
+		MultipartFile attach =  lgboarddto.getAttach();
+		
+		if( !attach.isEmpty() ) { // attach(첨부파일)가 비어있지 않으면(즉, 첨부파일이 있는 경우라면)
+			
+			// 1. 사용자가 보낸 첨부파일을 WAS(톰캣)의 특정 폴더에 저장해주어야 한다. 
+			HttpSession session = mrequest.getSession();
+			String root = session.getServletContext().getRealPath("/");
+			String path = root+"resources"+File.separator+"files";
+			//	System.out.println("~~~ 첨부파일이 저장될 WAS의 폴더 경로 path  : " + path); 
+			//	~~~ 확인용 파일이 올라갈 경로 path  : C:\NCS\workspace(spring)\.metadata\.plugins\org.eclipse.wst.server.core\tmp0\wtpwebapps\Board\resources\files
+			//  ~~~ 첨부파일이 저장될 WAS의 폴더 경로 path  : C:\Users\\user\git\Haebollangce\src\main\webapp\resources\files
+			// -> 왜 .metadata 폴더가 아니지..??
+				
+				
+			// 2. 파일첨부를 위한 변수의 설정 및 값을 초기화 한 후 파일 올리기
+			String newFilename = ""; 		// WAS(톰캣)의 디스크에 저장될 파일명
+			long fileSize = 0;		 		// 첨부파일의 크기
+			byte[] bytes = null; 	 		// 첨부파일의 내용물을 담는 것
+			
+			try {
+				bytes = attach.getBytes();  // 첨부파일의 내용물을 읽어오는 것
+				
+				String originalFilename = attach.getOriginalFilename();
+				//	System.out.println("~~~ 첨부파일의 파일명 originalFilename : " + originalFilename); 
+				// ~~~ 첨부파일의 파일명 originalFilename : 댐벼.jpg
+				
+				newFilename = fileManager.doFileUpload(bytes, originalFilename, path);
+				//	System.out.println("~~~ 확인용 newFilename : " + newFilename);
+				// ~~~ 확인용 newFilename : 20230605160348266890041852700.jpg
+				
+				// 3. LoungeBoardDTO lgboarddto 에 fileName 값과 orgFilename 값과 fileSize 값을 넣어주기 	
+				lgboarddto.setFileName(newFilename);	
+				lgboarddto.setOrgFilename(originalFilename);
+
+				fileSize = attach.getSize(); // 첨부파일의 크기 (단위는 byte)
+				lgboarddto.setFileSize(String.valueOf(fileSize));
+				
+			} catch (Exception e) { // 모든 익셉션 수용가능
+				e.printStackTrace();
+			}	
+			
+		}//end of try~catch()------------------------------------------
+		
+		int n = 0;
+		
+		if( attach.isEmpty() ) {
+			n = service.loungeAdd(lgboarddto); // -> 파일첨부 없음
+		}
+		else {
+			n = service.loungeAdd_withFile(lgboarddto); // -> 파일첨부 있음
+		}
 		
 		if(n==1) { // insert 가 성공하면 /loungeList 페이지  주소로 URL요청을 다시 한다.
 			mav.setViewName("redirect:/lounge/loungeList");
@@ -59,6 +118,17 @@ public class LoungeController {
 		
 		return mav;
 	}
+	
+	
+
+	// === #2-2. 스마트에디터. 드래그앤드롭을 사용한 다중사진 파일업로드 ===
+	@PostMapping(value="/image/multiplePhotoUpload.action")
+	public void multiplePhotoUpload(HttpServletRequest request, HttpServletResponse response) {
+	
+	
+	
+	}
+
 	
 	
 	// === #3. 라운지 글목록 보기 페이지 요청 === (#58.)
@@ -78,6 +148,8 @@ public class LoungeController {
 		
 		String searchType = request.getParameter("searchType"); 
 		String searchWord = request.getParameter("searchWord"); 
+		//String str_currentShowPageNo = request.getParameter("currentShowPageNo"); // 페이징 처리를 위해 보여주는 현재 페이지 번호
+		
 		
 		if(searchType == null) { searchType = ""; }
 		if(searchWord == null) { searchWord = ""; }
@@ -159,6 +231,16 @@ public class LoungeController {
 		// --- 조회하고자 하는 글번호 받아오기 ---
 		String seq = request.getParameter("seq");
 		
+		String searchType = request.getParameter("searchType");
+		String searchWord = request.getParameter("searchWord");
+		
+		if(searchType == null) {
+			searchType = "";
+		}
+		if(searchWord == null) {
+			searchWord = "";
+		}
+		
 		// get 방식도 허용되다 보니 '숫자가 아닌 값을 입력해 유저가 장난'칠 수 있으니 익셉션 처리가 필요하다
 		try {
 			Integer.parseInt(seq);
@@ -210,6 +292,10 @@ public class LoungeController {
 		Map<String,String> paraMap = new HashMap<>();
 		paraMap.put("seq", seq);
 		
+		// 파일첨부가 된 글이라면 글 수정 시 첨부파일이 있으면 paraMap 에 담아준다 
+		paraMap.put("searchType", "");
+		paraMap.put("searchWord", "");
+		
 		// 글조회수(readCount) 증가 없이 단순히 글 1개만 조회
 		LoungeBoardDTO lgboarddto = service.lggetViewWithNoAddCount(paraMap); 
 		
@@ -256,6 +342,10 @@ public class LoungeController {
 		Map<String,String> paraMap = new HashMap<>();
 		paraMap.put("seq", seq);
 		
+		// 파일첨부가 된 글이라면 글 수정 시 첨부파일이 있으면 paraMap 에 담아준다 
+		paraMap.put("searchType", "");
+		paraMap.put("searchWord", "");
+		
 		// 글조회수(readCount) 증가 없이 단순히 글 1개만 조회
 		LoungeBoardDTO lgboarddto = service.lggetViewWithNoAddCount(paraMap); 
 		
@@ -278,9 +368,26 @@ public class LoungeController {
 		// 삭제하고자 하는 글내용 가져오기 (이 안에 작성자 정보도 포함되어있음 - 남이 쓴 글 삭제를 막기위해 필요)
 		Map<String,String> paraMap = new HashMap<>();
 		paraMap.put("seq", seq);
+		
+		// 파일첨부가 된 글이라면 글 수정 시 첨부파일이 있으면 paraMap 에 담아준다 
+		paraMap.put("searchType", "");
+		paraMap.put("searchWord", "");
+		
+		// -- 글조회수(readCount) 증가 없이 단순히 글 1개만 조회
+		LoungeBoardDTO lgboarddto = service.lggetViewWithNoAddCount(paraMap);
+		String fileName = lgboarddto.getFileName();
+		
+		if(fileName != null || !"".equals(fileName)) {
+			HttpSession session = request.getSession();
+			String root = session.getServletContext().getRealPath("/");
+			String path = root+"resources"+File.separator+"files";
+			
+			paraMap.put("path", path);			// -> 삭제해야할 파일이 저장된 경로
+			paraMap.put("fileName", fileName); 	// -> 삭제해야할 파일명
+		}
 				
-		/* 글 삭제는 원본글의 글암호와 삭제시 입력한 암호가 일치할 때만 가능하도록 한다. */
-		// n 이 1 이라면 정상적으로 글삭제 완료, 0 이라면 글삭제에 필요한 글암호가 틀린경우임
+		// 글 삭제는 원본글의 글암호와 삭제시 입력한 암호가 일치할 때만 가능하도록 한다.
+		// -> n 이 1 이라면 정상적으로 글삭제 완료, 0 이라면 글삭제에 필요한 글암호가 틀린경우임
 		int n = service.lgdel(paraMap);
 		
 		
@@ -323,7 +430,7 @@ public class LoungeController {
 	}
 	
 	
-	// === #10. 라운지 글에 댓글달기 요청 (Ajax 처리)  ===
+	// === #10. 라운지 글에 댓글읽기 요청 (Ajax 처리)  ===
 	@ResponseBody
 	@GetMapping(value = "/loungereadComment", produces="text/plain;charset=UTF-8")
 	public String loungeaddComment(HttpServletRequest request) {
@@ -342,6 +449,9 @@ public class LoungeController {
 				jsonObj.put("name", lgcmtvo.getName());
 				jsonObj.put("content", lgcmtvo.getContent());
 				jsonObj.put("regdate", lgcmtvo.getRegDate());
+				jsonObj.put("groupno", lgcmtvo.getGroupno());
+				jsonObj.put("fk_seq", lgcmtvo.getFk_seq());
+				jsonObj.put("depthno", lgcmtvo.getDepthno());
 				
 				jsonArr.put(jsonObj);
 			}
@@ -350,4 +460,75 @@ public class LoungeController {
 	}	
 	
 	
+	// === #12. 라운지 글에 첨부파일 다운로드 받기 === (aop)
+	@GetMapping(value = "/lgdownload", produces="text/plain;charset=UTF-8")
+	public void lgdownload(HttpServletRequest request, HttpServletResponse response, ModelAndView mav) {
+	
+		String seq = request.getParameter("seq");		
+		// 첨부파일이 있는 글번호 20230522111442253534330919200.pdf 처럼 저장되는 fileName 값을 DB에서 가져와야 한다.
+        // 또한 orgFilename 값도  DB에서 가져와야 한다.
+		
+		Map<String,String> paraMap = new HashMap<>(); // lounge.xml 의 lggetview 에서 3개의 파라미터가 꼭! 필요하므로 put 해줘야 한다
+	    paraMap.put("searchType", "");	
+	    paraMap.put("searchWord", "");
+	    paraMap.put("seq", seq);
+	    
+	    // 두번째 파라미터인 response 는 전송되어온 데이터를 저장해서 결과물을 나타낼때 사용
+  		response.setContentType("text/html; charset=UTF-8");
+  		PrintWriter out = null;
+  		// -> out 은 웹브라우저에 기술하는 대상체라고 생각하자!
+		
+  		try {
+	    	Integer.parseInt(seq);
+	    	LoungeBoardDTO lgboarddto = service.lggetViewWithNoAddCount(paraMap); // 글조회수 증가없이 글보기
+	    	
+	    	if(lgboarddto == null || (lgboarddto != null && lgboarddto.getFileName() == null)) {
+	    		out = response.getWriter();				
+	    		out.println("<script type='text/javascript'>alert('존재하지 않는 글번호 이거나 첨부파일이 없으므로 파일다운로드가 불가합니다.'); history.back();</script>");
+	            return; // 종료
+	    	}
+	    	else {
+	    		// --- 정상적으로 다운로드 하는 경우 ---
+	    		String fileName = lgboarddto.getFileName(); 	   // 20230522111442253534330919200.pdf 이것이 바로 WAS(톰캣) 디스크에 저장된 파일명이다.
+	    		String orgFilename = lgboarddto.getOrgFilename(); // 2023 마음을 사로잡는 면접전형 준비.pdf 이것이 바로 다운로드 시 보여줄 파일명이다.
+	    		
+	    		// 첨부파일이 저장되어 있는 WAS(톰캣)의 디스크 경로명을 알아와야만 다운로드를 해줄수 있다. 
+	            // 이 경로는 우리가 파일첨부를 위해서 /loungeaddEnd.action 에서 설정해두었던 경로와 똑같아야 한다.
+	            // WAS 의 webapp 의 절대경로를 알아와야 한다.
+	            HttpSession session = request.getSession();
+	            String root = session.getServletContext().getRealPath("/");
+	    		
+            	System.out.println("~~~ 확인용 webapp 의 절대경로  : " + root);
+    		//  ~~~ 확인용 webapp 의 절대경로  : C:\NCS\workspace(spring)\.metadata\.plugins\org.eclipse.wst.server.core\tmp0\wtpwebapps\Board\
+
+    			String path = root+"resources"+File.separator+"files";
+    			System.out.println("~~~ 첨부파일이 저장될 WAS(툼캣)의 폴더 path : " + path);
+    		//	~~~ 첨부파일이 저장될 WAS(툼캣)의 폴더 path : C:\NCS\workspace(spring)\.metadata\.plugins\org.eclipse.wst.server.core\tmp0\wtpwebapps\Board\resources\files
+	    		
+    			
+    			// *** file 다운로드 하기 *** //
+    			boolean flag = false; 	 // file 다운로드 성공, 실패를 알려주는 용도
+    			flag = fileManager.doFileDownload(fileName, orgFilename, path, response);
+    			// --- file 다운로드 성공시 flag 는 true, 
+                // --- file 다운로드 실패시 flag 는 false 를 가진다. 
+    			if(!flag) {
+	                // 다운로드가 실패할 경우 메시지를 띄워준다.
+    				out = response.getWriter();
+    				out.println("<script type='text/javascript'>alert('파일다운로드가 실패되었습니다.'); history.back();</script>");
+	            }
+    		}
+	    	
+	    } catch(NumberFormatException | IOException e) {
+	    	try {
+				out = response.getWriter();				
+				out.println("<script type='text/javascript'>alert('파일다운로드가 불가합니다.'); history.back();</script>");
+				e.printStackTrace();
+			} catch (IOException e1) {
+				e1.printStackTrace();
+			}
+	    }
+  		
+  		
+  		
+	}
 }

@@ -11,6 +11,12 @@
 		values(lounge_boardSeq.nextval, #{fk_userid}, #{name}, #{subject}, #{content}, #{pw}, default, default, default)
 	</insert>
 
+	<!-- // === #2-1. 파일첨부가 있는 게시판 글쓰기 완료 요청 === -->
+	<insert id="loungeAdd_withFile" parameterType="com.sist.haebollangce.lounge.model.LoungeBoardDTO">
+		insert into tbl_lounge_board(seq, fk_userid, name, subject, content, pw, readCount, regDate, status, fileName, orgFilename, fileSize)
+		values(lounge_boardSeq.nextval, #{fk_userid}, #{name}, #{subject}, #{content}, #{pw}, default, default, default, #{fileName}, #{orgFilename}, #{fileSize})
+	</insert>
+
 	<!-- // #3-1. 페이징 처리 안한 검색어 있는 전체 글 목록 보기  --> 
 	<select id="lgboardListSearch" parameterType="HashMap" resultType="com.sist.haebollangce.lounge.model.LoungeBoardDTO">
 		select seq, fk_userid, name, subject, content, readcount, regdate, commentCount, 
@@ -49,13 +55,14 @@
 	<!-- // #4-1.글 조회수 증가와 함께 글 1개를 조회 해주는 것 -->
 	<select id="lggetView" parameterType="HashMap" resultType="com.sist.haebollangce.lounge.model.LoungeBoardDTO">
 		SELECT seq, fk_userid, name, subject, content, readcount, to_char(regdate, 'yyyy-mm-dd hh24:mi:ss') as regdate, pw, commentCount, 
-		       regDate_ago, likeCount
+		       regDate_ago, fileName, orgFilename, fileSize, likeCount
 		FROM 
 		(   
 		    select seq, fk_userid, name, subject, content, readcount, regdate, pw, commentCount, 
-		           TO_DATE(sysdate, 'YYYY-MM-DD') - TO_DATE(regdate, 'YYYY-MM-DD') as regDate_ago
+		           TO_DATE(sysdate, 'YYYY-MM-DD') - TO_DATE(regdate, 'YYYY-MM-DD') as regDate_ago, fileName, orgFilename, fileSize
 		    from tbl_lounge_board
 		    where status = 1 and seq = #{seq}
+		   
 		) LB
 		CROSS JOIN
 		(
@@ -86,8 +93,14 @@
 	
 	<!-- // #9-1. tbl_lounge_comment 댓글쓰기(insert) (원댓글과 대댓글에 차이를 아직안둠)--> 
 	<insert id="loungeaddComment" parameterType="com.sist.haebollangce.lounge.model.LoungeCommentDTO">
-		insert into tbl_lounge_comment(seq, fk_userid, name, content, regDate, parentSeq, status)
-		values(lounge_commentSeq.nextval, #{fk_userid}, #{name}, #{content}, default, #{parentSeq}, default)
+		<if test='fk_seq != null and fk_seq.equals("")'> 
+			insert into tbl_lounge_comment(seq, fk_userid, name, content, regDate, parentSeq, status, groupno, fk_seq, depthno)
+			values(lounge_commentSeq.nextval, #{fk_userid}, #{name}, #{content}, default, #{parentSeq}, default, #{groupno}, default, default)
+		</if>	
+		<if test='fk_seq != null and !fk_seq.equals("")'>
+			insert into tbl_lounge_comment(seq, fk_userid, name, content, regDate, parentSeq, status, groupno, fk_seq, depthno)
+			values(lounge_commentSeq.nextval, #{fk_userid}, #{name}, #{content}, default, #{parentSeq}, default, #{groupno}, #{fk_seq}, #{depthno}+1)
+		</if>	
 	</insert>
 	
 	<!-- // #9-2. tbl_lounge_board 댓글수증가(update) --> 
@@ -97,18 +110,26 @@
 	</update>
 	
 	<!-- // #9-3. tbl_lounge_comment 테이블에서 groupno 컬럼의 최대값 알아오기
-		 // -> 원댓글쓰기 : groupno 컬럼의 최대값(max)+1 로 해서 insert 해야한다  / 최초 글쓰기의 경우 null 이 나오므로 0 으로 바꿔줌~ 
+		 // -> 원댓글쓰기 : groupno 컬럼의 최대값(max)+1 로 해서 insert 해야한다  / 최초 글쓰기의 경우 null 이 나오므로 0 으로 바꿔줌~ -->
 	<select id="getGroupno_max" resultType="int">
 		select nvl(max(groupno), 0)
 		from tbl_lounge_comment
-	</select>-->
+	</select>
 	
 	<!-- // === #10. 원 게시물에 딸린 댓글들을 조회 === -->
 	<select id="lggetCommentList" parameterType="String" resultType="com.sist.haebollangce.lounge.model.LoungeCommentDTO">
-		select name, content, to_char(regdate, 'yyyy-mm-dd hh24:mi:ss') AS regdate
-		from tbl_lounge_comment
-		where status = 1 and parentSeq = #{parentSeq}
-		order by seq desc
+		select seq, parentSeq, name, content , regdate, status, groupno, fk_seq, depthno
+		from 
+		(
+		    select seq, parentSeq, content, name, regDate, status, groupno, fk_seq, depthno
+		    from (
+		            select seq, parentSeq, content, name, to_char(regdate, 'yyyy-mm-dd hh24:mi:ss') AS regDate, status, groupno, fk_seq, depthno
+		            from tbl_lounge_comment 
+		            start with fk_seq = 0 connect by prior seq = fk_seq
+		            order siblings by seq desc, groupno asc 
+		        ) r
+		    where status = 1 and parentSeq = #{parentSeq}
+		) 
 	</select>
 
 

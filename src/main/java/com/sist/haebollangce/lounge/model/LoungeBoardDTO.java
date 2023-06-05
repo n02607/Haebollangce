@@ -19,10 +19,10 @@ public class LoungeBoardDTO {
 	private String status;       // 글삭제여부   1:사용가능한 글,  0:삭제된글 
    
 	
-	// === #81. 댓글형 게시판을 위한 댓글수  필드 추가
+	// === 댓글형 게시판을 위한 댓글수  필드 추가
 	private String commentCount;	
 	
-	// === #152. 파일을 첨부하도록 VO 수정
+	// === 파일을 첨부하도록 VO 수정
     private MultipartFile attach; 
 	/* 
 		form 태그에서 type="file" 인 파일을 받아서 저장되는 필드이다. 

@@ -18,11 +18,18 @@ public class LoungeDAO implements InterLoungeDAO {
 
 	// === #2. 게시판 글쓰기 완료 요청 ===
 	@Override
-	public int loungeAdd(LoungeBoardDTO lgboarddto) throws Exception {
+	public int loungeAdd(LoungeBoardDTO lgboarddto) {
 		
 //      int n = sqlsession.insert("user.test_insert",userid);
 //      int n = mapper.test_insert(userid);
 		int n = mapper.loungeAdd(lgboarddto);
+		return n;
+	}
+	
+	// === #2-1. 파일첨부가 있는 게시판 글쓰기 완료 요청 ===
+	@Override
+	public int loungeAdd_withFile(LoungeBoardDTO lgboarddto) {
+		int n = mapper.loungeAdd_withFile(lgboarddto);
 		return n;
 	}
 
@@ -83,12 +90,12 @@ public class LoungeDAO implements InterLoungeDAO {
 	
 	// --- #9-3. tbl_lounge_comment 테이블에서 groupno 컬럼의 최대값 알아오기 ---
 	// -> 원댓글쓰기 : groupno 컬럼의 최대값(max)+1 로 해서 insert 해야한다
-/*	@Override
+	@Override
 	public int getGroupno_max() {
 		int groupno = mapper.getGroupno_max();
 		return groupno;
 	}
-*/	
+	
 
 	// === #10. 원 게시물에 딸린 댓글들을 조회 ===
 	@Override
@@ -96,7 +103,7 @@ public class LoungeDAO implements InterLoungeDAO {
 		List<LoungeCommentDTO> lgcommentList = mapper.lggetCommentList(parentSeq);
 		return lgcommentList;
 	}
-
+	
 	
 	
 	

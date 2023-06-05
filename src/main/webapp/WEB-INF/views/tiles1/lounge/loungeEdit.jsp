@@ -112,10 +112,10 @@
 		           	<textarea style="width:100%; height: 500px;" name="content" id="content" placeholder="글내용" >${requestScope.lgboarddto.content}</textarea>
 		            
 		            <div class="mt-2">
-		            	<div class="mt-2">
+		            	<!-- <div class="mt-2">
 		                	<span class="mr-4 align-center" style="width: 15%;">파일첨부</span>
 		                  	<input type="file" name="attach" />
-		                </div>
+		                </div> -->
 		                <div class="mt-2 mb-2">
 		                	<span class="mr-4" style="width: 15%;">작성암호</span>
 		                  	<input type="password" name="pw" id="pw" />
