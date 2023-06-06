@@ -33,13 +33,20 @@ public class LoungeDAO implements InterLoungeDAO {
 		return n;
 	}
 
-	// --- #3-1. 페이징 처리 안한 검색어 있는 전체 글 목록 보기 ---
+	// --- #3-1. 페이징 처리 한 검색어 있는 전체 글 목록 보기 (1)검색이 있을 때 2)없을 때 다 포함) ---
 	@Override
 	public List<LoungeBoardDTO> lgboardListSearch(Map<String, String> paraMap) {
 		List<LoungeBoardDTO> lgboardList = mapper.lgboardListSearch(paraMap);
 		return lgboardList;
 	}
-
+	
+	// --- #3-2. 페이징 처리를 위해 총 게시물 건수(totalCount) 구하기 (1)검색이 있을 때 2)없을 때 다 포함) ---
+	@Override
+	public int lggetTotalCount(Map<String, String> paraMap) {
+		int n = mapper.lggetTotalCount(paraMap);
+		return n;
+	}
+		
 	// === #11. 검색어 입력시 자동글 완성하기 (Ajax 로 처리) ===
 	@Override
 	public List<String> lgwordSearchShow(Map<String, String> paraMap) {
@@ -103,7 +110,42 @@ public class LoungeDAO implements InterLoungeDAO {
 		List<LoungeCommentDTO> lgcommentList = mapper.lggetCommentList(parentSeq);
 		return lgcommentList;
 	}
+
+	// === #13-0. 라운지 특정글에 대한 좋아요가 눌렸는지 확인하기 ===
+	@Override
+	public int loungelikeCheck(LoungelikeDTO lglikedto) {
+		int n = mapper.loungelikeCheck(lglikedto);
+		return n;
+	}
 	
+	// --- #13-1.tbl_lounge_like 테이블에 좋아요 추가하기(insert) ---
+	@Override
+	public int loungelikeAdd(LoungelikeDTO lglikedto) {
+		int n = mapper.loungelikeAdd(lglikedto);
+		return n;
+	}
+	
+	// --- #13-2.tbl_lounge_board 테이블에 likeCount 컬럼이 1 증가 (update) ---
+	@Override
+	public int loungeupdatelikeCount(String fk_seq) {
+		int n = mapper.loungeupdatelikeCount(fk_seq);
+		return n;
+	}
+
+	// --- #13-3.tbl_lounge_like 테이블에 좋아요 취소하기(delete)
+	@Override
+	public int loungelikeCancel(LoungelikeDTO lglikedto) {
+		int n = mapper.loungelikeCancel(lglikedto);
+		return n;
+	}
+
+	// --- #13-4.tbl_lounge_board 테이블에 likeCount 컬럼이 1 감소 (update)
+	@Override
+	public int loungecancellikeCount(String fk_seq) {
+		int n = mapper.loungecancellikeCount(fk_seq);
+		return n;
+	}
+
 	
 	
 	

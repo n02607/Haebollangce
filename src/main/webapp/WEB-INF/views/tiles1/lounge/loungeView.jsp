@@ -70,7 +70,8 @@
     			else {
     				lggoReadComment();	// 페이징 처리 안한 댓글 읽어오기
 				}
-    			$("input#commentContent").val(""); // 댓글이 써졌든 아니든 이제 댓글칸 비워주기 			
+    			$("input#commentContent").val(""); // 댓글이 써졌든 아니든 이제 댓글칸 비워주기 
+    			location.href="javascript:history.go(0)";
     		},
     		error: function(request, status, error){
                 alert("code: "+request.status+"\n"+"message: "+request.responseText+"\n"+"error: "+error);
@@ -79,18 +80,7 @@
   		});//end of $.ajax()----------------------------------
   		
   	}//end of function lgcgoAddWrite()----------------
-  	
-
-    /* function lgccgoAddWrite(fk_seq, depthno, groupno) {
-        
-  		// 예시) /lounge/loungeView URL에 파라미터 추가하여 이동
-        var url = '/lounge/loungeView?seq=' + ${requestScope.lgboarddto.seq};
-        url += '&fk_seq=' + fk_seq;
-        url += '&groupno=' + groupno;
-        url += '&depthno=' + depthno;
-        location.href = url;
-    } */
-
+  
   	
  	// === 댓글 페이징 처리안하고 읽어오기  
   	function lggoReadComment() {
@@ -155,13 +145,42 @@
   	}//end of function lggoReadComment()----------------
   	
   	
+ 	// 라운지 특정글에 대한 좋아요 등록하기 // 
+   	function lggoLikeAdd(seq) {
+   
+      	/* if(${empty sessionScope.loginuser}) {
+    	  	alert("좋아요를 누르려면 먼저 로그인 하셔야 합니다.");
+    	  	return;
+      	} */
+      
+      	$.ajax({
+			url:"<%= request.getContextPath()%>/lounge/loungelikeAdd",
+			type:"post",
+			data:{"fk_userid":$("input#fk_userid").val(),
+				  "fk_seq":seq},
+			dataType:"json",
+			success: function(json){
+				console.log(JSON.stringify(json));
+			
+				alert(json.message);
+				location.href="javascript:history.go(0)";
+
+			},
+			error: function(request, status, error){
+             		alert("code: "+request.status+"\n"+"message: "+request.responseText+"\n"+"error: "+error);
+          		}
+		});//end of ajax()--------------------------
+      
+   	}// end of golikeAdd(pnum)---------------------------
+  	
 </script>
 
 
 <div class=" container-fluid mt-5 mb-5 mx-auto bg-white">
-	<div class="row col-md-10 mx-auto my-5 justify-content-center" style="width:50%; ">
+	<div class="row col-lg-6 col-md-6 col-sm-6 mx-auto my-5 justify-content-center">
 	
 		<c:if test="${not empty requestScope.lgboarddto}">
+		
 		    <div class="card p-3 mb-5 mt-5" >
 		        <div class="d-flex justify-content-between">
 		            <div class="d-flex flex-row align-items-center">
@@ -176,8 +195,8 @@
 		            </div>
 		            <div class="badge2"> <span>follow</span> </div>
 		        </div>
-		        <div class="mt-4">
-		            <img style="width:100%;" src="http://images.munto.kr/production-feed/1684289174510-photo-spznw-42282-0?s=1080x1080" />
+		        <div class="mt-4" style="padding:10px;">
+		   			<img style="width:90%;" src="http://images.munto.kr/production-feed/1684289174510-photo-spznw-42282-0?s=1080x1080" />
 		            <div class="mt-3">
 		            	<h4>${lgboarddto.subject}</h4>
 		                <div>${lgboarddto.content}</div>
@@ -194,7 +213,12 @@
 		                </c:if>
 		                <div class="mt-4"> 
 		                	<span class="text1 ">
-		                		<img src="https://images.munto.kr/munto-web/ic_action_like-empty-black_30px.svg?s=32x32"/>${lgboarddto.likeCount}
+		                	<%--<c:if test="${}"> 로그인한 유저가 좋아요를 누른상태면 빨간하트를 --%>
+		                			<img src="<%= request.getContextPath()%>/images/lounge-redheart.jpg" alt="Lounge Like"  width="29" height="29" style="cursor: pointer;" onclick="lggoLikeAdd('${lgboarddto.seq}')"/>${lgboarddto.likeCount}
+		                		<%-- </c:if>
+		                		<c:if test="${}"> 로그인한 유저가 좋아요를 누르지 않은 상태면 빈 하트를 보이자  --%>
+		                			<img src="<%= request.getContextPath()%>/images/lounge-emptyheart.jpg" alt="Lounge Like"  width="29" height="29" style="cursor: pointer;" onclick="lggoLikeAdd('${lgboarddto.seq}')"/>${lgboarddto.likeCount}
+		                		<%-- </c:if> --%>
 		                		<img src="https://images.munto.kr/munto-web/ic_action_comment_30px.svg?s=32x32"/>${lgboarddto.commentCount}
 		                		<img src="https://images.munto.kr/munto-web/info_group.svg?s=32x32"/>${lgboarddto.readCount}
 		                	</span> 
@@ -210,7 +234,6 @@
 		                </div>
 		            </div>
 		        </div>
-		        
 		     
 		    	<!-- 댓글쓰기 폼 추가 (로그인했을때만 가능)-->
 		    <%--<c:if test="${not empty sessionScope.loginuser}">--%>

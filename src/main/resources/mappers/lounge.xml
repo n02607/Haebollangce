@@ -17,16 +17,33 @@
 		values(lounge_boardSeq.nextval, #{fk_userid}, #{name}, #{subject}, #{content}, #{pw}, default, default, default, #{fileName}, #{orgFilename}, #{fileSize})
 	</insert>
 
-	<!-- // #3-1. 페이징 처리 안한 검색어 있는 전체 글 목록 보기  --> 
+	<!-- // #3-1. 페이징 처리 한 검색어 있는 전체 글 목록 보기  --> 
 	<select id="lgboardListSearch" parameterType="HashMap" resultType="com.sist.haebollangce.lounge.model.LoungeBoardDTO">
-		select seq, fk_userid, name, subject, content, readcount, regdate, commentCount, 
-		       TO_DATE(sysdate, 'YYYY-MM-DD') - TO_DATE(regdate, 'YYYY-MM-DD') as regDate_ago, orgFilename, likeCount
+		select seq, fk_userid, name, subject, readCount, regDate, commentCount, regDate_ago, orgFilename, likeCount
+		from
+		(
+		select row_number() over(order by seq desc) AS rno,
+		       seq, fk_userid, name, subject, readCount,
+		       to_char(regDate, 'yyyy-mm-dd hh24:mi:ss') AS regDate, 
+		       commentCount, TO_DATE(sysdate, 'YYYY-MM-DD') - TO_DATE(regdate, 'YYYY-MM-DD') as regDate_ago, orgFilename, likeCount
 		from tbl_lounge_board
 		where status = 1
-		<if test=" searchType != '' and searchWord != '' ">
-			and lower(${searchType}) like '%' || lower(#{searchWord}) || '%'
+		<if test="searchType != '' and searchWord != ''">
+		and lower(${searchType}) like '%' || lower(#{searchWord}) || '%'
 		</if>
-		order by seq desc
+		) V
+		where V.rno between #{startRno} and #{endRno}
+	</select>
+	
+	<!-- // #3-2. 페이징 처리를 위해 총 게시물 건수(totalCount) 구하기  --> 
+	<select id="lggetTotalCount" parameterType="HashMap" resultType="int">
+		select count(*)
+		from tbl_lounge_board
+		where status = 1 
+		<if test="searchType != '' and searchWord != ''">
+		<!-- 검색조건이 있는 경우에만 검색타입 searchType 과 검색어 searchWord 를 매핑해주도록 한다. -->
+		and lower(${searchType}) like '%'|| lower(#{searchWord}) ||'%'
+		</if>
 	</select>
 	
 	<!-- // === #11. 검색어 입력시 자동글 완성하기 (Ajax 로 처리) === --> 
@@ -132,14 +149,36 @@
 		) 
 	</select>
 
+	<!-- // === #13-0. 라운지 특정글에 대한 좋아요가 눌렸는지 확인하기 === --> 
+	<select id="loungelikeCheck" parameterType="com.sist.haebollangce.lounge.model.LoungelikeDTO" resultType="int">
+		select count(*)
+		from tbl_lounge_like
+		where fk_userid=#{fk_userid} and fk_seq = to_number(#{fk_seq})
+	</select>
 
+	<!-- // #13-1.tbl_lounge_like 테이블에 좋아요 추가하기(insert) --> 
+	<insert id="loungelikeAdd" parameterType="com.sist.haebollangce.lounge.model.LoungelikeDTO">
+		insert into tbl_lounge_like(fk_userid, fk_seq)
+		values(#{fk_userid}, to_number(#{fk_seq}))
+	</insert>
 
+	<!-- // #13-2.tbl_lounge_board 테이블에 likeCount 컬럼이 1 증가 (update) --> 
+	<update id="loungeupdatelikeCount" parameterType="String">
+		update tbl_lounge_board set likeCount = likeCount + 1
+		where seq = #{fk_seq}
+	</update>
 
+	<!-- // #13-3.tbl_lounge_like 테이블에 좋아요 취소하기(delete) -->
+	<delete id="loungelikeCancel" parameterType="com.sist.haebollangce.lounge.model.LoungelikeDTO">
+		delete from tbl_lounge_like 
+		where fk_userid=#{fk_userid} and fk_seq = to_number(#{fk_seq})
+	</delete>
 
-
-
-
-
+	<!-- // #13-4.tbl_lounge_board 테이블에 likeCount 컬럼이 1 감소 (update) --> 
+	<update id="loungecancellikeCount" parameterType="String">
+		update tbl_lounge_board set likeCount = likeCount - 1
+		where seq = #{fk_seq}
+	</update>
 
 
 

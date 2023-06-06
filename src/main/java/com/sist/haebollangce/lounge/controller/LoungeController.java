@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.PrintWriter;
+import java.sql.SQLException;
 import java.util.*;
 
 import javax.servlet.http.HttpServletRequest;
@@ -26,6 +27,7 @@ import org.springframework.web.servlet.ModelAndView;
 import com.sist.haebollangce.common.FileManager;
 import com.sist.haebollangce.lounge.model.LoungeBoardDTO;
 import com.sist.haebollangce.lounge.model.LoungeCommentDTO;
+import com.sist.haebollangce.lounge.model.LoungelikeDTO;
 import com.sist.haebollangce.lounge.service.InterLoungeService;
 
 
@@ -175,26 +177,116 @@ public class LoungeController {
 		
 		String searchType = request.getParameter("searchType"); 
 		String searchWord = request.getParameter("searchWord"); 
-		//String str_currentShowPageNo = request.getParameter("currentShowPageNo"); // 페이징 처리를 위해 보여주는 현재 페이지 번호
+		String str_currentShowPageNo = request.getParameter("currentShowPageNo"); // 페이징 처리를 위해 보여주는 현재 페이지 번호
 		
+		// 유저가 이상한 값을 입력하는 장난 못치게 if 문으로 막았으니 where 절에 안잡히도록 "" 을 map 으로 보낸다
+		if(searchType == null || (!"subject".equals(searchType) && !"name".equals(searchType))) {
+			searchType = "";
+		}
 		
-		if(searchType == null) { searchType = ""; }
-		if(searchWord == null) { searchWord = ""; }
-		if(searchWord != null) { searchWord = searchWord.trim(); } // 공백제거
+		// 검색어에 오로지 공백만 들어올 때도 마찬가지로 where 절에 안잡히도록 "" 을 map 으로 보낸다
+		if(searchWord == null || "".equals(searchWord) || searchWord.trim().isEmpty()) {
+			searchWord = "";
+		}
 		
 		Map<String, String> paraMap = new HashMap<>();
 		paraMap.put("searchType", searchType);
 		paraMap.put("searchWord", searchWord);
 
-		// --- #3-1. 페이징 처리 안한 검색어 있는 전체 글 목록 보기 (#102.)
+		
+		// >>> 페이징 처리 시작 <<< //
+		// === 페이징 처리를 위해 먼저 총 게시물 건수(totalCount)를 구해와야 한다.
+	    // -> 총 게시물 건수(totalCount)는  - 1)검색이 있을 때 2)없을 때 로 나뉜다. 
+	    int totalCount = 0;         // 총 게시물 건수
+	    int sizePerPage = 12;       // 한 페이지당 보여줄 게시물 건수 
+	    int currentShowPageNo = 0;  // 현재 보여주는 페이지번호로서, 초기치로는 1페이지로 설정함.
+	    int totalPage = 0;          // 총 페이지수(웹브라우저상에서 보여줄 총 페이지 개수, 페이지바)
+	    int startRno = 0;		    // 시작 행번호
+	    int endRno = 0;   			// 끝 행번호
+	    
+	    // --- #3-2. 총 게시물 건수(totalCount) 구하기 ---
+	    // 총 게시물 건수(totalCount)를 구하기 위해 DTO 에 가야하는데 service 로 보내보겠다
+	    totalCount = service.lggetTotalCount(paraMap);
+	    // System.out.println("~~~ 확인용 totalCount : " + totalCount);
+	    // ~~~ 확인용 totalCount : 9 => 검색이 없을 때
+	    // ~~~ 확인용 totalCount : 2 => '글' 로 검색할 때 검색결과 항목의 갯수가 나옴 .
+		
+	    // --- 만약에 총 게시물 건수(totalCount)가 127개 이라면 총페이지수(totalPage)는 13개가 되어야 한다.
+	    totalPage = (int) Math.ceil((double) totalCount/sizePerPage);
+	    // (double)127/10 ==> 12.7 ==> Math.ceil(12.7) ==> 13.0
+	    // (double)120/10 ==> 12.0 ==> Math.ceil(12.0) ==> 12.0
+	    
+	    if(str_currentShowPageNo == null) {
+	    	// -- 게시판이 보여지는 초기화면 --
+	    	currentShowPageNo = 1;
+	    }
+	    else {
+	    	try {
+	    		currentShowPageNo = Integer.parseInt(str_currentShowPageNo);
+	    		if(currentShowPageNo < 1 || currentShowPageNo > totalPage) {
+	    			currentShowPageNo = 1;
+	    		}
+	    	} catch(NumberFormatException e) {
+	    		currentShowPageNo = 1;
+	    	}
+	    }
+	    
+	    // **** 가져올 게시글의 범위를 구한다.(공식임!!!) ****
+	    startRno = ((currentShowPageNo - 1) * sizePerPage) + 1;
+	    endRno = startRno + sizePerPage - 1;
+	    
+	    paraMap.put("startRno", String.valueOf(startRno));
+	    paraMap.put("endRno", String.valueOf(endRno));
+	    
+		// --- #3-1. 페이징 처리 한 검색어 있는 전체 글 목록 보기 (#102. -> #114.)
 		lgboardList = service.lgboardListSearch(paraMap);
 				
+		
 		// ""이 아닐때만 view 단에 보내주겠따.
 		// -- 아래는 검색대상 컬럼과 검색어를 유지시키기 위한 작업의 시작이다 --
 		if( !"".equals(searchType) && !"".equals(searchWord)) {
 			mav.addObject("paraMap", paraMap);
 		}
-				
+		
+		// === #3-3. 페이지바 만들기  ===
+		int blockSize = 2; // 1개 블럭(토막)당 보여지는 페이지번호의 개수
+		int loop = 1;		// 1부터 증가하여 1개 블럭을 이루는 페이지번호의 개수[지금은 10개(== blockSize)]까지만 증가하는 용도
+      	
+		int pageNo = ((currentShowPageNo - 1)/blockSize) * blockSize + 1; 
+      	// -> currentShowPageNo 를 얻어와서 pageNo(블럭의 페이지번호 시작값 ex)1,11,21) 를 구하는 공식
+		
+		String pageBar = "<div class='pagination-wrapper'><ul class='pagination'>";
+		String url = "loungeList";
+
+		// === [맨처음][이전] 만들기 === //
+	    pageBar += "<li class='lgpage-item'><a class='prev lgpage-link' href='" + url + "?searchType=" + searchType + "&searchWord=" + searchWord + "&currentShowPageNo=1'><i class='fa-solid fa-angles-left'></i></a></li>";
+	    if(pageNo != 1) {
+	    	pageBar += "<li class='lgpage-item'><a class='prev lgpage-link' href='" + url + "?searchType=" + searchType + "&searchWord=" + searchWord + "&currentShowPageNo=" + (pageNo - 1) + "'><i class='fa-solid fa-angle-left'></i></a></li>";
+	  	}
+	    
+		while (!(loop > blockSize || pageNo > totalPage)) {
+		    if (pageNo == currentShowPageNo) {
+		        pageBar += "<li class='lgpage-item active'><a class='lgpage-link' href='#'>" + pageNo + "</a></li>";
+		    } else {
+		        pageBar += "<li class='lgpage-item'><a class='lgpage-link' href='" + url + "?searchType=" + searchType + "&searchWord=" + searchWord + "&currentShowPageNo=" + pageNo + "'>" + pageNo + "</a></li>";
+		    }
+		    loop++;
+		    pageNo++;
+		}
+
+		// === [다음][마지막] 만들기 === //
+		if( pageNo < totalPage ) {
+			pageBar += "<li class='lgpage-item'><a class='next lgpage-link' href='" + url + "?searchType=" + searchType + "&searchWord=" + searchWord + "&currentShowPageNo=" + pageNo + "'><i class='fa-solid fa-angle-right'></i></a></li>";
+		}
+	    pageBar += "<li class='lgpage-item'><a class='next lgpage-link' href='" + url + "?searchType=" + searchType + "&searchWord=" + searchWord + "&currentShowPageNo=" + totalPage + "'><i class='fa-solid fa-angles-right'></i></a></li>";
+
+		pageBar += "</ul></div>";
+      
+      	mav.addObject("pageBar", pageBar); // 넘기자~
+      	
+      	// >>> 페이징 처리 끝 <<< //
+		
+		
 		mav.addObject("lgboardList", lgboardList);
 		mav.setViewName("lounge/loungeList.tiles1");
 		// => /WEB-INF/views/tiles1/lounge/loungeList.jsp view 단을 보여준다.  
@@ -557,7 +649,39 @@ public class LoungeController {
 			}
 	    }
   		
-  		
-  		
 	}
+	
+	
+	// === #13. 라운지 특정글에 대한 좋아요 등록하기(Ajax 로 처리) === //
+	@ResponseBody
+	@PostMapping(value = "/loungelikeAdd", produces="text/plain;charset=UTF-8")
+	public String loungelikeAdd(LoungelikeDTO lglikedto) throws SQLException {
+		
+		int n = 0;
+		
+		// === #13-0. 라운지 특정글에 대한 좋아요가 눌렸는지 확인하기 ===
+		n = service.loungelikeCheck(lglikedto);
+		
+		String message = "";
+		
+		if(n == 0) {
+			n = service.loungelikeAdd(lglikedto); // --- #13-1.tbl_lounge_like 테이블에 좋아요 추가하기(insert)
+			message = "좋아요 :-)";
+		}
+		else {
+			n = service.loungelikeCancel(lglikedto); // --- #13-3.tbl_lounge_like 테이블에 좋아요 취소하기(delete)
+			message = "좋아요 취소 :-(";
+		}
+		
+		JSONObject jsonObj = new JSONObject();
+		jsonObj.put("message", message); 
+		// {"message":"좋아요 :-)"} 또는  {"message":"좋아요 취소 :-("}
+		
+		jsonObj.put("n", n); // 정상이면 1, rollback 당하면 0 이 나올 것이다.
+		jsonObj.put("fk_userid", lglikedto.getFk_userid());
+		
+		return jsonObj.toString(); 
+	}
+	
+	
 }

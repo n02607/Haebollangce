@@ -85,7 +85,7 @@
 
 </script>
 
-<div class=" container-fluid mt-5 mb-5 mx-auto bg-white">
+<div class="container-fluid mt-5 mb-5 mx-auto bg-white">
 	<div class=" col-md-10 mx-auto my-5 justify-content-center" style="width:80%; ">
 
 		<h4 class="d-flex justify-content-center mb-1 pb-1" style="padding-top:50px;"><span style="border-bottom: solid 3px;">라운지 글작성하기</span></h4>

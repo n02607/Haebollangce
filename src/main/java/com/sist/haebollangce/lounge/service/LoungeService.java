@@ -1,21 +1,18 @@
 package com.sist.haebollangce.lounge.service;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+import java.util.*;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.transaction.annotation.Isolation;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.sist.haebollangce.common.FileManager;
 import com.sist.haebollangce.lounge.model.InterLoungeDAO;
 import com.sist.haebollangce.lounge.model.LoungeBoardDTO;
 import com.sist.haebollangce.lounge.model.LoungeCommentDTO;
+import com.sist.haebollangce.lounge.model.LoungelikeDTO;
 
 @Service
 public class LoungeService implements InterLoungeService {
@@ -38,11 +35,18 @@ public class LoungeService implements InterLoungeService {
 		return n;
 	}
 	
-	// --- #3-1. 페이징 처리 안한 검색어 있는 전체 글 목록 보기 ---
+	// --- #3-1. 페이징 처리 한 검색어 있는 전체 글 목록 보기 (1)검색이 있을 때 2)없을 때 다 포함)---
 	@Override
 	public List<LoungeBoardDTO> lgboardListSearch(Map<String, String> paraMap) {
 		List<LoungeBoardDTO> lgboardList = dao.lgboardListSearch(paraMap);
 		return lgboardList;
+	}
+
+	// --- #3-2. 페이징 처리를 위해 총 게시물 건수(totalCount) 구하기 (1)검색이 있을 때 2)없을 때 다 포함)---
+	@Override
+	public int lggetTotalCount(Map<String, String> paraMap) {
+		int n = dao.lggetTotalCount(paraMap);
+		return n;
 	}
 	
 	// === #11. 검색어 입력시 자동글 완성하기 (Ajax 로 처리) ===
@@ -134,6 +138,52 @@ public class LoungeService implements InterLoungeService {
 	public List<LoungeCommentDTO> lggetCommentList(String parentSeq) {
 		List<LoungeCommentDTO> lgcommentList = dao.lggetCommentList(parentSeq);
 		return lgcommentList;
+	}
+
+	// === #13. 라운지 특정글에 대한 좋아요 등록하고 취소하기 === 
+	
+	// === #13-0. 라운지 특정글에 대한 좋아요가 눌렸는지 확인하기 ===
+	@Override
+	public int loungelikeCheck(LoungelikeDTO lglikedto) {
+		int n = dao.loungelikeCheck(lglikedto);
+		return n;
+	}
+
+	// --- 좋아요 등록(transaction 처리) ---
+	@Override
+	@Transactional(propagation=Propagation.REQUIRED, isolation=Isolation.READ_COMMITTED, rollbackFor= {Throwable.class})
+	public int loungelikeAdd(LoungelikeDTO lglikedto) {
+		
+		int n=0, result=0;
+		
+		n = dao.loungelikeAdd(lglikedto); // --- #13-1.tbl_lounge_like 테이블에 좋아요 추가하기(insert)
+		System.out.println("~~~ 확인용 n : " + n);
+		// ~~~ 확인용 n : 1
+		
+		if(n==1) {
+			result = dao.loungeupdatelikeCount(lglikedto.getFk_seq()); // --- #13-2.tbl_lounge_board 테이블에 likeCount 컬럼이 1 증가 (update)
+			System.out.println("~~~ 확인용 result : " + result);
+			// ~~~ 확인용 result : 1
+		}
+		return result;
+	}
+
+	// --- 좋아요 취소(transaction 처리) ---
+	@Override
+	public int loungelikeCancel(LoungelikeDTO lglikedto) {
+		
+		int n=0, result=0;
+		
+		n = dao.loungelikeCancel(lglikedto); // --- #13-3.tbl_lounge_like 테이블에 좋아요 취소하기(delete)
+		System.out.println("~~~ 확인용 n : " + n);
+		// ~~~ 확인용 n : 1
+		
+		if(n==1) {
+			result = dao.loungecancellikeCount(lglikedto.getFk_seq()); // --- #13-4.tbl_lounge_board 테이블에 likeCount 컬럼이 1 감소 (update)
+			System.out.println("~~~ 확인용 result : " + result);
+			// ~~~ 확인용 result : 1
+		}
+		return result;
 	}
 
 	

@@ -7,6 +7,53 @@
 
 <style type="text/css">
 	
+	/* 페이지바 */
+	div.pagination-wrapper {
+		border-radius: 35px;
+		background-color: white;
+		width: fit-content;
+	}
+	
+	ul.pagination {
+		justify-content: center;
+	}
+
+	a.lgpage-link {
+		display: block;
+		padding: 0 20px;
+		float: left;
+		transition: 300ms ease;
+		color: black;
+		font-size: 18px;
+		line-height: 40px;
+	}
+	
+	a.lgpage-link.active {
+		display: block;
+		padding: 0 25px;
+		float: left;
+		transition: 300ms ease;
+		color: white !important;
+		font-size: 18px;
+		line-height: 50px;
+	}
+
+	.lgpage-link:hover,
+	.lgpage-item.active {
+		background-color: #ff8a7a;
+		color: white;
+	}
+	
+	a.prev, a.next {
+    	color: gray;
+	}
+	
+	a.prev:hover, a.next:hover {
+		background-color: transparent;
+    	color: #ff8a7a;
+	}
+	/* 페이지바끝 */
+		
 	div.lgcontent {
 		overflow: hidden;
 	    text-overflow: ellipsis;
@@ -260,7 +307,7 @@
 			        			
 		                        <div class="mt-3"> 
 		                        	<span class="text1">
-		                        		<img src="https://images.munto.kr/munto-web/ic_action_like-empty-black_30px.svg?s=32x32"/>${lgboarddto.likeCount}
+		                        		<img src="https://images.munto.kr/munto-web/ic_action_like-empty-black_30px.svg?s=32x32" />${lgboarddto.likeCount}
 			                        	<span class="text2">
 			                        		<img src="https://images.munto.kr/munto-web/ic_action_comment_30px.svg?s=32x32"/>${lgboarddto.commentCount}
 			                        	</span>
@@ -272,6 +319,7 @@
 		            </div>
 		        </div>
         	</c:forEach>
+        	
         </c:if>
         <c:if test="${empty requestScope.lgboardList}">
         	<div style="margin: 0 auto; padding-bottom:50px;">
@@ -280,5 +328,12 @@
         </c:if>
         
     </div>
+    
+ 	<%-- === #3-3. 페이지바 보여주기 === --%>  
+    <div align="center" style="border: solid 0px gray; width: 70%; margin: 20px auto; ">
+    	${requestScope.pageBar}
+    </div>
+    
+        	
 </div>
 <!-- lounge_content 끝 -->

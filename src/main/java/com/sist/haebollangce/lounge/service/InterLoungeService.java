@@ -5,6 +5,7 @@ import java.util.Map;
 
 import com.sist.haebollangce.lounge.model.LoungeBoardDTO;
 import com.sist.haebollangce.lounge.model.LoungeCommentDTO;
+import com.sist.haebollangce.lounge.model.LoungelikeDTO;
 
 public interface InterLoungeService {
 
@@ -14,8 +15,11 @@ public interface InterLoungeService {
 	// === #2-1. 파일첨부가 있는 게시판 글쓰기 완료 요청 ===
 	int loungeAdd_withFile(LoungeBoardDTO lgboarddto);
 	
-	// --- #3-1. 페이징 처리 안한 검색어 있는 전체 글 목록 보기 ---
+	// --- #3-1. 페이징 처리 한 검색어 있는 전체 글 목록 보기 (1)검색이 있을 때 2)없을 때 다 포함) ---
 	List<LoungeBoardDTO> lgboardListSearch(Map<String, String> paraMap);
+	
+	// --- #3-2. 페이징 처리를 위해 총 게시물 건수(totalCount) 구하기 (1)검색이 있을 때 2)없을 때 다 포함) ---
+	int lggetTotalCount(Map<String, String> paraMap);
 
 	// === #11. 검색어 입력시 자동글 완성하기 (Ajax 로 처리) ===
 	List<String> lgwordSearchShow(Map<String, String> paraMap);
@@ -39,6 +43,17 @@ public interface InterLoungeService {
 	// === #10. 원 게시물에 딸린 댓글들을 조회 ===
 	List<LoungeCommentDTO> lggetCommentList(String parentSeq);
 
+	// === #13-0. 라운지 특정글에 대한 좋아요가 눌렸는지 확인하기 (select) ===
+	int loungelikeCheck(LoungelikeDTO lglikedto);
+	
+	// --- #13-1.tbl_lounge_like 테이블에 좋아요 추가하기(insert)
+	int loungelikeAdd(LoungelikeDTO lglikedto);
+
+	// --- #13-3.tbl_lounge_like 테이블에 좋아요 취소하기(delete)
+	int loungelikeCancel(LoungelikeDTO lglikedto);
+
+
+	
 	
 	
 }
