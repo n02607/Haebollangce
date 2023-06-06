@@ -248,7 +248,16 @@
 		                <div class="mt-3" onclick="goView(${lgboarddto.seq})" style="cursor:pointer;">
 		                    <img style="width:100%;" src="http://images.munto.kr/production-feed/1684333844811-photo-hut52-101851-0?s=384x384" />
 		                    <div class="mt-2">
-		                        <div class="lgcontent">${lgboarddto.subject}</div>
+		                    
+		                    	<!-- === 첨부파일이 없는 경우 === -->
+		        				<c:if test="${lgboarddto.orgFilename == null}">
+		                        	<div class="lgcontent">${lgboarddto.subject}</div>
+		                        </c:if>
+		                        <!-- === 첨부파일이 있는 경우 === -->
+			        			<c:if test="${lgboarddto.orgFilename != null}">
+			        				<div class="lgcontent">${lgboarddto.subject}&nbsp;&nbsp;<i class="fa-solid fa-file-arrow-down" style="color: #fed85d;"></i></div>
+			        			</c:if>
+			        			
 		                        <div class="mt-3"> 
 		                        	<span class="text1">
 		                        		<img src="https://images.munto.kr/munto-web/ic_action_like-empty-black_30px.svg?s=32x32"/>${lgboarddto.likeCount}

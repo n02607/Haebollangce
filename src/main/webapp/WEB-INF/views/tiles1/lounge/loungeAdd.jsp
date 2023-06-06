@@ -53,8 +53,8 @@
 	        content = content.substring(content.indexOf("<p>")+3);
  	  	 	content = content.substring(0, content.indexOf("</p>"));
  	  	 	
- 	  	 	let Listcontent = $("textarea#content").val();
- 	  	 	Listcontent = Listcontent.replace(/&nbsp;/gi, "");
+ 	  	 	//let Listcontent = $("textarea#content").val();
+ 	  	 	//Listcontent = Listcontent.replace(/&nbsp;/gi, "");
  	  	 		
  	  	 	
  	  	 	if(content.trim().length == 0) {

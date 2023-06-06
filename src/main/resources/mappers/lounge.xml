@@ -20,7 +20,7 @@
 	<!-- // #3-1. 페이징 처리 안한 검색어 있는 전체 글 목록 보기  --> 
 	<select id="lgboardListSearch" parameterType="HashMap" resultType="com.sist.haebollangce.lounge.model.LoungeBoardDTO">
 		select seq, fk_userid, name, subject, content, readcount, regdate, commentCount, 
-		       TO_DATE(sysdate, 'YYYY-MM-DD') - TO_DATE(regdate, 'YYYY-MM-DD') as regDate_ago, likeCount
+		       TO_DATE(sysdate, 'YYYY-MM-DD') - TO_DATE(regdate, 'YYYY-MM-DD') as regDate_ago, orgFilename, likeCount
 		from tbl_lounge_board
 		where status = 1
 		<if test=" searchType != '' and searchWord != '' ">
@@ -116,7 +116,7 @@
 		from tbl_lounge_comment
 	</select>
 	
-	<!-- // === #10. 원 게시물에 딸린 댓글들을 조회 === -->
+	<!-- // === #10. 원 게시물에 딸린 댓글들을 조회 (계층형쿼리) === -->
 	<select id="lggetCommentList" parameterType="String" resultType="com.sist.haebollangce.lounge.model.LoungeCommentDTO">
 		select seq, parentSeq, name, content , regdate, status, groupno, fk_seq, depthno
 		from 

@@ -2,6 +2,7 @@ package com.sist.haebollangce.lounge.controller;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.PrintWriter;
 import java.util.*;
 
@@ -69,7 +70,6 @@ public class LoungeController {
 			//  ~~~ 첨부파일이 저장될 WAS의 폴더 경로 path  : C:\Users\\user\git\Haebollangce\src\main\webapp\resources\files
 			// -> 왜 .metadata 폴더가 아니지..??
 				
-				
 			// 2. 파일첨부를 위한 변수의 설정 및 값을 초기화 한 후 파일 올리기
 			String newFilename = ""; 		// WAS(톰캣)의 디스크에 저장될 파일명
 			long fileSize = 0;		 		// 첨부파일의 크기
@@ -118,17 +118,44 @@ public class LoungeController {
 		
 		return mav;
 	}
-	
-	
 
 	// === #2-2. 스마트에디터. 드래그앤드롭을 사용한 다중사진 파일업로드 ===
-	@PostMapping(value="/image/multiplePhotoUpload.action")
+	@PostMapping(value="/challenge/image/multiplePhotoUpload.action")
 	public void multiplePhotoUpload(HttpServletRequest request, HttpServletResponse response) {
 	
+		// 1. 사용자가 보낸 파일을 WAS(톰캣)의 특정 폴더에 저장해주어야 한다.
+		HttpSession session = request.getSession();
+		String root = session.getServletContext().getRealPath("/");
+		String path = root + "resources"+File.separator+"lgphoto_upload";
 	
-	
+		File dir = new File(path);
+		if(!dir.exists()) {
+			dir.mkdirs();
+		}
+		
+		try {
+			String filename = request.getHeader("file-name"); // 파일명(문자열)을 받는다 - 일반 원본파일명
+			// 네이버 스마트에디터를 사용한 파일업로드시 싱글파일업로드와는 다르게 멀티파일업로드는 파일명이 header 속에 담겨져 넘어오게 되어있다. 
+			
+			InputStream is = request.getInputStream(); // is는 네이버 스마트 에디터를 사용하여 사진첨부하기 된 이미지 파일임.
+			
+			String newFilename = fileManager.doFileUpload(is, filename, path);
+			
+			
+			String ctxPath = request.getContextPath(); //  /board
+			
+			String strURL = "";
+			strURL += "&bNewLine=true&sFileName="+newFilename; 
+			strURL += "&sFileURL="+ctxPath+"/resources/photo_upload/"+newFilename;
+			
+			// === 웹브라우저 상에 사진 이미지를 쓰기 === //
+			PrintWriter out = response.getWriter();
+			out.print(strURL);
+			
+		} catch(Exception e) {
+			e.printStackTrace();
+		}
 	}
-
 	
 	
 	// === #3. 라운지 글목록 보기 페이지 요청 === (#58.)
@@ -216,7 +243,7 @@ public class LoungeController {
 		String fk_seq = request.getParameter("fk_seq");
 		String groupno = request.getParameter("groupno");
 		String depthno = request.getParameter("depthno");
-		String content = request.getParameter("content");
+		String name = request.getParameter("name");
 		
 		if(fk_seq == null) { // null 이라는 글자로 알아듣는 것을 방지해주기 위해 없다는 의미로 "" 처리를 해줘야 한다
 			fk_seq = "";
@@ -225,7 +252,7 @@ public class LoungeController {
 		mav.addObject("fk_seq", fk_seq);
 		mav.addObject("groupno", groupno);
 		mav.addObject("depthno", depthno);
-		mav.addObject("content", content); // -> 원글쓰기의 경우에는 위 4개의 값이 모두 null 일 것이다
+		mav.addObject("name", name); // -> 원글쓰기의 경우에는 위 4개의 값이 모두 null 일 것이다
 		// === 답변글쓰기가 추가된 경우 끝 ===================================================
 		
 		// --- 조회하고자 하는 글번호 받아오기 ---
@@ -446,6 +473,8 @@ public class LoungeController {
 			for(LoungeCommentDTO lgcmtvo : lgcommentList) {
 				
 				JSONObject jsonObj = new JSONObject();
+				jsonObj.put("parentSeq", lgcmtvo.getParentSeq());
+				jsonObj.put("seq", lgcmtvo.getSeq());
 				jsonObj.put("name", lgcmtvo.getName());
 				jsonObj.put("content", lgcmtvo.getContent());
 				jsonObj.put("regdate", lgcmtvo.getRegDate());

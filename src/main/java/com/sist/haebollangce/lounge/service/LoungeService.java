@@ -120,13 +120,10 @@ public class LoungeService implements InterLoungeService {
 		
 		// --- #9-1. tbl_lounge_comment 댓글쓰기(insert)--- 
 		n = dao.loungeaddComment(lgcommentdto); 
-		System.out.println("serevice 에서 n : " + n);
 		
 		if(n==1) {
-			
 			// --- #9-2. tbl_lounge_board 댓글수증가(update)--- 
 			m = dao.loungeupdateCount(lgcommentdto.getParentSeq()); 
-			System.out.println("serevice 에서 m : " + m);
 		}
 		
 		return m;

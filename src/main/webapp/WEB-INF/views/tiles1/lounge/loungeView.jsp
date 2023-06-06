@@ -18,7 +18,7 @@
   		// -- 엔터치면 댓글입력됨 --
 		$("input#commentContent").keyup(function(e){
 			if (e.keyCode == 13) { 
-				lgcgoAddWrite();
+				lgcgoAddWrite()
 			}
 		});
   		
@@ -53,13 +53,11 @@
   			return; // 종료
   		}
   		
+  		const queryString = $("form[name='addWriteFrm']").serialize();
+  		
   		$.ajax({
   			url:"<%= ctxPath%>/lounge/loungeaddComment",
-  			data:{"fk_userid":$("input#fk_userid").val(), 
-  			      "name":$("input#name").val(), 
-  			      "content":$("input#commentContent").val(),
-  			      "parentSeq":$("input#parentSeq").val()} ,
-  		
+  			data:queryString,
 		    type:"post",
     		dataType:"json",
     		success:function(json){
@@ -83,7 +81,7 @@
   	}//end of function lgcgoAddWrite()----------------
   	
 
-    function lgccgoAddWrite(fk_seq, depthno, groupno) {
+    /* function lgccgoAddWrite(fk_seq, depthno, groupno) {
         
   		// 예시) /lounge/loungeView URL에 파라미터 추가하여 이동
         var url = '/lounge/loungeView?seq=' + ${requestScope.lgboarddto.seq};
@@ -91,7 +89,7 @@
         url += '&groupno=' + groupno;
         url += '&depthno=' + depthno;
         location.href = url;
-    }
+    } */
 
   	
  	// === 댓글 페이징 처리안하고 읽어오기  
@@ -113,13 +111,13 @@
 	  						html += ` <div class="d-flex flex-row mb-3"> 
 			                		 	<img style="border: solid 3px #eee; border-radius: 100%; width:45px; height: 45px; vertical-align: top;" src="http://images.munto.kr/production-user/1684469607083-photo-g1p6z-101851-0?s=48x48" /> 
 			  	              		 	<div class="c-details"> 
-			  	                     		<h5 class="mb-1 ml-3 lounge_comment_userid"><span class="lounge_comment_name">\${item.name}</span></h5> 
+			  	                     		<h5 class="mb-1 ml-3 lounge_comment_userid"><span class="lounge_comment_name">(댓글번호 \${item.seq}) \${item.name}</span></h5> 
 			  	                     		<div class="c-details">
 			  		                 			<h6 class="mb-0 ml-3 lounge_comment_content">\${item.content}</h6>
 			  	                	 		</div>
 			  	                	 		<div class="c-details"> 
 			  	                				<small class="mb-0 ml-3" style="color:gray;">\${item.regdate}</small>
-			  	                				<small type="button" class="mb-0 ml-2" style="color:gray;" onclick="lgccgoAddWrite(\${item.fk_seq}, \${item.depthno}, \${item.groupno});">답글달기</small> 
+			  	                				<small type="button" class="mb-0 ml-2" style="color:gray;" onclick="javascript:location.href='/lounge/loungeView?seq=\${item.parentSeq}&fk_seq=\${item.seq}&groupno=\${item.groupno}&depthno=\${item.depthno}'">답글달기</small> 
 			  	                	 		</div>
 			  	                		</div> 
 		  	              		 	  </div>`; 
@@ -130,13 +128,13 @@
   							html += ` <div class="d-flex flex-row mb-3" style="padding-left:\${padding}px"> 
   										<img style="border: solid 3px #eee; border-radius: 100%; width:45px; height: 45px; vertical-align: top;" src="http://images.munto.kr/production-user/1684469607083-photo-g1p6z-101851-0?s=48x48" /> 
 			  	              		 	<div class="c-details"> 
-			  	                     		<h5 class="mb-1 ml-3 lounge_comment_userid"><span class="lounge_comment_name">\${item.name}</span></h5> 
+			  	                     		<h5 class="mb-1 ml-3 lounge_comment_userid"><span class="lounge_comment_name">(댓글번호 \${item.seq}) \${item.name}</span></h5> 
 			  	                     		<div class="c-details">
 			  		                 			<h6 class="mb-0 ml-3 lounge_comment_content">\${item.content}</h6>
 			  	                	 		</div>
 			  	                	 		<div class="c-details"> 
 			  	                				<small class="mb-0 ml-3" style="color:gray;">\${item.regdate}</small>
-			  	                				<small type="button" class="mb-0 ml-2" style="color:gray;" onclick="lgccgoAddWrite(\${item.fk_seq}, \${item.depthno}, \${item.groupno})">답글달기</small>
+			  	                				<small type="button" class="mb-0 ml-2" style="color:gray;" onclick="javascript:location.href='/lounge/loungeView?seq=\${item.parentSeq}&fk_seq=\${item.seq}&groupno=\${item.groupno}&depthno=\${item.depthno}'">답글달기</small>
 											</div> 
 			  	                		</div> 
 			              		 	</div>`;
@@ -183,15 +181,17 @@
 		            <div class="mt-3">
 		            	<h4>${lgboarddto.subject}</h4>
 		                <div>${lgboarddto.content}</div>
-		                <div style="border:solid 1px silver; border-radius:7px; margin:10px; padding:7px;"> 첨부파일 |  
-		                	<a href="<%= request.getContextPath() %>/lounge/lgdownload?seq=${lgboarddto.seq}" style="color:black;">${lgboarddto.orgFilename} ( <fmt:formatNumber value="${lgboarddto.fileSize}" pattern="#,###" /> bytes ) </a>
-		                	<%-- <c:if test="${sessionScope.loginuser != null}">
-		               			<a href="<%= request.getContextPath() %>/download.action?seq=${requestScope.boardvo.seq}">${requestScope.boardvo.orgFilename}</a>
-		               		</c:if>
-		               		<c:if test="${sessionScope.loginuser == null}">
-		               			${requestScope.boardvo.orgFilename}
-		               		</c:if> --%>
-		                </div>
+		                <c:if test="${lgboarddto.orgFilename != null}">
+			                <div style="border:solid 1px silver; border-radius:7px; margin:10px; padding:7px;"> 첨부파일 |  
+			                	<a href="<%= request.getContextPath() %>/lounge/lgdownload?seq=${lgboarddto.seq}" style="color:black;">${lgboarddto.orgFilename} ( <fmt:formatNumber value="${lgboarddto.fileSize}" pattern="#,###" /> bytes ) </a>
+			                <%--<c:if test="${sessionScope.loginuser != null}">
+			               			<a href="<%= request.getContextPath() %>/lounge/lgdownload?seq=${lgboarddto.seq}" style="color:black;">${lgboarddto.orgFilename} ( <fmt:formatNumber value="${lgboarddto.fileSize}" pattern="#,###" /> bytes ) </a>
+			               		</c:if>
+			               		<c:if test="${sessionScope.loginuser == null}">
+			               			${lgboarddto.orgFilename}
+			               		</c:if> --%>
+			                </div>
+		                </c:if>
 		                <div class="mt-4"> 
 		                	<span class="text1 ">
 		                		<img src="https://images.munto.kr/munto-web/ic_action_like-empty-black_30px.svg?s=32x32"/>${lgboarddto.likeCount}
@@ -214,14 +214,14 @@
 		     
 		    	<!-- 댓글쓰기 폼 추가 (로그인했을때만 가능)-->
 		    <%--<c:if test="${not empty sessionScope.loginuser}">--%>
-		    	<form name="addWriteFrm" id="addWriteFrm" style="margin-top: 20px;">
+		    	<form name="addWriteFrm" id="addWriteFrm" style="margin-top: 20px;" onsubmit="return false;">
 			    	<div class="d-flex flex-row align-items-center">
 		                <div > 
 		                	<img style="border: solid 3px #eee; border-radius: 100%; width:45px; height: 45px; vertical-align: top;" src="https://blogpfthumb-phinf.pstatic.net/MjAyMzAzMjZfMTcg/MDAxNjc5ODA1Nzg5MTA1.q_8Sgd5xxiU_c6miUoEzA8hlH3NQxSN7b0MrRsFUFkwg.Blbzms8HupOJpb4xBiGh9sKEXI7dluwLxcNeyuo6Ry4g.PNG.jin970510/profileImage.png?type=w161" /> 
 		                </div>
 		                <div style="width:100%;">
 		                	<input type="hidden" name="fk_userid" id="fk_userid" value="sudin" /> 
-		                	<input type="hidden" name="name" id="name" value="망나뇽수진" /> 
+		                	<input type="hidden" name="name" id="name" value="로그인유저" /> 
 		                    
 		                    <div class=" c-details">
 		                    	<h6 class="mb-0 ml-2 lounge_comment_content align-items-center">
@@ -233,7 +233,7 @@
 			                    	
 			                    	<!-- 대댓글쓰기인 경우 -->
 		                    		<c:if test="${requestScope.fk_seq ne ''}">
-				                    	<input type="text" name="content" id="commentContent" style="border-radius:10px; border: solid 3px #eee; height: 35px; width:90%;" placeholder=" ${requestScope.name} 님에게 댓글달기.." /> 
+				                    	<input type="text" name="content" id="commentContent" style="border-radius:10px; border: solid 3px #eee; height: 35px; width:90%;" placeholder=" @ ${requestScope.fk_seq} 님에게 댓글달기.." /> 
 			                    	</c:if>
 			                    	
 								   	<%-- === #9-4. 답변글쓰기가 추가된 경우 시작 === --%>
