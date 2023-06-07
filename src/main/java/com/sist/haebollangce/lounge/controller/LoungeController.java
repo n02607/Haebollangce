@@ -128,8 +128,13 @@ public class LoungeController {
 		// 1. 사용자가 보낸 파일을 WAS(톰캣)의 특정 폴더에 저장해주어야 한다.
 		HttpSession session = request.getSession();
 		String root = session.getServletContext().getRealPath("/");
-		String path = root + "resources"+File.separator+"lgphoto_upload";
+		System.out.println("root -> " + root);
+		// root -> C:/Users/user/git/Haebollangce/src/main/webapp/
 	
+		String path = root + "resources"+File.separator+"lgphoto_upload";
+		System.out.println("path -> " + path);
+		// path -> C:/Users/user/git/Haebollangce/src/main/webapp/resources/lgphoto_upload
+		
 		File dir = new File(path);
 		if(!dir.exists()) {
 			dir.mkdirs();
@@ -139,16 +144,19 @@ public class LoungeController {
 			String filename = request.getHeader("file-name"); // 파일명(문자열)을 받는다 - 일반 원본파일명
 			// 네이버 스마트에디터를 사용한 파일업로드시 싱글파일업로드와는 다르게 멀티파일업로드는 파일명이 header 속에 담겨져 넘어오게 되어있다. 
 			
+			System.out.println(">>> 확인용 filename ==> " + filename);
+			// >>> 확인용 filename ==> %EB%90%90%EC%96%B4%EC%9A%94.jpg
+			
 			InputStream is = request.getInputStream(); // is는 네이버 스마트 에디터를 사용하여 사진첨부하기 된 이미지 파일임.
 			
 			String newFilename = fileManager.doFileUpload(is, filename, path);
 			
-			
-			String ctxPath = request.getContextPath(); //  /board
+			String ctxPath = request.getContextPath(); //  /
+			System.out.println("ctxPath : " + ctxPath);
 			
 			String strURL = "";
 			strURL += "&bNewLine=true&sFileName="+newFilename; 
-			strURL += "&sFileURL="+ctxPath+"/resources/photo_upload/"+newFilename;
+			strURL += "&sFileURL="+ctxPath+"/resources/lgphoto_upload/"+newFilename;
 			
 			// === 웹브라우저 상에 사진 이미지를 쓰기 === //
 			PrintWriter out = response.getWriter();
