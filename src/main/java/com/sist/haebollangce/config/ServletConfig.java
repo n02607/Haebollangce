@@ -1,9 +1,11 @@
 package com.sist.haebollangce.config;
 
-import com.sist.haebollangce.user.util.AES256;
+import java.io.UnsupportedEncodingException;
+
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.web.multipart.commons.CommonsMultipartResolver;
 import org.springframework.web.servlet.ViewResolver;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
@@ -13,7 +15,7 @@ import org.springframework.web.servlet.view.tiles3.TilesConfigurer;
 import org.springframework.web.servlet.view.tiles3.TilesView;
 import org.springframework.web.servlet.view.tiles3.TilesViewResolver;
 
-import java.io.UnsupportedEncodingException;
+import com.sist.haebollangce.user.util.AES256;
 @Configuration
 @EnableWebMvc
 @ComponentScan(basePackages = "com.sist")
@@ -51,13 +53,13 @@ public class ServletConfig implements WebMvcConfigurer {
         return tilesViewResolver;
     }
 
-//    @Bean
-//    public CommonsMultipartResolver multipartResolver() {
-//        CommonsMultipartResolver multipartResolver = new CommonsMultipartResolver();
-//        multipartResolver.setDefaultEncoding("UTF-8");
-//        multipartResolver.setMaxUploadSize(10485760);
-//        return multipartResolver;
-//    }
+    @Bean
+    public CommonsMultipartResolver multipartResolver() {
+        CommonsMultipartResolver multipartResolver = new CommonsMultipartResolver();
+        multipartResolver.setDefaultEncoding("UTF-8");
+        multipartResolver.setMaxUploadSize(10485760);
+        return multipartResolver;
+    }
 
     @Bean
     public AES256 aes() throws UnsupportedEncodingException {
