@@ -73,6 +73,13 @@ public class LoungeDAO implements InterLoungeDAO {
 		int n = mapper.lgedit(lgboarddto);
 		return n;
 	}
+	
+	// === #6-1. 파일첨부가 있는 라운지 글 수정 페이지 요청 완료 ===
+	@Override
+	public int lgedit_withFile(LoungeBoardDTO lgboarddto) {
+		int n = mapper.lgedit_withFile(lgboarddto);
+		return n;
+	}
 
 	// === #8. 라운지 글 삭제 페이지 요청 완료 ===
 	@Override
@@ -145,7 +152,7 @@ public class LoungeDAO implements InterLoungeDAO {
 		int n = mapper.loungecancellikeCount(fk_seq);
 		return n;
 	}
-
+	
 	
 	
 	

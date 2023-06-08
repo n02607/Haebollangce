@@ -53,6 +53,17 @@
     	color: #ff8a7a;
 	}
 	/* 페이지바끝 */
+	
+	
+	div.lgsubject{
+		overflow: hidden;
+	    text-overflow: ellipsis;
+	    display: -webkit-box;
+	    -webkit-line-clamp: 1; /* 라인수 */
+	    -webkit-box-orient: vertical;
+	    word-wrap:break-word; 
+	    line-height: 1.2em;
+	}
 		
 	div.lgcontent {
 		overflow: hidden;
@@ -63,7 +74,9 @@
 	    word-wrap:break-word; 
 	    line-height: 1.2em;
 	    height: 3.6em; /* line-height 가 1.2em 이고 3라인을 자르기 때문에 height는 1.2em * 3 = 3.6em */
+		font-size: 15px; 
 	}
+	
 	
 	/* 글검색 폼 */
 
@@ -214,7 +227,9 @@
   
 	// Function Declaration
 	function goView(seq) {
-		location.href = "<%= ctxPath%>/lounge/loungeView?seq="+seq; 
+		const searchType = $("select#searchType").val();
+  		const searchWord = $("input#searchWord").val();
+		location.href = "<%= ctxPath%>/lounge/loungeView?seq="+seq+"&searchType="+searchType+"&searchWord="+searchWord; 
 	}
 	
 	function goSearch() {
@@ -281,7 +296,7 @@
 			        <div class="card p-3 mb-5 " style="min-height: 400px;">
 			            <div class="d-flex justify-content-between">
 			                <div class="d-flex flex-row align-items-center">
-		                        <div><img style="border-radius:60%; width:35px;" src="https://lh3.googleusercontent.com/ogw/AOLn63F1Ha6NDXd-seLYOJM9EFk7xFis5ODQaOFR0zDz0w=s32-c-mo" /> </div>
+		                        <div><img style="border-radius:60%; width:35px;" src="<%= ctxPath%>/images/${lgboarddto.lgbprofile}" /> </div>
 		                        <div class=" c-details">
 		                            <h6 class="mb-0 ml-2">${lgboarddto.name}</h6> 
 		                            <span class="ml-2">
@@ -293,16 +308,20 @@
 		                    <div class="badge"> <span>follow</span> </div>
 		                </div>
 		                <div class="mt-3" onclick="goView(${lgboarddto.seq})" style="cursor:pointer;">
-		                    <img style="width:100%;" src="http://images.munto.kr/production-feed/1684333844811-photo-hut52-101851-0?s=384x384" />
+		                	<div style="width: 100%; height: 0; padding-bottom: 100%; position: relative;">
+		                    	<img style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover;" src="<%= ctxPath%>/images/lgthumFiles/${lgboarddto.thumbnail}" />
+		                    </div>
 		                    <div class="mt-2">
 		                    
 		                    	<!-- === 첨부파일이 없는 경우 === -->
 		        				<c:if test="${lgboarddto.orgFilename == null}">
-		                        	<div class="lgcontent">${lgboarddto.subject}</div>
+		                        	<div class="lgsubject mb-1">${lgboarddto.subject}</div>
+		                        	<div class="lgcontent">${lgboarddto.content}</div>
 		                        </c:if>
 		                        <!-- === 첨부파일이 있는 경우 === -->
 			        			<c:if test="${lgboarddto.orgFilename != null}">
-			        				<div class="lgcontent">${lgboarddto.subject}&nbsp;&nbsp;<i class="fa-solid fa-file-arrow-down" style="color: #fed85d;"></i></div>
+			        				<div class="lgsubject mb-1">${lgboarddto.subject}&nbsp;&nbsp;<i class="fa-solid fa-file-arrow-down" style="color: #fed85d;"></i></div>
+			        				<div class="lgcontent">${lgboarddto.content}</div>
 			        			</c:if>
 			        			
 		                        <div class="mt-3"> 

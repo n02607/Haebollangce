@@ -32,6 +32,12 @@ public interface InterLoungeService {
 
 	// === #6. 라운지 글 수정 페이지 요청 완료 ===
 	int lgedit(LoungeBoardDTO lgboarddto);
+	
+	// === #6-1. 파일첨부가 있는 라운지 글 수정 페이지 요청 완료 ===
+	int lgedit_withFile(LoungeBoardDTO lgboarddto);
+
+	// === #6-2. 라운지 글 편집 중 파일첨부 있으면 삭제 요청 === 첨부파일 편집 기능 만들다 보류
+	/* void deletelgOrgFilename(Map<String, String> paraMap); */
 
 	// === #8. 라운지 글 삭제 페이지 요청 완료 ===
 	int lgdel(Map<String, String> paraMap);
@@ -52,7 +58,8 @@ public interface InterLoungeService {
 	// --- #13-3.tbl_lounge_like 테이블에 좋아요 취소하기(delete)
 	int loungelikeCancel(LoungelikeDTO lglikedto);
 
-
+	
+	
 	
 	
 	

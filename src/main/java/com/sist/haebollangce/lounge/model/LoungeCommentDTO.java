@@ -11,12 +11,11 @@ public class LoungeCommentDTO {
 	private String parentSeq;    // 원게시물 글번호
 	private String status;       // 글삭제여부
 	
-
-	// === 답변글쓰기 게시판을 위한 필드
-	private String groupno;
+	private String groupno;		// === 답변글쓰기 게시판을 위한 필드
 	private String fk_seq;
 	private String depthno;
 	
+	private String lgcprofile;	// 라운지 1개글 볼때 필요한 댓글이미지
 
 	// getter & setter
 	public String getSeq() {
@@ -99,6 +98,14 @@ public class LoungeCommentDTO {
 	
 	public void setDepthno(String depthno) {
 		this.depthno = depthno;
+	}
+
+	public String getLgcprofile() {
+		return lgcprofile;
+	}
+
+	public void setLgcprofile(String lgcprofile) {
+		this.lgcprofile = lgcprofile;
 	}
 
 	/////////////////////////////////////////

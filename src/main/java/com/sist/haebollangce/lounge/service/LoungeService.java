@@ -82,7 +82,24 @@ public class LoungeService implements InterLoungeService {
 		int n = dao.lgedit(lgboarddto);
 		return n;
 	}
-
+	
+	// === #6-1. 파일첨부가 있는 라운지 글 수정 페이지 요청 완료 ===
+	@Override
+	public int lgedit_withFile(LoungeBoardDTO lgboarddto) {
+		int n = dao.lgedit_withFile(lgboarddto);
+		return n;
+	}
+	
+	// === #6-2. 라운지 글 편집 중 파일첨부 있으면 삭제 요청 === 첨부파일 편집 기능 만들다 보류
+	/*
+	 * @Override public void deletelgOrgFilename(Map<String, String> paraMap) {
+	 * String path = paraMap.get("path"); String fileName = paraMap.get("fileName");
+	 * 
+	 * if(fileName != null && !"".equals(fileName)) { try {
+	 * FileManager.doFileDelete(fileName, path); } catch (Exception e) {
+	 * e.printStackTrace(); } } }
+	 */
+			
 	// === #8. 라운지 글 삭제 페이지 요청 완료 ===
 	@Override
 	public int lgdel(Map<String, String> paraMap) {
@@ -185,6 +202,7 @@ public class LoungeService implements InterLoungeService {
 		}
 		return result;
 	}
+	
 
 	
 }

@@ -15,6 +15,7 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -101,6 +102,38 @@ public class LoungeController {
 			
 		}//end of try~catch()------------------------------------------
 		
+		// === 썸네일 사진 업로드 필수 === 
+		MultipartFile attachThumbnail = lgboarddto.getAttachThumbnail();
+		
+		// 1. 사용자가 보낸 첨부파일을 WAS(톰캣)의 특정 폴더에 저장해주어야 한다. 
+		HttpSession session = mrequest.getSession();
+		String root = session.getServletContext().getRealPath("/").substring(0, 40);
+		// root -> C:/Users/user/git/Haebollangce/src/main/
+		
+		String path = root+"resources"+File.separator+"static"+File.separator+"images"+File.separator+"lgthumFiles";
+		// path -> C:/Users/user/git/Haebollangce/src/main/resources/static/images/lgthumFiles
+		
+		// 2. 파일첨부를 위한 변수의 설정 및 값을 초기화 한 후 파일 올리기
+		String thumFilename = ""; 		// WAS(톰캣)의 디스크에 저장될 파일명
+		byte[] bytes = null; 	 		// 첨부파일의 내용물을 담는 것
+		
+		try {
+			bytes = attachThumbnail.getBytes();  // 첨부파일의 내용물을 읽어오는 것
+			
+			String originalFilename = attachThumbnail.getOriginalFilename();
+			// ~~~ 첨부파일의 파일명 originalFilename : 댐벼.jpg
+			
+			thumFilename = fileManager.doFileUpload(bytes, originalFilename, path);
+			// ~~~ 확인용 thumFilename : 20230605160348266890041852700.jpg
+			
+			// 3. LoungeBoardDTO lgboarddto 에 fileName 값과 orgFilename 값과 fileSize 값을 넣어주기 	
+			lgboarddto.setThumbnail(thumFilename);
+			
+		} catch (Exception e) { // 모든 익셉션 수용가능
+			e.printStackTrace();
+		}	
+		// === 썸네일 사진 업로드 필수 === 
+		
 		int n = 0;
 		
 		if( attach.isEmpty() ) {
@@ -122,18 +155,16 @@ public class LoungeController {
 	}
 
 	// === #2-2. 스마트에디터. 드래그앤드롭을 사용한 다중사진 파일업로드 ===
-	@PostMapping(value="/challenge/image/multiplePhotoUpload.action")
+	@PostMapping(value="/challenge/image/multiplePhotoUpload")
 	public void multiplePhotoUpload(HttpServletRequest request, HttpServletResponse response) {
 	
 		// 1. 사용자가 보낸 파일을 WAS(톰캣)의 특정 폴더에 저장해주어야 한다.
 		HttpSession session = request.getSession();
-		String root = session.getServletContext().getRealPath("/");
-		System.out.println("root -> " + root);
-		// root -> C:/Users/user/git/Haebollangce/src/main/webapp/
-	
-		String path = root + "resources"+File.separator+"lgphoto_upload";
-		System.out.println("path -> " + path);
-		// path -> C:/Users/user/git/Haebollangce/src/main/webapp/resources/lgphoto_upload
+		String root = session.getServletContext().getRealPath("/").substring(0, 40);
+		// root -> C:/Users/user/git/Haebollangce/src/main/
+
+		String path = root+"resources"+File.separator+"static"+File.separator+"images"+File.separator+"lgphoto_upload";
+		// path -> C:/Users/user/git/Haebollangce/src/main/resources/static/images/lgphoto_upload
 		
 		File dir = new File(path);
 		if(!dir.exists()) {
@@ -156,7 +187,9 @@ public class LoungeController {
 			
 			String strURL = "";
 			strURL += "&bNewLine=true&sFileName="+newFilename; 
-			strURL += "&sFileURL="+ctxPath+"/resources/lgphoto_upload/"+newFilename;
+			strURL += "&sFileURL="+ctxPath+"/images/lgphoto_upload/"+newFilename;
+			// strURL : &bNewLine=true&sFileName=20230607163259441438809332500.jpg&sFileURL=/resources/lgphoto_upload/20230607163259441438809332500.jpg
+
 			
 			// === 웹브라우저 상에 사진 이미지를 쓰기 === //
 			PrintWriter out = response.getWriter();
@@ -248,7 +281,8 @@ public class LoungeController {
 	    
 		// --- #3-1. 페이징 처리 한 검색어 있는 전체 글 목록 보기 (#102. -> #114.)
 		lgboardList = service.lgboardListSearch(paraMap);
-				
+		System.out.println("lgboardList : " + lgboardList);
+		
 		
 		// ""이 아닐때만 view 단에 보내주겠따.
 		// -- 아래는 검색대상 컬럼과 검색어를 유지시키기 위한 작업의 시작이다 --
@@ -358,13 +392,17 @@ public class LoungeController {
 		// --- 조회하고자 하는 글번호 받아오기 ---
 		String seq = request.getParameter("seq");
 		
+		
 		String searchType = request.getParameter("searchType");
 		String searchWord = request.getParameter("searchWord");
 		
-		if(searchType == null) {
+		// 유저가 이상한 값을 입력하는 장난 못치게 if 문으로 막았으니 where 절에 안잡히도록 "" 을 map 으로 보낸다
+		if(searchType == null || (!"subject".equals(searchType) && !"name".equals(searchType))) {
 			searchType = "";
 		}
-		if(searchWord == null) {
+		
+		// 검색어에 오로지 공백만 들어올 때도 마찬가지로 where 절에 안잡히도록 "" 을 map 으로 보낸다
+		if(searchWord == null || "".equals(searchWord) || searchWord.trim().isEmpty()) {
 			searchWord = "";
 		}
 		
@@ -410,8 +448,8 @@ public class LoungeController {
 	
 	// === #5. 라운지 글 수정 페이지 요청 ===
 	@GetMapping(value = "/loungeEdit")
-	public ModelAndView loungeEdit(ModelAndView mav, HttpServletRequest request) {
-	
+	public ModelAndView loungeEdit(ModelAndView mav,  HttpServletRequest request) {
+		
 		// 수정하고자 하는 글번호 받아오기 
 		String seq = request.getParameter("seq");
 		
@@ -436,11 +474,62 @@ public class LoungeController {
 	
 	// === #6. 라운지 글 수정 페이지 요청 완료 ===
 	@PostMapping(value = "/loungeEditEnd")
-	public ModelAndView loungeEditEnd(ModelAndView mav, LoungeBoardDTO lgboarddto, HttpServletRequest request) {
+	public ModelAndView loungeEditEnd(ModelAndView mav, LoungeBoardDTO lgboarddto, HttpServletRequest request,  MultipartHttpServletRequest mrequest) {
+		
+		// === #2-1. 첨부파일이 있는 경우 작업  ===
+		MultipartFile attach =  lgboarddto.getAttach();
+		
+		if( !attach.isEmpty() ) { // attach(첨부파일)가 비어있지 않으면(즉, 첨부파일이 있는 경우라면)
+			
+			// 1. 사용자가 보낸 첨부파일을 WAS(톰캣)의 특정 폴더에 저장해주어야 한다. 
+			HttpSession session = mrequest.getSession();
+			String root = session.getServletContext().getRealPath("/");
+			String path = root+"resources"+File.separator+"files";
+			//	System.out.println("~~~ 첨부파일이 저장될 WAS의 폴더 경로 path  : " + path); 
+			//	~~~ 확인용 파일이 올라갈 경로 path  : C:\NCS\workspace(spring)\.metadata\.plugins\org.eclipse.wst.server.core\tmp0\wtpwebapps\Board\resources\files
+			//  ~~~ 첨부파일이 저장될 WAS의 폴더 경로 path  : C:\Users\\user\git\Haebollangce\src\main\webapp\resources\files
+			// -> 왜 .metadata 폴더가 아니지..??
+				
+			// 2. 파일첨부를 위한 변수의 설정 및 값을 초기화 한 후 파일 올리기
+			String newFilename = ""; 		// WAS(톰캣)의 디스크에 저장될 파일명
+			long fileSize = 0;		 		// 첨부파일의 크기
+			byte[] bytes = null; 	 		// 첨부파일의 내용물을 담는 것
+			
+			try {
+				bytes = attach.getBytes();  // 첨부파일의 내용물을 읽어오는 것
+				
+				String originalFilename = attach.getOriginalFilename();
+				//	System.out.println("~~~ 첨부파일의 파일명 originalFilename : " + originalFilename); 
+				// ~~~ 첨부파일의 파일명 originalFilename : 댐벼.jpg
+				
+				newFilename = fileManager.doFileUpload(bytes, originalFilename, path);
+				//	System.out.println("~~~ 확인용 newFilename : " + newFilename);
+				// ~~~ 확인용 newFilename : 20230605160348266890041852700.jpg
+				
+				// 3. LoungeBoardDTO lgboarddto 에 fileName 값과 orgFilename 값과 fileSize 값을 넣어주기 	
+				lgboarddto.setFileName(newFilename);	
+				lgboarddto.setOrgFilename(originalFilename);
+
+				fileSize = attach.getSize(); // 첨부파일의 크기 (단위는 byte)
+				lgboarddto.setFileSize(String.valueOf(fileSize));
+				
+			} catch (Exception e) { // 모든 익셉션 수용가능
+				e.printStackTrace();
+			}	
+			
+		}//end of try~catch()------------------------------------------
+		
+		int n = 0;
+		
+		if( attach.isEmpty() ) {
+			n = service.lgedit(lgboarddto); // -> #6.파일첨부 없음
+		}
+		else {
+			n = service.lgedit_withFile(lgboarddto); // -> #6-1.파일첨부 있음
+		}
 		
 		/* 글 수정은 원본글의 글암호와 수정시 입력한 암호가 일치할 때만 가능하도록 한다. */
 		// n 이 1 이라면 정상적으로 글수정 완료, 0 이라면 글수정에 필요한 글암호가 틀린경우임
-		int n = service.lgedit(lgboarddto);
 		
 		if(n==0) {
 			mav.addObject("message", "암호가 일치하지 않아 글 수정이 불가합니다.");
@@ -456,6 +545,34 @@ public class LoungeController {
 		
 		return mav;
 	}
+	
+	// === #6-2. 라운지 글 편집 중 파일첨부 있으면 삭제 요청 === 첨부파일 편집 기능 만들다 보류
+	/*
+	 * @ResponseBody
+	 * 
+	 * @DeleteMapping(value = "/deletelgOrgFilename") public void
+	 * deletelgOrgFilename(LoungeBoardDTO lgboarddto, HttpServletRequest request) {
+	 * 
+	 * lgboarddto.setOrgFilename(null); lgboarddto.setFileName(null);
+	 * lgboarddto.setFileSize(null);
+	 * 
+	 * // 삭제하고자 하는 글번호 받아오기 String seq = request.getParameter("seq");
+	 * 
+	 * // 삭제하고자 하는 글내용 가져오기 (이 안에 작성자 정보고 포함되어있음 - 남이 쓴 글 삭제를 막기위해 필요)
+	 * Map<String,String> paraMap = new HashMap<>(); paraMap.put("seq", seq);
+	 * 
+	 * String fileName = lgboarddto.getFileName();
+	 * 
+	 * if(fileName != null || !"".equals(fileName)) { HttpSession session =
+	 * request.getSession(); String root =
+	 * session.getServletContext().getRealPath("/"); String path =
+	 * root+"resources"+File.separator+"files";
+	 * 
+	 * paraMap.put("path", path); // -> 삭제해야할 파일이 저장된 경로 paraMap.put("fileName",
+	 * fileName); // -> 삭제해야할 파일명 }
+	 * 
+	 * service.deletelgOrgFilename(paraMap); }
+	 */
 	
 	
 	// === #7. 라운지 글 삭제 페이지 요청 ===
@@ -516,7 +633,6 @@ public class LoungeController {
 		// 글 삭제는 원본글의 글암호와 삭제시 입력한 암호가 일치할 때만 가능하도록 한다.
 		// -> n 이 1 이라면 정상적으로 글삭제 완료, 0 이라면 글삭제에 필요한 글암호가 틀린경우임
 		int n = service.lgdel(paraMap);
-		
 		
 		if(n==1) {
 			mav.addObject("message", "글 삭제 완료");
@@ -581,6 +697,7 @@ public class LoungeController {
 				jsonObj.put("groupno", lgcmtvo.getGroupno());
 				jsonObj.put("fk_seq", lgcmtvo.getFk_seq());
 				jsonObj.put("depthno", lgcmtvo.getDepthno());
+				jsonObj.put("lgcprofile", lgcmtvo.getLgcprofile());
 				
 				jsonArr.put(jsonObj);
 			}

@@ -61,7 +61,7 @@
 		    type:"post",
     		dataType:"json",
     		success:function(json){
-    			console.log("~~~ 확인뇽 : " + JSON.stringify(json));
+    			// console.log("~~~ 확인뇽 : " + JSON.stringify(json));
     			// ~~~ 확인뇽 : {"name":"망나뇽수진","n":0}
     			
     			if(json.n == 0) {
@@ -99,7 +99,7 @@
   						
   						if (item.depthno == 0) {
 	  						html += ` <div class="d-flex flex-row mb-3"> 
-			                		 	<img style="border: solid 3px #eee; border-radius: 100%; width:45px; height: 45px; vertical-align: top;" src="http://images.munto.kr/production-user/1684469607083-photo-g1p6z-101851-0?s=48x48" /> 
+			                		 	<img style="border: solid 3px #eee; border-radius: 100%; width:45px; height: 45px; vertical-align: top;" src="<%= ctxPath%>/images/\${item.lgcprofile}" /> 
 			  	              		 	<div class="c-details"> 
 			  	                     		<h5 class="mb-1 ml-3 lounge_comment_userid"><span class="lounge_comment_name">(댓글번호 \${item.seq}) \${item.name}</span></h5> 
 			  	                     		<div class="c-details">
@@ -116,7 +116,7 @@
   						else if (item.depthno > 0) {
   							let padding = parseInt(item.depthno)*40;
   							html += ` <div class="d-flex flex-row mb-3" style="padding-left:\${padding}px"> 
-  										<img style="border: solid 3px #eee; border-radius: 100%; width:45px; height: 45px; vertical-align: top;" src="http://images.munto.kr/production-user/1684469607083-photo-g1p6z-101851-0?s=48x48" /> 
+  										<img style="border: solid 3px #eee; border-radius: 100%; width:45px; height: 45px; vertical-align: top;" src="<%= ctxPath%>/images/\${item.lgcprofile}" /> 
 			  	              		 	<div class="c-details"> 
 			  	                     		<h5 class="mb-1 ml-3 lounge_comment_userid"><span class="lounge_comment_name">(댓글번호 \${item.seq}) \${item.name}</span></h5> 
 			  	                     		<div class="c-details">
@@ -184,7 +184,7 @@
 		    <div class="card p-3 mb-5 mt-5" >
 		        <div class="d-flex justify-content-between">
 		            <div class="d-flex flex-row align-items-center">
-		                <div><img style="border-radius:60%; width:60px; height: 60px;" src="http://images.munto.kr/production-user/1684469607083-photo-g1p6z-101851-0?s=48x48" /> </div>
+		                <div><img style="border-radius:60%; width:60px; height: 60px;" src="<%= ctxPath%>/images/${lgboarddto.lgbprofile}" /> </div>
 		                <div class="c-details">
 		                    <h6 class="mb-0 ml-4">${lgboarddto.name}</h6> 
 		                    <span class="ml-4">
@@ -196,7 +196,7 @@
 		            <div class="badge2"> <span>follow</span> </div>
 		        </div>
 		        <div class="mt-4" style="padding:10px;">
-		   			<img style="width:90%;" src="http://images.munto.kr/production-feed/1684289174510-photo-spznw-42282-0?s=1080x1080" />
+		   			<img style="width:100%;" src="<%= ctxPath%>/images/lgthumFiles/${lgboarddto.thumbnail}" />
 		            <div class="mt-3">
 		            	<h4>${lgboarddto.subject}</h4>
 		                <div>${lgboarddto.content}</div>
@@ -240,11 +240,11 @@
 		    	<form name="addWriteFrm" id="addWriteFrm" style="margin-top: 20px;" onsubmit="return false;">
 			    	<div class="d-flex flex-row align-items-center">
 		                <div > 
-		                	<img style="border: solid 3px #eee; border-radius: 100%; width:45px; height: 45px; vertical-align: top;" src="https://blogpfthumb-phinf.pstatic.net/MjAyMzAzMjZfMTcg/MDAxNjc5ODA1Nzg5MTA1.q_8Sgd5xxiU_c6miUoEzA8hlH3NQxSN7b0MrRsFUFkwg.Blbzms8HupOJpb4xBiGh9sKEXI7dluwLxcNeyuo6Ry4g.PNG.jin970510/profileImage.png?type=w161" /> 
+		                	<img style="border: solid 3px #eee; border-radius: 100%; width:45px; height: 45px; vertical-align: top;" src="<%= ctxPath%>/images/"/> <!-- *여기는 지금 로그인 한 사람의 profile_pic 정보가 와야함!* -->
 		                </div>
 		                <div style="width:100%;">
-		                	<input type="hidden" name="fk_userid" id="fk_userid" value="sudin" /> 
-		                	<input type="hidden" name="name" id="name" value="로그인유저" /> 
+		                	<input type="hidden" name="fk_userid" id="fk_userid" value="sudin" />  <!-- *여기는 지금 로그인 한 사람의 userid 정보가 와야함!* -->
+		                	<input type="hidden" name="name" id="name" value="슈딘쓰" />  <!-- *여기는 지금 로그인 한 사람의 name 정보가 와야함!* -->
 		                    
 		                    <div class=" c-details">
 		                    	<h6 class="mb-0 ml-2 lounge_comment_content align-items-center">

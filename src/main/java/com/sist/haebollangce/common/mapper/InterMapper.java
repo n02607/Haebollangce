@@ -45,7 +45,10 @@ public interface InterMapper {
 
 	// === #6. 라운지 글 수정 페이지 요청 완료 ===
 	int lgedit(LoungeBoardDTO lgboarddto);
-
+	
+	// === #6-1. 파일첨부가 있는 라운지 글 수정 페이지 요청 완료 ===
+	int lgedit_withFile(LoungeBoardDTO lgboarddto);
+			
 	// === #8. 라운지 글 삭제 페이지 요청 완료 ===
 	int lgdel(Map<String, String> paraMap); 
 	
@@ -79,7 +82,6 @@ public interface InterMapper {
 
 	List<ChallengeDTO> getJoinedChaList();
 	// 참가중인 챌린지 리스트 가져오기
-	
 	
 	
 	
