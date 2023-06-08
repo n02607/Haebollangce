@@ -76,10 +76,7 @@ public class MypageController {
 		// 예치금 결제하기
 		int n = service.go_purchase(paraMap);
 
-		// 예치금을 보유예치금에 추가하기
-		int plus = service.plus_deposit(paraMap);
-
-		if (n == 1 && plus == 1) {
+		if (n == 1) {
 			mav.setViewName("mypage/mypageHome.tiles5");
 		}
 
@@ -235,15 +232,15 @@ public class MypageController {
 
 		UserDTO udto = service.select_info(paraMap);
 
-		String hp1 = udto.getMobile().substring(3, 7);
+		//String hp1 = udto.getMobile().substring(3, 7);
 
-		String hp2 = udto.getMobile().substring(7);
+		//String hp2 = udto.getMobile().substring(7);
 
 		request.setAttribute("udto", udto);
 
-		request.setAttribute("hp1", hp1);
+		//request.setAttribute("hp1", hp1);
 
-		request.setAttribute("hp2", hp2);
+		//request.setAttribute("hp2", hp2);
 
 		return "mypage/mypageInfoEdit.tiles5";
 	}
