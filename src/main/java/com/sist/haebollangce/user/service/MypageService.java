@@ -15,7 +15,7 @@ import com.sist.haebollangce.user.dao.InterMypageDAO;
 import com.sist.haebollangce.user.dto.UserDTO;
 import com.sist.haebollangce.user.util.AES256;
 import com.sist.haebollangce.common.GoogleMail;
-
+ 
 @Service
 public class MypageService implements InterMypageService {
 
