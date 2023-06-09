@@ -114,4 +114,91 @@ public class MypageDAO implements InterMypageDAO {
 	}
 
 	
+<<<<<<< HEAD
 }
+=======
+	// 찜한 챌린지 불러오기
+	@Override
+	public List<Map<String, Object>> select_like_challenge(String userid) {
+		
+		List<Map<String, Object>>  like_challenge_list = mapper.select_like_challenge(userid);
+		
+		return like_challenge_list;
+	}
+	
+	// 찜한 라운지 불러오기
+	@Override
+	public List<Map<String, Object>> select_like_lounge(String userid) {
+		
+		List<Map<String, Object>>  like_lounge_list = mapper.select_like_lounge(userid);
+		
+		return like_lounge_list;
+	}
+	
+	// 진행중인 챌린지 페이지 정보 가지고오기
+	@Override
+	public List<Map<String, String>> mypage_challenging(Map<String, String> paraMap) {
+
+		List<Map<String, String>> mypage_challenging_list = mapper.mypage_challenging(paraMap);
+		
+		return mypage_challenging_list;
+	}
+
+	// 마이페이지 홈화면 사용자 정보 불러오기
+	@Override
+	public List<Map<String, String>> user_information(String userid) {
+
+		List<Map<String, String>> information_list = mapper.user_information(userid);
+		
+		return information_list;
+	}
+
+	// 진행중인 챌린지 중 오늘 하루 인증했는지 여부
+	@Override
+	public List<Map<String, String>> mypage_certify_challenge(Map<String, String> paraMap) {
+
+		List<Map<String, String>> certify_list = mapper.mypage_certify_challenge(paraMap);
+		
+		return certify_list;
+	}
+
+	// 완료한 챌린지 갯수 불러오기
+	@Override
+	public int finish_count(Map<String, String> paraMap) {
+		
+		int n = mapper.finish_count(paraMap);
+		
+		return n;
+	}
+	
+	// 마이페이지 100% 인증한 챌린지 갯수 불러오기
+	@Override
+	public int finish_100_count(Map<String, String> paraMap) {
+		
+		int n = mapper.finish_100_count(paraMap);
+		
+		return n;
+	}
+
+	// 마이페이지 홈 챌린지 그래프-챌린지 참여 횟수
+	@Override
+	public List<Map<String, String>> chart_challenging(Map<String, String> paraMap) {
+
+		List<Map<String, String>> chart_challenging_list = mapper.chart_challenging(paraMap);
+		
+		return chart_challenging_list;
+	}
+	@Override
+	public List<Map<String, String>> chart_category(Map<String, String> paraMap) {
+
+		List<Map<String, String>> category_list = mapper.chart_category(paraMap);
+		
+		// System.out.println("dao userid : " + paraMap.get("userid"));
+		// System.out.println("dao userid : " + paraMap.get("month"));
+		
+		return category_list;
+	}
+
+
+}
+>>>>>>> branch 'main' of https://github.com/n02607/Haebollangce.git

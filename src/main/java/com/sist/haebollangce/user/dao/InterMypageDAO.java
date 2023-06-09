@@ -36,5 +36,38 @@ public interface InterMypageDAO {
 	// 사용자 정보 수정하기
 	int mypage_info_edit(Map<String, Object> paraMap);
 
+<<<<<<< HEAD
+=======
+	// 회원 탈퇴하기
+	int delete_user(Map<String, String> paraMap);
+
+	// 찜한 챌린지 불러오기
+	List<Map<String, Object>> select_like_challenge(String userid);
+	
+	// 찜한 라운지 불러오기
+	List<Map<String, Object>> select_like_lounge(String userid);
+
+	// 진행중인 챌린지 페이지 정보 가지고오기
+	List<Map<String, String>> mypage_challenging(Map<String, String> paraMap);
+
+	// 마이페이지 홈화면 사용자 정보 불러오기
+	List<Map<String, String>> user_information(String userid);
+	
+	// 진행중인 챌린지 중 오늘 하루 인증했는지 여부
+	List<Map<String, String>> mypage_certify_challenge(Map<String, String> paraMap);
+
+	// 완료한 챌린지 갯수 불러오기
+	int finish_count(Map<String, String> paraMap);
+	
+	// 마이페이지 100% 인증한 챌린지 갯수 불러오기
+	int finish_100_count(Map<String, String> paraMap);
+
+	// 마이페이지 홈 챌린지 그래프-챌린지 참여 횟수
+	List<Map<String, String>> chart_challenging(Map<String, String> paraMap);
+	List<Map<String, String>> chart_category(Map<String, String> paraMap);
+
+
+	
+>>>>>>> branch 'main' of https://github.com/n02607/Haebollangce.git
 
 }

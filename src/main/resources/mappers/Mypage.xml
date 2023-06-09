@@ -84,5 +84,175 @@
 							mobile=#{mobile}
 		where userid=#{userid}
 	</update>
+<<<<<<< HEAD
+=======
+	
+	<!-- 회원 탈퇴하기 -->
+	<update id="delete_user" parameterType="HashMap">
+		update tbl_user set status=1
+		where userid=#{userid}
+	</update>
+	
+	<!-- 찜한 챌린지 불러오기 -->
+	<resultMap type="HashMap" id="mypage_select_like_challenge_map">
+		<result property="thumbnail" 	  column="thumbnail" 	  javaType="String" />
+		<result property="challenge_code" column="challenge_code" javaType="int" />
+		<result property="challenge_name" column="challenge_name" javaType="String" />
+		<result property="startdate" 	  column="startdate" 	  javaType="String" />
+		<result property="enddate"   	  column="enddate"   	  javaType="String" />
+	</resultMap>
+	<select id="select_like_challenge" parameterType="String" resultMap="mypage_select_like_challenge_map">
+		select C.thumbnail, C.challenge_code, C.challenge_name, 
+       		   to_char(C.startdate, 'yyyy-mm-dd') AS startdate, 
+       		   to_char(C.startdate+func_challeng_during(C.fk_during_type), 'yyyy-mm-dd') AS enddate
+		from tbl_challenge C join tbl_challenge_during D
+    					     on C.fk_during_type = D.during_type
+    						 join tbl_like L
+    						 on C.challenge_code = L.fk_challenge_code
+		where L.fk_userid = #{userid}
+		order by C.startdate asc
+	</select>
+	
+	<!-- 찜한 라운지 불러오기 -->
+	<resultMap type="HashMap" id="mypage_select_like_lounge_map">
+		<result property="seq" 	 	    column="seq" 		  javaType="String" />
+		<result property="name" 	    column="name" 	 	  javaType="String" />
+		<result property="subject" 	    column="subject" 	  javaType="String" />
+		<result property="content" 	    column="content" 	  javaType="String" />
+		<result property="likeCount" 	column="likeCount" 	  javaType="String" />
+		<result property="commentCount" column="commentCount" javaType="String" />
+		<result property="readCount" 	column="readCount" 	  javaType="String" />
+		<result property="profile_pic" 	column="profile_pic"  javaType="String" />
+		<result property="filename" 	column="filename"     javaType="String" />
+	</resultMap>
+	<select id="select_like_lounge" parameterType="String" resultMap="mypage_select_like_lounge_map">
+		select seq, B.name, subject, content, likeCount, 
+			   commentCount, readCount, profile_pic, filename
+		from TBL_LOUNGE_LIKE L join tbl_lounge_board B
+									on L.fk_seq = B.seq
+							   join tbl_user U
+									on B.fk_userid = U.userid
+		where L.fk_userid = #{userid}
+	</select>
+	
+	
+	<!-- 진행중인 챌린지 페이지 정보 가지고오기 -->
+	<resultMap type="HashMap" id="mypage_challenging_map">
+		<result property="fk_challenge_code" 	    column="fk_challenge_code" 	      javaType="String" />
+		<result property="thumbnail" 	    column="thumbnail" 	      javaType="String" />
+		<result property="challenge_name"   column="challenge_name"   javaType="String" />
+		<result property="set_date" 	    column="set_date" 	      javaType="String" />
+		<result property="fk_userid" 	    column="fk_userid" 	      javaType="String" />
+		<result property="freq_type" 	    column="freq_type" 	      javaType="String" />
+		<result property="frequency" 	    column="frequency" 	      javaType="String" />
+		<result property="startdate" 	    column="startdate" 	      javaType="String" />
+		<result property="hour_start" 	    column="hour_start"       javaType="String" />
+		<result property="hour_end" 	    column="hour_end" 	      javaType="String" />
+		<result property="finish_day" 	    column="finish_day"       javaType="String" />
+	</resultMap>
+	<select id="mypage_challenging" parameterType="HashMap" resultMap="mypage_challenging_map">
+		select I.fk_challenge_code, C.thumbnail, C.challenge_name, D.set_date, C.fk_userid, F.freq_type ,F.frequency,
+			   to_char(C.startdate, 'yyyy-mm-dd') AS startdate,
+			   to_char(H.hour_start, 'hh24:mi:ss') AS hour_start, 
+			   to_char(H.hour_end, 'hh24:mi:ss') AS hour_end,
+			   to_char(C.startdate + func_challeng_during(D.during_type), 'yyyy-mm-dd') AS finish_day
+		from tbl_challenge C join tbl_challenge_info I
+                       		 	on I.fk_challenge_code = C.challenge_code
+                    		 join tbl_challenge_during D
+                        		on C.fk_during_type = D.during_type
+                        	join tbl_certify_hour H
+                        		on C.challenge_code = H.challenge_code
+                        	join tbl_certify_freq F
+                       		     on F.freq_type = C.fk_freq_type
+		where I.fk_userid = #{userid}
+		<if test="fk_category_code != 0">
+			and C.fk_category_code = #{fk_category_code}
+		</if>
+	</select>
+
+	
+	<!-- 사용자 정보 가지고 오기 -->
+	<resultMap type="HashMap" id="user_information_map">
+		<result property="userid" 	   column="userid" 		javaType="String" />
+		<result property="name" 	   column="name"	    javaType="String" />
+		<result property="fk_level"    column="fk_level" 	javaType="String" />
+		<result property="exp" 		   column="exp"  		javaType="String" />
+		<result property="profile_pic" column="profile_pic" javaType="String" />
+	</resultMap>
+	<select id="user_information" parameterType="String" resultMap="user_information_map">
+		select userid, name, fk_level, exp, profile_pic
+		from tbl_user
+		where userid = #{userid} 
+	</select>
+	
+	<!-- 진행중인 챌린지 중 오늘 하루 인증했는지 여부 -->
+	<resultMap type="HashMap" id="mypage_certify_challenge_map">
+		<result property="fk_challenge_code" 	   column="fk_challenge_code" 		javaType="String" />
+	</resultMap>
+	<select id="mypage_certify_challenge" parameterType="HashMap" resultMap="mypage_certify_challenge_map">
+		select fk_challenge_code
+		from tbl_certify_history 
+		where trunc(certify_time) = trunc(sysdate) and fk_userid = #{userid}
+	</select>
+	
+	<!-- 완료된 챌린지 갯수 불러오기 -->
+	<select id="finish_count" parameterType="HashMap" resultType="int">
+		select count(*)
+		from tbl_challenge C join tbl_challenge_during D
+                        		on C.fk_during_type = D.during_type
+                     		 join tbl_challenge_info I
+                         		on I.fk_challenge_code = C.challenge_code
+		where I.fk_userid = #{userid} and <![CDATA[trunc(C.startdate + func_challeng_during(D.during_type)) < trunc(sysdate)]]>
+		<!-- 여기에서 < 는 태그로 인식하기 때문에 <![CDATA[조건문]]> 으로 작성해주어야한다. -->
+	</select>
+	
+	
+	<!-- 마이페이지 100% 인증한 챌린지 갯수 불러오기 -->
+	<select id="finish_100_count" parameterType="HashMap" resultType="int">
+		select count(*)
+		from tbl_challenge_info
+		where fk_userid = #{userid} and achievement_pct = 100
+	</select>
+	
+	<!-- 마이페이지 홈 챌린지 그래프-챌린지 참여 횟수 -->
+	<resultMap type="HashMap" id="chart_challenging_map">
+		<result property="month" 	   column="month" 		javaType="String" />
+		<result property="count" 	   column="count" 		javaType="String" />
+	</resultMap>
+	<select id="chart_challenging" parameterType="HashMap" resultMap="chart_challenging_map">
+		select V.month as month, NVL(T.count, 0) as count
+		from 
+			(
+				select level as month
+				from dual
+				<![CDATA[connect by level <= 12]]>
+			) V left join
+			(
+				select extract(month from C.startdate) as month, count(*) as count
+				from tbl_challenge C join tbl_challenge_info I
+                        			on C.challenge_code = I.fk_challenge_code
+				where I.fk_userid = #{userid}
+				group by extract(month from C.startdate)
+			) T 
+			on V.month = T.month
+			order by V.month
+	</select>
+	<resultMap type="HashMap" id="chart_category_map">
+		<result property="category_name" column="category_name" javaType="String" />
+		<result property="percentage" 	 column="percentage" 	javaType="String" />
+	</resultMap>
+	<select id="chart_category" parameterType="HashMap" resultMap="chart_category_map">
+		select G.category_name as category_name,
+        		round(count(*)/(select count(*) from tbl_challenge_info where fk_userid=#{userid})*100, 2) as percentage
+		from tbl_challenge C join tbl_challenge_info I
+                        		on C.challenge_code = I.fk_challenge_code
+                    		 join tbl_category G
+                       			 on C.fk_category_code = G.category_code
+		where I.fk_userid = #{userid} and to_char(C.startdate, 'mm') = ${month}
+		group by G.category_name
+		order by percentage desc
+	</select>
+>>>>>>> branch 'main' of https://github.com/n02607/Haebollangce.git
+
 
 </mapper>

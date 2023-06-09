@@ -39,4 +39,29 @@ public interface InterMypageService {
 	
 	
 	
+<<<<<<< HEAD
+=======
+	// 진행중인 챌린지 페이지 정보 가지고오기
+	String mypage_challenging(Map<String, String> paraMap);
+	
+	// 챌린지 추천하기
+	String recommend(String userid);
+
+	// 진행중인 챌린지 페이지에서 그래프 그리기
+	String graph_challenge_during(String userid);
+
+	// 마이페이지 홈화면 사용자 정보 불러오기
+	String user_information(String userid);
+
+	// 마이페이지 인증 필요한 챌린지 불러오기
+	String mypage_certify_challenging(Map<String, String> paraMap);
+
+	// 마이페이지 100% 인증한 챌린지들 불러오기
+	String finish_100_count(Map<String, String> paraMap);
+
+	// 마이페이지 홈 챌린지 그래프-챌린지 참여 횟수
+	String chart_challenging(Map<String, String> paraMap);
+	String chart_category(Map<String, String> paraMap);
+
+>>>>>>> branch 'main' of https://github.com/n02607/Haebollangce.git
 }
