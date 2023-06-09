@@ -388,7 +388,7 @@ public class MypageController {
 			UserDTO udto = service.select_info(paraMap);
 	
 			String hp1 = udto.getMobile().substring(3, 7);
-	
+			
 			String hp2 = udto.getMobile().substring(7);
 			
 			request.setAttribute("udto", udto);

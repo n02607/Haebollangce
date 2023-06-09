@@ -92,7 +92,6 @@ public interface InterMypageDAO {
 	List<Map<String, String>> chart_challenging(Map<String, String> paraMap);
 	List<Map<String, String>> chart_category(Map<String, String> paraMap);
 
-
 	
 
 }
