@@ -1,7 +1,9 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
-
+<%
+	String ctxPath = request.getContextPath();
+%>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.6/dist/sweetalert2.all.min.js"></script>
 <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.6/dist/sweetalert2.min.css" rel="stylesheet">
 
@@ -309,7 +311,7 @@
 	<div id="challenge_join_header" class="mx-5" style="height: 250px;">
 		<div class="join_body" style="box-shadow: 0px 0px 10px 1px gray; display: flex; justify-content: center; align-items:center; width: 100%; height: 100%; border-radius: 20px; font-size: 16pt;">
 			<div style="height: 100%; width: 30%;">
-	  			<img src="${chaDTO.thumbnail}" style="object-fit: cover; height:90%; width: 90%; margin-top:12px; border-radius: 20px;"/>
+	  			<img src="<%= ctxPath%>/images/${chaDTO.thumbnail}" style="object-fit: cover; height:90%; width: 90%; margin-top:12px; border-radius: 20px;"/>
   			</div>
   			<div style="text-align: left; width: 70%;">
   				<div style="display: flex; justify-content: space-between;">

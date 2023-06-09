@@ -223,9 +223,9 @@ const imgInfo = document.querySelector('.img_info');
 					label: '인원 수 (명)',
 				    data: [ Number("${userAchieveCharts.hundredCnt}"), Number("${userAchieveCharts.eighty_up_cnt}"), Number("${userAchieveCharts.eighty_down_cnt}")],
 				    backgroundColor: [
-				      '#EB534C',
+				      '#FCEEED',
 				      '#F19E9B',
-				      '#FCEEED'
+				      '#EB534C'
 					],
 					hoverOffset: 4
 				}]
@@ -279,7 +279,7 @@ const imgInfo = document.querySelector('.img_info');
 	<h3 style="font-weight: bold;">참가중인 챌린지 인증정보</h3>
 	<br>
 	<div style="height: 300px; width: 50%; margin:auto;">
-		<img src="${joinedChallInfo.thumbnail}" width="100%" height="100%" style="object-fit: cover; border-radius: 20px;"/>
+		<img src="<%= ctxPath%>/images/${joinedChallInfo.thumbnail}" width="100%" height="100%" style="object-fit: cover; border-radius: 20px;"/>
 	</div>
 	<div class="mt-5" style="display: inline-block; width: 100%;">
 		<p style="display: inline-block; width: 20%; margin:0;"><span style="background-color: rgb(244, 244, 244); display: inline-block; border-radius: 20px; width: 100%; height: 44px; line-height: 48px;">${joinedChallInfo.category_name}</span></p>
@@ -341,7 +341,7 @@ const imgInfo = document.querySelector('.img_info');
 				  			<tr style="height:250px; width:100%;">
   						</c:if>
 	  							<td class="imgContainer" style="height:300px; width:33%; position: relative;">
-	  								<img class="my_image" style="width: 100%; height:100%; object-fit: cover;" alt="대체이미지 준비중" src="${certifyDTO.certifyImg}">
+	  								<img class="my_image" style="width: 100%; height:100%; object-fit: cover;" alt="대체이미지 준비중" src="<%= ctxPath%>/images/certify/${certifyDTO.certifyImg}">
 	  								<div class="img_info">
 	  									<div><span data-toggle="modal" data-target="#myImage${status.index }" class="report" style="background-color: gray; opacity:0.8;">사진보기</span></div>
 	  								</div>
@@ -349,11 +349,11 @@ const imgInfo = document.querySelector('.img_info');
 	  							
   								<!-- 사진 확대 Modal -->
 								<div class="modal fade" id="myImage${status.index }">
-								  <div class="modal-dialog modal-dialog-centered">
+								  <div class="modal-dialog modal-dialog-centered modal-lg">
 								    <div class="modal-content">
 								      <div class="modal-body">
 									      <button type="button" class="close" data-dismiss="modal">&times;</button>
-									      <img class="my_image mt-5" style="width: 100%; height:100%;" alt="대체이미지 준비중" src="${certifyDTO.certifyImg}">
+									      <img class="my_image mt-5" style="width: 100%; height:100%;" alt="대체이미지 준비중" src="<%= ctxPath%>/images/certify/${certifyDTO.certifyImg}">
 								      </div>
 								    </div>
 								  </div>
@@ -385,21 +385,21 @@ const imgInfo = document.querySelector('.img_info');
 			<div class="my-5" style="display: flex; justify-content: space-evenly;">
 				<div>
 					<p class="mb-1">
-						<span style="border:solid 2px #D34A44; border-radius: 20px; background-color: #EB534C;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+						<span style="border:solid 2px #E2D5D5; border-radius: 20px; background-color: #FCEEED;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
 						&nbsp;&nbsp;100%
 					</p>
 					<p style="font-weight: bold;">${userAchieveCharts.hundredCnt}명</p>
 				</div>
 				<div>
 					<p class="mb-1">
-						<span style="border:solid 1px #D88E8B; border-radius: 20px; background-color: #F19E9B;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+						<span style="border:solid 2px #D88E8B; border-radius: 20px; background-color: #F19E9B;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
 						&nbsp;&nbsp;80% 이상
 					</p>
 					<p style="font-weight: bold;">${userAchieveCharts.eighty_up_cnt}명</p>
 				</div>
 				<div>
 					<p class="mb-1">
-						<span style="border:solid 1px #E2D5D5; border-radius: 20px; background-color: #FCEEED;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+						<span style="border:solid 2px #D34A44; border-radius: 20px; background-color: #EB534C;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
 						&nbsp;&nbsp;80% 미만
 					</p>
 					<p style="font-weight: bold;">${userAchieveCharts.eighty_down_cnt}명</p>
@@ -414,7 +414,7 @@ const imgInfo = document.querySelector('.img_info');
 				  			<tr style="height:250px; width:100%;">
   						</c:if>
 	  							<td class="imgContainer" style="height:300px; width:33%; position: relative;">
-	  								<img class="user_image" style="width: 100%; height:100%; object-fit: cover;" alt="대체이미지" src="${allcertifyDTO.certifyImg}">
+	  								<img class="user_image" style="width: 100%; height:100%; object-fit: cover;" alt="대체이미지" src="<%= ctxPath%>/images/certify/${allcertifyDTO.certifyImg}">
 	  								<div class="user_img_info">
 	  									<div><span class="report">신고하기</span></div>
 	  									<div class="mt-3"><span data-toggle="modal" data-target="#userImage${status.index }" class="report" style="background-color: gray; opacity:0.8;">사진보기</span></div>
@@ -423,11 +423,11 @@ const imgInfo = document.querySelector('.img_info');
 	  							
 	  							<!-- 사진 확대 Modal -->
 								<div class="modal fade" id="userImage${status.index }">
-								  <div class="modal-dialog modal-dialog-centered">
+								  <div class="modal-dialog modal-dialog-centered modal-lg">
 								    <div class="modal-content">
 								      <div class="modal-body">
 									      <button type="button" class="close" data-dismiss="modal">&times;</button>
-									      <img class="user_image mt-5" style="width: 100%; height:100%;" alt="대체이미지 준비중" src="${allcertifyDTO.certifyImg}">
+									      <img class="user_image mt-5" style="width: 100%; height:100%;" alt="대체이미지 준비중" src="<%= ctxPath%>/images/certify/${allcertifyDTO.certifyImg}">
 								      </div>
 								    </div>
 								  </div>
@@ -467,11 +467,11 @@ const imgInfo = document.querySelector('.img_info');
 				<div style="height: 650px; justify-content: center;">
 					<div id="img_exam">
 						<div style="width: 50%; border-radius: 20px;">
-							<img class="img_insert" src="${oneExample.success_img}" width="100%" height="90%" style="object-fit: cover;"/>
+							<img class="img_insert" src="<%= ctxPath%>/images/${oneExample.success_img}" width="100%" height="90%" style="object-fit: cover;"/>
 							<p class="img_OX" style="background-color:#57B585;">○</p>
 						</div>
 						<div style="width: 50%; border-radius: 20px;">
-							<img class="img_insert" src="${oneExample.fail_img}" width="100%" height="90%" style="object-fit: cover;"/>
+							<img class="img_insert" src="<%= ctxPath%>/images/${oneExample.fail_img}" width="100%" height="90%" style="object-fit: cover;"/>
 							<p class="img_OX" style="background-color:#AF2317;">✕</p>
 						</div>
 					</div>

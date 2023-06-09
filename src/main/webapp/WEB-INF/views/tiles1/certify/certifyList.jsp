@@ -225,7 +225,7 @@
 					<c:if test="${chaDTO.startDate <= today && today <= chaDTO.enddate}">
 				  		<div class="challengeList my-4" style="width: 100%; height: 250px; display: flex; border-radius: 20px;">
 				  			<div style="height: 100%; width: 30%;">
-					  			<img src="${chaDTO.thumbnail}" style="object-fit: cover; height:90%; width: 90%; margin-top:12px; border-radius: 20px;"/>
+					  			<img src="<%= ctxPath%>/images/${chaDTO.thumbnail}" style="object-fit: cover; height:90%; width: 90%; margin-top:12px; border-radius: 20px;"/>
 				  			</div>
 				  			<div style="text-align: left; width: 70%;">
 				  				<div style="display: flex; justify-content: space-between;">
@@ -282,7 +282,7 @@
 					<c:if test="${chaDTO.startDate > today}">
 				  		<div class="challengeList my-4" style="width: 100%; height: 250px; display: flex; border-radius: 20px;">
 				  			<div style="height: 100%; width: 30%;">
-					  			<img src="${chaDTO.thumbnail}" style="object-fit: cover; height:90%; width: 90%; margin-top:12px; border-radius: 20px;"/>
+					  			<img src="<%= ctxPath%>/images/${chaDTO.thumbnail}" style="object-fit: cover; height:90%; width: 90%; margin-top:12px; border-radius: 20px;"/>
 				  			</div>
 				  			<div style="text-align: left; width: 70%;">
 				  				<div style="display: flex; justify-content: space-between;">

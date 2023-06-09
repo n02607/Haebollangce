@@ -148,11 +148,11 @@
 	<div style="height: 783px; justify-content: center;">
 		<div id="img_exam">
 			<div style="width: 50%; border-radius: 20px;">
-				<img class="img_insert" src="${oneExample.success_img}" width="100%" height="90%" style="object-fit: cover;"/>
+				<img class="img_insert" src="<%= ctxPath%>/images/${oneExample.success_img}" width="100%" height="90%" style="object-fit: cover;"/>
 				<p class="img_OX" style="background-color:#57B585;">○</p>
 			</div>
 			<div style="width: 50%; border-radius: 20px;">
-				<img class="img_insert" src="${oneExample.fail_img}" width="100%" height="90%" style="object-fit: cover;"/>
+				<img class="img_insert" src="<%= ctxPath%>/images/${oneExample.fail_img}" width="100%" height="90%" style="object-fit: cover;"/>
 				<p class="img_OX" style="background-color:#AF2317;">✕</p>
 			</div>
 		</div>
