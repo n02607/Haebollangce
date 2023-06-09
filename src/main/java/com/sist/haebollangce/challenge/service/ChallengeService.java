@@ -22,8 +22,8 @@ public class ChallengeService implements InterChallengeService {
    
  // 참가중인 챌린지 리스트 가져오기
  	@Override
- 	public List<ChallengeDTO> getJoinedChaList() {
- 		List<ChallengeDTO> chaList = dao.getJoinedChaList();
+ 	public List<ChallengeDTO> getJoinedChaList(String fk_userid) {
+ 		List<ChallengeDTO> chaList = dao.getJoinedChaList(fk_userid);
  		return chaList;
  	}
 

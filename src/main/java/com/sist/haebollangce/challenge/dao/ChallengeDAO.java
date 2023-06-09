@@ -18,8 +18,8 @@ public class ChallengeDAO implements InterChallengeDAO {
     
  // 참가중인 챌린지 리스트 가져오기
  	@Override
- 	public List<ChallengeDTO> getJoinedChaList() {
- 		List<ChallengeDTO> chaList = mapper.getJoinedChaList();
+ 	public List<ChallengeDTO> getJoinedChaList(String fk_userid) {
+ 		List<ChallengeDTO> chaList = mapper.getJoinedChaList(fk_userid);
  		return chaList;
  	}
 

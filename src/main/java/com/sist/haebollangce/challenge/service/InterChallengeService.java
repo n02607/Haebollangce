@@ -8,7 +8,7 @@ import com.sist.haebollangce.challenge.dto.ChallengeDTO;
 
 public interface InterChallengeService {
 	
-	List<ChallengeDTO> getJoinedChaList();
+	List<ChallengeDTO> getJoinedChaList(String fk_userid);
 	// 참가중인 챌린지 리스트 가져오기
 
 	ChallengeDTO getOneChallengeInfo(String challenge_code);

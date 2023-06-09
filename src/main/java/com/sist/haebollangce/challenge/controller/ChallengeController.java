@@ -26,8 +26,8 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.servlet.ModelAndView;
 
-//@Controller
-//@RequestMapping("/challenge")
+@Controller
+@RequestMapping("/challenge")
 public class ChallengeController {
 
     @Autowired
@@ -42,12 +42,13 @@ public class ChallengeController {
     	
     	// 로그인 확인
     	
-    	String fk_userid = "qwer1234"; // 아이디 보내주어야함
-    	
+    	String fk_userid = "qwer1234"; // 아이디 받아오기
+
+    	List<ChallengeDTO> chaList = service.getJoinedChaList(fk_userid);
+
     	int ing_count = 0;  // 초기값 설정
     	int before_count = 0;  // 초기값 설정
     	
-    	List<ChallengeDTO> chaList = service.getJoinedChaList();
     	
     	for (ChallengeDTO chaDTO : chaList) {
     	    
@@ -74,6 +75,7 @@ public class ChallengeController {
     	    } else if (startDate.compareTo(today) > 0) {
     	    	before_count++;
     	    }
+    	    
     	}
     	
     	mav.addObject("ing_count", ing_count);
@@ -149,7 +151,7 @@ public class ChallengeController {
     	paraMap.put("after_deposit", after_deposit);
     	
     	try {
-			int n = service.joinChallenge(paraMap);
+			service.joinChallenge(paraMap);
 			// 유저가 챌린지 참가했을 때 - tbl_challenge_info 에 insert (참가인원수 update 트랜잭션 처리)
 			// 맵퍼 userid 변경해야함
 		} catch (Throwable e) {
@@ -342,7 +344,7 @@ public class ChallengeController {
     	
     	String fk_userid = "qwer1234";
     	String challenge_code = request.getParameter("challenge_code");
-    	
+
     	Map<String, String> paraMap = new HashMap<>();
     	paraMap.put("fk_userid", fk_userid);
     	paraMap.put("challenge_code", challenge_code);

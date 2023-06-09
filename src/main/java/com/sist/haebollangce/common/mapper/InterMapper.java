@@ -39,7 +39,7 @@ public interface InterMapper {
 	// === #8. 라운지 글 삭제 페이지 요청 완료 ===
 	int lgdel(Map<String, String> paraMap); 
 	
-	List<ChallengeDTO> getJoinedChaList();
+	List<ChallengeDTO> getJoinedChaList(String fk_userid);
 	// 참가중인 챌린지 리스트 가져오기
 
 	// 인증빈도 리스트 가져오기

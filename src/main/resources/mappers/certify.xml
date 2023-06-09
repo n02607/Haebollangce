@@ -4,21 +4,21 @@
 <!-- ==== #29. 루트 엘리먼트 & 네임스페이스 설정(프로젝트 전체내에서 유일해야 한다.) ==== -->
 <mapper namespace="com.sist.haebollangce.common.mapper.InterMapper">
 
-	<select id="getJoinedChaList" resultType="com.sist.haebollangce.challenge.dto.ChallengeDTO">
-		select C.challenge_code, fk_category_code, G.category_name as category_name, challenge_name, content, regDate
-		     , challenge_exp, member_count, thumbnail, fk_freq_type, F.frequency, fk_during_type, D.set_date
-		     , to_char(startDate, 'yyyy-mm-dd') as startdate, fk_userid
-		     , to_char(hour_start, 'hh24:mi') as hour_start, to_char(hour_end, 'hh24:mi') as hour_end
-		     , success_img, fail_img, example
+	<select id="getJoinedChaList" parameterType="String" resultType="com.sist.haebollangce.challenge.dto.ChallengeDTO">
+		select C.challenge_code, G.category_name, challenge_name, thumbnail, fk_freq_type, frequency, D.set_date
+		     , to_char(startDate, 'yyyy-mm-dd') as startdate
 		     , to_char( startdate + (to_number(fk_during_type) * 7), 'yyyy-mm-dd') as enddate
+		     , to_char(hour_start, 'hh24:mi') as hour_start
+		     , to_char(hour_end, 'hh24:mi') as hour_end
+		     , achievement_pct
 		from tbl_challenge C 
 		join tbl_category G             on G.category_code = C.fk_category_code
 		join tbl_challenge_during D     on D.during_type = C.fk_during_type
 		join tbl_certify_freq F         on F.freq_type = C.fk_freq_type
 		join tbl_certify_hour H         on H.challenge_code = C.challenge_code
-		join tbl_certify_exam E    		on E.challenge_code = C.challenge_code
+		join tbl_challenge_info I       on I.fk_challenge_code = C.challenge_code
+		where I.fk_userid = #{fk_userid}
 		order by C.challenge_code desc
-		<!-- 현재 달성률도 구해와야함 -->
 	</select>
 
 	<select id="getOneChallengeInfo" parameterType="String" resultType="com.sist.haebollangce.challenge.dto.ChallengeDTO">
