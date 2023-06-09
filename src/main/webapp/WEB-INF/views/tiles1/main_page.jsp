@@ -16,7 +16,6 @@
   align-items: center;
   flex-direction: column;
   margin-top: 80px;
-  background-color: white;
 }
 
 .challenge_title_b {
@@ -276,7 +275,7 @@ a:hover { text-decoration: none;}
 
 .ChallengeCard_tag {
   letter-spacing: -.4px;
-  font-size: 15px;
+  font-size: 18px;
   line-height: 18px;
   padding: 8px 13px;
   border-radius: 16px;
@@ -292,7 +291,8 @@ a:hover { text-decoration: none;}
 
 .ChallengeCard_info__title {
   font-size: 24px;
-  line-height: 28px;
+  line-height: 40px;
+  line-height: 24px;
   letter-spacing: -.4px;
   color: #383535;
   text-overflow: ellipsis;
@@ -300,11 +300,10 @@ a:hover { text-decoration: none;}
   white-space: nowrap;
   margin-bottom: 4px;
   display: block;
-  font-weight: bold;
 }
 
 .ChallengeCard_info__describe {
-  font-size: 18px;
+  font-size: 20px;
   line-height: 24px;
   letter-spacing: -.4px;
   font-weight: 400;
@@ -474,14 +473,6 @@ a:hover { text-decoration: none;}
   align-items: center;
 }
 
-
-.All_content__card__e:not(:nth-child(-n+4)) {
-        display: none;
-    }  
-    
-    
-    
-    
     section {
     display: block;
 }
@@ -549,70 +540,28 @@ a:hover { text-decoration: none;}
     z-index: 0;
 }
 
-
-
-
-
-#slider{
+.carousel {
   width: 100%;
-  position:relative;
+  overflow: hidden;
 }
-.challenge_title_e{
-  width: 100%;
-  height: 450px;
+
+.carousel-container {
   display: flex;
-  justify-content: center;
-  align-items: center;
-  color: #fff;
-  font-size: 48px;
-  position:absolute;
-  z-index:0;
-  opacity:0;
-  transition: all 1s ease-in-out;
-}
-.challenge_title_e:nth-child(odd){
-  background-color:royalblue;
-}
-.challenge_title_e:nth-child(even){
-  background-color:blueviolet;
-}
-.showing{
-  z-index:1;
-  opacity:1;
+  transition: transform 0.3s ease-in-out;
 }
 
+.carousel-item {
+  flex: 0 0 100%;
+}
 
-
+.carousel-item img {
+  width: 100%;
+  height: auto;
+}
 
 </style>
 
-<script>
-const SHOWING_CLASS = "showing";
-const firstSlide = document.querySelector(".challenge_title_e:first-child");
-
-function slide(){
-
-  const currentSlide = document.querySelector(`.${SHOWING_CLASS}`);
-
-  if (currentSlide) { // 만약 현재 슬라이드라면
-    currentSlide.classList.remove(SHOWING_CLASS); // 현재 슬라이드에서 SHOWING_CLASS를 제거한다
-    const nextSlide = currentSlide.nextElementSibling; // 다음 슬라이드를 정의한다.
-
-    if (nextSlide) { //만약 다음 슬라이드가 있다면
-      nextSlide.classList.add(SHOWING_CLASS); //다음 슬라이드에 SHOWING_CLASS를 붙인다.
-    } else { // 다음 슬라이드가 없다면 =>  5번째 슬라이드라면(마지막 슬라이드라면)
-      firstSlide.classList.add(SHOWING_CLASS); // 첫번째 슬라이드에 SHOWING_CLASS를 붙인다.
-    }
-
-  } else {
-    firstSlide.classList.add(SHOWING_CLASS);
-  }
-}
-
-slide();
-setInterval(slide, 2000);
-
-</script>    
+    
     
 <section class="Main_section__rShmE">
                  <div class="Main_template__J5p3A">
@@ -627,25 +576,31 @@ setInterval(slide, 2000);
                              관심사 기반 커뮤니티, <b>&nbsp;Heabollangce</b>
                          </div>
                      
-                     <img alt="people" src="https://o.remove.bg/downloads/3354c636-bf8f-4cae-8d01-739c912d2777/tid283t001156-removebg-preview.png" width="800" height="566" decoding="async" data-nimg="1" class="Main_people__qOdFR" style="color:transparent"/>
+                     <img alt="people" src="https://o.remove.bg/downloads/94331cc2-5931-4a7d-b6b4-7c0a5bbc718e/6472096-removebg-preview.png" width="800" height="566" decoding="async" data-nimg="1" class="Main_people__qOdFR" style="color:transparent"/>
                  </div>
-</section>    
+</section>     
     
     
-    
-    
-    
-    
-    
-    
-    
-    
-       
-<div id="slider">
- 
+
+<div class="carousel">
+  <div class="carousel-container">
+    <div class="carousel-item">
+      <img src="https://images.munto.kr/munto-web/ic_info_challengeleader_16px.svg" alt="Image 1">
+    </div>
+    <div class="carousel-item">
+      <img src="https://images.munto.kr/munto-web/ic_info_challengeleader_16px.svg" alt="Image 2">
+    </div>
+    <div class="carousel-item">
+      <img src="https://images.munto.kr/munto-web/ic_info_challengeleader_16px.svg" alt="Image 3">
+    </div>
+  </div>
+</div>
+
+
+
 <div class="challenge_title_e">
-    <div class="challenge_title_f" style="margin-top: 90px;">
-      <img alt="challenge-mark" src="https://images.munto.kr/munto-web/ic_info_challengeleader_16px.svg" class="challenge_title__icon__f3gEi"/>챌린지
+    <div class="challenge_title_f" style="margin-top: 20px;">
+        <img alt="challenge-mark" src="https://images.munto.kr/munto-web/ic_info_challengeleader_16px.svg" width="18" height="18" decoding="async" data-nimg="1" class="challenge_title__icon__f3gEi" loading="lazy" style="color:transparent"/>챌린지
     </div>
     <div class="challenge_title_g">같은 목표를 가진<br/>멤버들과 함께 도전해요</div>
   </div>
@@ -677,39 +632,10 @@ setInterval(slide, 2000);
                       <!-- -->
                       회
                   </div>
-                  <div class="ChallengeCard_info_participants">
-                      <span class="ChallengeCard_participant">
-                          <img alt="participant" srcSet="http://images.munto.kr/production-user/1684331739071-photo-k5fkj-27080-0?s=48x48 1x, http://images.munto.kr/production-user/1684331739071-photo-k5fkj-27080-0?s=96x96 2x" src="http://images.munto.kr/production-user/1684331739071-photo-k5fkj-27080-0?s=96x96" class="ChallengeCard_participant_image"/>
-                      </span>
-                      <span class="ChallengeCard_participant">
-                          <img alt="participant" srcSet="http://images.munto.kr/production-user/1684331739071-photo-k5fkj-27080-0?s=48x48 1x, http://images.munto.kr/production-user/1684331739071-photo-k5fkj-27080-0?s=96x96 2x" src="http://images.munto.kr/production-user/1684331739071-photo-k5fkj-27080-0?s=96x96" class="ChallengeCard_participant_image"/>
-                      </span>
-                      <span class="ChallengeCard_participant">
-                          <img alt="participant" srcSet="http://images.munto.kr/production-user/1684331739071-photo-k5fkj-27080-0?s=48x48 1x, http://images.munto.kr/production-user/1684331739071-photo-k5fkj-27080-0?s=96x96 2x" src="http://images.munto.kr/production-user/1684331739071-photo-k5fkj-27080-0?s=96x96" class="ChallengeCard_participant_image"/>
-                      </span>
-                      <span class="ChallengeCard_participant">
-                          <img alt="participant" srcSet="http://images.munto.kr/production-user/1684331739071-photo-k5fkj-27080-0?s=48x48 1x, http://images.munto.kr/production-user/1684331739071-photo-k5fkj-27080-0?s=96x96 2x" src="http://images.munto.kr/production-user/1684331739071-photo-k5fkj-27080-0?s=96x96" class="ChallengeCard_participant_image"/>
-                      </span>
-                      <span class="ChallengeCard_participant">
-                          <img alt="participant" srcSet="http://images.munto.kr/production-user/1684331739071-photo-k5fkj-27080-0?s=48x48 1x, http://images.munto.kr/production-user/1684331739071-photo-k5fkj-27080-0?s=96x96 2x" src="http://images.munto.kr/production-user/1684331739071-photo-k5fkj-27080-0?s=96x96" class="ChallengeCard_participant_image"/>
-                          <img alt="more" srcSet="https://images.munto.kr/munto-web/action_more_24px.svg?s=48x48 1x, https://images.munto.kr/munto-web/action_more_24px.svg?s=96x96 2x" src="https://images.munto.kr/munto-web/action_more_24px.svg?s=96x96" class="ChallengeCard_participant_more"/>
-                      </span>
-                   
-                      <div class="ChallengeCard_member">
-                          <img alt="people" srcSet="https://images.munto.kr/munto-web/ic_info_person_14px.svg?s=16x16 1x, https://images.munto.kr/munto-web/ic_info_person_14px.svg?s=32x32 2x" src="https://images.munto.kr/munto-web/ic_info_person_14px.svg?s=32x32"/>
-                          <div class="ChallengeCard_member_count">66
-                          <!-- -->
-                          /
-                          <!-- -->
-                          99</div>
-                      </div>
-                  </div>
+                  
               </div>
           </a>
       </div>
-
-
-
 
       <div class="All_content__card__e" >
           <a class="ChallengeCard_card" href="/detail-challenge?id=1676">
@@ -869,8 +795,8 @@ setInterval(slide, 2000);
               </div>
           </a>
       </div>
-</div>
-          <a class="Socialing_more" href="<%=ctxPath%>/challenge_all"><div class="Socialing_more__text" style="color: black;">더보기<img src="https://images.munto.kr/munto-web/ic_arrow_right_14px.svg"></div></a>
+
+          <a class="Socialing_more" href="<%=ctxPath%>/challenge/challenge_all"><div class="Socialing_more__text" style="color: black;">더보기<img src="https://images.munto.kr/munto-web/ic_arrow_right_14px.svg"></div></a>
 
 
 
@@ -881,7 +807,7 @@ setInterval(slide, 2000);
 
       <div class="challenge_title_e">
         <div class="challenge_title_h">
-            <img src="https://images.munto.kr/munto-web/ic_info_lounge-fill_24px.svg"/>라운지
+            <img alt="lounge-mark" src="https://images.munto.kr/munto-web/ic_info_lounge-fill_24px.svg" width="18" height="18" decoding="async" data-nimg="1" class="Lounge_title__icon__UV95I" loading="lazy" style="color:transparent"/>라운지
         </div>
         <div class="challenge_title_g">비슷한 관심사를 가진<br/>멤버들의 취향 피드 구독하기</div>
       </div>
@@ -893,7 +819,7 @@ setInterval(slide, 2000);
     
             <div class="All_content__card__e">
               <a class="ChallengeCard_card" href="/detail-challenge?id=1676">
-              <span><figure><img srcSet="http://images.munto.kr/socialing-category/cover_category-7_%E1%84%89%E1%85%A5%E1%86%BC%E1%84%8C%E1%85%A1%E1%86%BC%E1%84%8C%E1%85%A1%E1%84%80%E1%85%B5%E1%84%80%E1%85%A8%E1%84%87%E1%85%A1%E1%86%AF_5.png?s=256x256 1x, http://images.munto.kr/socialing-category/cover_category-7_%E1%84%89%E1%85%A5%E1%86%BC%E1%84%8C%E1%85%A1%E1%86%BC%E1%84%8C%E1%85%A1%E1%84%80%E1%85%B5%E1%84%80%E1%85%A8%E1%84%87%E1%85%A1%E1%86%AF_5.png?s=384x384 2x" src="http://images.munto.kr/socialing-category/cover_category-7_%E1%84%89%E1%85%A5%E1%86%BC%E1%84%8C%E1%85%A1%E1%86%BC%E1%84%8C%E1%85%A1%E1%84%80%E1%85%B5%E1%84%80%E1%85%A8%E1%84%87%E1%85%A1%E1%86%AF_5.png?s=384x384" class="ChallengeCard_card_image" /></figure></span>
+              <span><figure><img alt="recommemd" srcSet="http://images.munto.kr/socialing-category/cover_category-7_%E1%84%89%E1%85%A5%E1%86%BC%E1%84%8C%E1%85%A1%E1%86%BC%E1%84%8C%E1%85%A1%E1%84%80%E1%85%B5%E1%84%80%E1%85%A8%E1%84%87%E1%85%A1%E1%86%AF_5.png?s=256x256 1x, http://images.munto.kr/socialing-category/cover_category-7_%E1%84%89%E1%85%A5%E1%86%BC%E1%84%8C%E1%85%A1%E1%86%BC%E1%84%8C%E1%85%A1%E1%84%80%E1%85%B5%E1%84%80%E1%85%A8%E1%84%87%E1%85%A1%E1%86%AF_5.png?s=384x384 2x" src="http://images.munto.kr/socialing-category/cover_category-7_%E1%84%89%E1%85%A5%E1%86%BC%E1%84%8C%E1%85%A1%E1%86%BC%E1%84%8C%E1%85%A1%E1%84%80%E1%85%B5%E1%84%80%E1%85%A8%E1%84%87%E1%85%A1%E1%86%AF_5.png?s=384x384" class="ChallengeCard_card_image" /></figure></span>
                   <div class="ChallengeCard_info">
                       <div class="ChallengeCard_info__subject">
                           <div class="ChallengeCard_tag">자존감</div>
@@ -1102,9 +1028,8 @@ setInterval(slide, 2000);
                   </div>
               </a>
           </div>
-          
-
-          <a class="Socialing_more" href="<%=ctxPath%>/challenge_all"><div class="Socialing_more__text" style="color: black;">더보기<img src="https://images.munto.kr/munto-web/ic_arrow_right_14px.svg"></div></a>
+    
+          <a class="Socialing_more" href="<%=ctxPath%>/challenge/challenge_all"><div class="Socialing_more__text" style="color: black;">더보기<img src="https://images.munto.kr/munto-web/ic_arrow_right_14px.svg"></div></a>
     
     
     

@@ -1,5 +1,6 @@
 package com.sist.haebollangce.common.mapper;
 
+import com.sist.haebollangce.challenge.dao.challengeVO;
 import com.sist.haebollangce.challenge.dto.ChallengeDTO;
 import com.sist.haebollangce.lounge.model.LoungeBoardDTO;
 import com.sist.haebollangce.user.dto.UserDTO;
@@ -63,7 +64,11 @@ public interface InterMapper {
 	List<ChallengeDTO> getcategoryList();
 
 	
-	
+	List<challengeVO> challengeList();
+    
+    List<challengeVO> categoryList();
+
+	List<challengeVO> challengelist();
 	
 	
 }

@@ -20,7 +20,7 @@
 	  SELECT
 	  a.category_name AS category_name,
 	  b.challenge_name,
-	  b.thumbnail,
+	  b.thumbnail as thumbnail,
 	  b.content,
 	  b.startDate,
 	  b.fk_during_type,
@@ -34,7 +34,7 @@
 	  JOIN tbl_challenge_during c ON b.fk_during_type = c.during_type
 	<where>
 	  <if test="category_code != null and category_name != '전체'">
-	    AND a.category_code = #{category_code}
+	    AND a.category_code = #{categoryCode}
 	  </if>
 	</where>
 	</select>
