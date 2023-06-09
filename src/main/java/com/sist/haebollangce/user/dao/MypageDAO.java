@@ -133,6 +133,19 @@ public class MypageDAO implements InterMypageDAO {
 		
 		return all_interest_list;
 	}
+	
+	// 모든 관심태그 가지고오기
+	@Override
+	public List<Map<String, Object>> all_interest() {
+
+		List<Map<String, Object>> all_interest_list = mapper.all_interest();
+		
+		return all_interest_list;
+	}
+
+	// 관심태그 알아오기
+	@Override
+	public List<Map<String, String>> interest(String userid) {
 
 	// 관심태그 알아오기
 	@Override

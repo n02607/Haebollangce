@@ -269,7 +269,11 @@
 			        <li class="nav-item dropdown active mr-3">
 			        	<a class="nav-link dropdown-toggle headerfont" id="navbardrop_chlg" data-toggle="dropdown">챌린지</a>
 			      		<div class="dropdown-menu" style="border:none;">
+<<<<<<< HEAD
 					        <a class="dropdown-item" href="<%=ctxPath%>/challenge/add_challenge">챌린지 개설하기</a>
+=======
+					        <a class="dropdown-item" href="<%=ctxPath%>/main">챌린지 개설하기</a>
+>>>>>>> refs/heads/main
 					        <a class="dropdown-item" href="<%=ctxPath%>/chanllenge_all">챌린지 둘러보기</a>
 					    </div>
 			      	</li>
