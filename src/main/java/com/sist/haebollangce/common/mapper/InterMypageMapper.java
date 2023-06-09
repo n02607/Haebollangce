@@ -96,10 +96,7 @@ public interface InterMypageMapper {
 
 	// 마이페이지 홈 챌린지 그래프-챌린지 참여 횟수
 	List<Map<String, String>> chart_challenging(Map<String, String> paraMap);
-<<<<<<< HEAD
 	List<Map<String, String>> chart_category(Map<String, String> paraMap);
-=======
->>>>>>> refs/heads/main
 
 
 }

@@ -333,7 +333,6 @@
 		<result property="count" 	   column="count" 		javaType="String" />
 	</resultMap>
 	<select id="chart_challenging" parameterType="HashMap" resultMap="chart_challenging_map">
-<<<<<<< HEAD
 		select V.month as month, NVL(T.count, 0) as count
 		from 
 			(
@@ -367,17 +366,5 @@
 		order by percentage desc
 	</select>
 
-=======
-		select extract(month from C.startdate) AS month, 
-       		   count(*) as count
-		from tbl_challenge C join tbl_challenge_info I
-                        		on C.challenge_code = I.fk_challenge_code
-		where I.fk_userid = #{userid}
-    		  and <![CDATA[extract(month from C.startdate) <= extract(month from sysdate)]]>
-   			  and <![CDATA[extract(month from C.startdate) > extract(month from sysdate)-12]]>
-		group by extract(month from C.startdate)
-		order by count desc
-	</select>
->>>>>>> refs/heads/main
 
 </mapper>
