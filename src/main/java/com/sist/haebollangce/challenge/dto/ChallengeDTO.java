@@ -5,14 +5,14 @@ import org.springframework.web.multipart.MultipartFile;
 public class ChallengeDTO {
 	
 	private String challengeCode;			// 챌린지 일련번호
-	private String fkCategoryCode;			// 카테고리 코드   
+	private String fkCategoryCode;		// 카테고리 코드   
 	private String challengeName;			// 챌린지이름
 	private String content;            		// 챌린지 본문(내용)
 	private String regDate; 				// 등록일자
 	private String challengeExp;			// 경험치
 	private String memberCount; 			// 참가인원
 	private String thumbnail;				// 대표이미지   
-	private String fkFreqType;				// 인증빈도 일련번호
+	private String fkFreqType;			// 인증빈도 일련번호
 	private String fkDuringType;			// 기간 일련번호
 	private String startDate;				// 시작날짜
 	private String fkUserid;				// 개설자(방장)
@@ -253,12 +253,20 @@ public class ChallengeDTO {
 	}
 
 
+
+
 	public String getAchievementPct() {
 		return achievementPct;
 	}
+
+
+
+
 	public void setAchievementPct(String achievementPct) {
 		this.achievementPct = achievementPct;
 	}
+	
+	
 	
 	
 	
