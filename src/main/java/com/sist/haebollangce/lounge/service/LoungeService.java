@@ -23,7 +23,7 @@ public class LoungeService implements InterLoungeService {
 
 	// === #2. 게시판 글쓰기 완료 요청 ===
 	@Override
-	public int loungeAdd(LoungeBoardDTO lgboarddto) {
+	public int loungeAdd(LoungeBoardDTO lgboarddto) throws Exception{
 		int n = dao.loungeAdd(lgboarddto);
 		return n;
 	}

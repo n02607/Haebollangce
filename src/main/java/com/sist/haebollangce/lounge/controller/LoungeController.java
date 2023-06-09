@@ -57,7 +57,7 @@ public class LoungeController {
 	
 	// === #2. 라운지 글쓰기 완료 요청 === (#54.)
 	@PostMapping(value = "/loungeAddEnd")
-	public ModelAndView loungeAddEnd(ModelAndView mav, LoungeBoardDTO lgboarddto, MultipartHttpServletRequest mrequest) {
+	public ModelAndView loungeAddEnd(ModelAndView mav, LoungeBoardDTO lgboarddto, MultipartHttpServletRequest mrequest) throws Exception {
 		
 		// === #2-1. 첨부파일이 있는 경우 작업  ===
 		MultipartFile attach =  lgboarddto.getAttach();
