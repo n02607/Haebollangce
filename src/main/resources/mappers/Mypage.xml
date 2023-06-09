@@ -346,11 +346,7 @@
 				select extract(month from C.startdate) as month, count(*) as count
 				from tbl_challenge C join tbl_challenge_info I
                         			on C.challenge_code = I.fk_challenge_code
-<<<<<<< HEAD
 				where I.fk_userid = #{userid} and to_char(C.startdate, 'yyyy') = to_char(sysdate, 'yyyy')
-=======
-				where I.fk_userid = #{userid}
->>>>>>> refs/heads/main
 				group by extract(month from C.startdate)
 			) T 
 			on V.month = T.month
@@ -367,7 +363,7 @@
                         		on C.challenge_code = I.fk_challenge_code
                     		 join tbl_category G
                        			 on C.fk_category_code = G.category_code
-		where I.fk_userid = #{userid} and to_char(C.startdate, 'mm') = ${month}
+		where I.fk_userid = #{userid} and to_char(C.startdate, 'mm') = ${month} and to_char(C.startdate, 'yyyy') = to_char(sysdate, 'yyyy')
 		group by G.category_name
 		order by percentage desc
 	</select>
