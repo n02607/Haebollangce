@@ -767,8 +767,6 @@ public class MypageController {
 		
 		return json;
 	}
-<<<<<<< HEAD
-=======
 	@ResponseBody
 	@RequestMapping(value = "/chart_category", method = {RequestMethod.GET}, produces = "text/plain;charset=UTF-8")
 	public String chart_category(HttpServletRequest request){
@@ -787,7 +785,6 @@ public class MypageController {
 		
 		return json;
 	}
->>>>>>> branch 'main' of https://github.com/n02607/Haebollangce.git
 	/* 마이페이지 홈 챌린지 그래프 끝*/
 	
 	
