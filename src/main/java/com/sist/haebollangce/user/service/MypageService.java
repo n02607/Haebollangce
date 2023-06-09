@@ -697,7 +697,11 @@ public class MypageService implements InterMypageService {
 
 		List<Map<String, String>> category_list = dao.chart_category(paraMap);
 		
+		// System.out.println("servicee userid : " + paraMap.get("userid"));
+		// System.out.println("servicee userid : " + paraMap.get("month"));
 		
+		// System.out.println("category_list " + category_list.toString());
+	
 		JsonArray jsonArr = new JsonArray();
 		
 		for(Map<String, String> map : category_list) {

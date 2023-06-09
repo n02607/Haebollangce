@@ -469,6 +469,11 @@
 		
 		
 		<%-- 챌린지 그래프 시작 --%>
+<<<<<<< HEAD
+=======
+	
+		
+>>>>>>> refs/heads/main
 		$.ajax({
 			url: "/mypage/chart_challenging",
 			data:{
@@ -489,7 +494,10 @@
 				$.each(json1, function(index, item){
 					month_challenging_arr.push({
 						 					name: item.month,
+<<<<<<< HEAD
 						 					y: Number(item.count),
+=======
+>>>>>>> refs/heads/main
 		                 					cnt: item.count,
 		                 					drilldown: item.month
 										});
@@ -505,6 +513,7 @@
 							"month":item1.month
 						},
 						dataType:"json",
+						async: false,
 						success: function(json2){
 							// 달 별 참여한 챌린지 태그 비율
 							
@@ -525,6 +534,7 @@
 					                			data: subArr
 											});
 							
+<<<<<<< HEAD
 							Highcharts.chart('chart_container', {
 							    chart: {
 							        type: 'column'
@@ -587,6 +597,76 @@
 							}); // end of chart
 							////////////////////////
 								
+=======
+							ajaxCounter++; // 호출이 완료될 때마다 카운터 증가
+							
+							if (ajaxCounter === totalAjaxCalls) {
+				                
+								Highcharts.chart('chart_container', {
+								    chart: {
+								        type: 'column'
+								    },
+								    title: {
+								        align: 'left',
+								        text: '올 해 챌린지 참여 횟수'
+								    },
+								    subtitle: {
+								        align: 'left',
+								        text: 'Click the columns to view versions. Source: <a href="http://statcounter.com" target="_blank">statcounter.com</a>'
+								    },
+								    accessibility: {
+								        announceNewData: {
+								            enabled: true
+								        }
+								    },
+								    xAxis: {
+								        type: 'category'
+								    },
+								    yAxis: {
+								        title: {
+								            text: '참여했던 챌린지 수(개)'
+								        }
+
+								    },
+								    legend: {
+								        enabled: false
+								    },
+								    plotOptions: {
+								        series: {
+								            borderWidth: 0,
+								            dataLabels: {
+								                enabled: true,
+								                format: '{point.y}'
+								            }
+								        }
+								    },
+
+								    tooltip: {
+								        headerFormat: '<span style="font-size:11px">{series.name}</span><br>',
+								        pointFormat: '<span style="color:{point.color}">{point.name}</span>: <b>{point.y}</b> of total<br/>'
+								    },
+
+								    series: [
+								        {
+								            name: '챌린지명',
+								            colorByPoint: true,
+								            data:month_challenging_arr
+								        }
+								    ],
+								    drilldown: {
+								        breadcrumbs: {
+								            position: {
+								                align: 'right'
+								            }
+								        },
+								        series: category_arr
+								    }
+								}); // end of chart
+								////////////////////////
+								
+				            }
+							
+>>>>>>> refs/heads/main
 						},
 						error: function(request, status, error){
 							alert("code: "+request.status+"\n"+"message: "+request.responseText+"\n"+"error: "+error);
