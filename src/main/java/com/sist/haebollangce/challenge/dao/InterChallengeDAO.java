@@ -1,28 +1,12 @@
 package com.sist.haebollangce.challenge.dao;
 
 import java.util.List;
-<<<<<<< HEAD
-=======
 import java.util.Map;
 
 import com.sist.haebollangce.challenge.dto.ChallengeDTO;
->>>>>>> refs/heads/main
 
 public interface InterChallengeDAO {
 
-<<<<<<< HEAD
-	// 챌린지 불러오기
-	List<challengeVO> challengeList();
-
-	// 카테고리 불러오기
-	List<challengeVO> categoryList();
-
-	// 카테고리별 챌린지 불러오기
-	List<challengeVO> challengelist();
-
-	
-
-=======
 	List<ChallengeDTO> getJoinedChaList();
 	// 참가중인 챌린지 리스트 가져오기
 
@@ -46,6 +30,5 @@ public interface InterChallengeDAO {
 	
 	// 인증 예시 등록하기
 	int addCertifyExam(ChallengeDTO challengedto);
->>>>>>> refs/heads/main
 
 }

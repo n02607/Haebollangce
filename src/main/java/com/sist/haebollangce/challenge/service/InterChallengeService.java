@@ -1,24 +1,15 @@
 package com.sist.haebollangce.challenge.service;
 
 import java.util.List;
-<<<<<<< HEAD
-
-import com.sist.haebollangce.challenge.dao.challengeVO;
-=======
 import java.util.Map;
 
 import com.sist.haebollangce.challenge.dto.ChallengeDTO;
->>>>>>> refs/heads/main
 
 public interface InterChallengeService {
 	
 	List<ChallengeDTO> getJoinedChaList();
 	// 참가중인 챌린지 리스트 가져오기
 
-<<<<<<< HEAD
-	// 챌린지 불러오기
-	List<challengeVO> challengeList();
-=======
 	// 인증빈도 리스트 가져오기
 	List<ChallengeDTO> getfreq();
 
@@ -33,17 +24,5 @@ public interface InterChallengeService {
 
 	// 카테고리 리스트 가져오기 
 	List<ChallengeDTO> getcategoryList();
->>>>>>> refs/heads/main
 
-	// 카테고리 불러오기
-	List<challengeVO> categoryList();
-
-	// 카테고리별 챌린지 불러오기
-	List<challengeVO> challengelist();
-
-	
-
-
-
-	
 }
