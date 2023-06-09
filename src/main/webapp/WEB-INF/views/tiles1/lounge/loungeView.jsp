@@ -108,7 +108,9 @@
 			  	                	 		<div class="c-details"> 
 			  	                				<small class="mb-0 ml-3" style="color:gray;">\${item.regdate}</small>
 			  	                				<small type="button" class="mb-0 ml-2" style="color:gray;" onclick="javascript:location.href='/lounge/loungeView?seq=\${item.parentSeq}&fk_seq=\${item.seq}&groupno=\${item.groupno}&depthno=\${item.depthno}'">답글달기</small> 
-			  	                	 		</div>
+			  	                				<small type="button" class="mb-0 ml-2 p-1" style="color:gray; background-color:#eee; border-radius:5px;">수정</small>
+			  	                				<small type="button" class="mb-0 ml-1 p-1" style="color:gray; background-color:#eee; border-radius:5px;">삭제</small>
+			  	                			</div>
 			  	                		</div> 
 		  	              		 	  </div>`; 
   						} 
@@ -125,7 +127,9 @@
 			  	                	 		<div class="c-details"> 
 			  	                				<small class="mb-0 ml-3" style="color:gray;">\${item.regdate}</small>
 			  	                				<small type="button" class="mb-0 ml-2" style="color:gray;" onclick="javascript:location.href='/lounge/loungeView?seq=\${item.parentSeq}&fk_seq=\${item.seq}&groupno=\${item.groupno}&depthno=\${item.depthno}'">답글달기</small>
-											</div> 
+			  	                				<small type="button" class="mb-0 ml-2 p-1" style="color:gray; background-color:#eee; border-radius:5px;">수정</small>
+			  	                				<small type="button" class="mb-0 ml-1 p-1" style="color:gray; background-color:#eee; border-radius:5px;" onclick="javascript:location.href='<%= ctxPath%>/lounge/loungeCmtDel?seq=\${item.seq}'">삭제</small>
+			  	                			</div> 
 			  	                		</div> 
 			              		 	</div>`;
   						}
