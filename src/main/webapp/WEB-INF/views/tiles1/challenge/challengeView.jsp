@@ -340,11 +340,13 @@
 	                 <div class="col-lg-3">
 	                 <img class="img-fluid" src="<%= ctxPath%>/images/${challengedto.successImg}" style=" width: 100%; height: 200px; object-fit: cover; border-radius: 12px 12px 0 0;" alt="인증성공예시" />
 	                 <div style="height: 30px; margin-top: -5px; background-color:green; color:white; text-align:center;  line-height: 30px; font-size:15pt; border-radius: 0 0 12px 12px;">O</div>
+	                 <div>올바른 인증 사진</div>
 					 </div>
 
 	                 <div class="col-lg-3">
 	                 <img class="img-fluid" src="<%= ctxPath%>/images/${requestScope.challengedto.failImg}" style="width: 100%; height: 200px; object-fit: cover; border-radius: 12px 12px 0 0;" alt="인증실패예시" />
 	                 <div style="height: 30px; margin-top: -5px; background-color:red; color:white; text-align:center;  line-height: 30px; font-size:15pt; border-radius: 0 0 12px 12px;">X</div>
+	                 <div>잘못된 인증 사진</div>
 	                 </div>
   
 			    </div>
