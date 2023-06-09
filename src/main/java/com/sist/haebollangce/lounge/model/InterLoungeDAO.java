@@ -6,7 +6,7 @@ import java.util.Map;
 public interface InterLoungeDAO {
 
 	// === #2. 게시판 글쓰기 완료 요청 ===
-	int loungeAdd(LoungeBoardDTO lgboarddto) ;
+	int loungeAdd(LoungeBoardDTO lgboarddto) throws Exception;
 
 	// === #2-1. 파일첨부가 있는 게시판 글쓰기 완료 요청 ===
 	int loungeAdd_withFile(LoungeBoardDTO lgboarddto);

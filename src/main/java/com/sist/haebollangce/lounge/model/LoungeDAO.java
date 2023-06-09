@@ -18,7 +18,7 @@ public class LoungeDAO implements InterLoungeDAO {
 
 	// === #2. 게시판 글쓰기 완료 요청 ===
 	@Override
-	public int loungeAdd(LoungeBoardDTO lgboarddto) {
+	public int loungeAdd(LoungeBoardDTO lgboarddto) throws Exception {
 		
 //      int n = sqlsession.insert("user.test_insert",userid);
 //      int n = mapper.test_insert(userid);
