@@ -1,16 +1,33 @@
 package com.sist.haebollangce.user.service;
 
+<<<<<<< HEAD
 import java.util.HashMap;
+=======
+import java.io.File;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
+>>>>>>> branch 'YJS' of https://github.com/n02607/Haebollangce.git
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.http.HttpSession;
+
+import org.json.JSONArray;
 import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.ObjectUtils;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
+<<<<<<< HEAD
+=======
+import com.sist.haebollangce.common.FileManager;
+>>>>>>> branch 'YJS' of https://github.com/n02607/Haebollangce.git
 import com.sist.haebollangce.user.dao.InterMypageDAO;
 import com.sist.haebollangce.user.dto.UserDTO;
 import com.sist.haebollangce.user.util.AES256;
@@ -671,8 +688,11 @@ public class MypageService implements InterMypageService {
 		
 		List<Map<String, String>> chart_challenging_list = dao.chart_challenging(paraMap);
 		
+<<<<<<< HEAD
 		// System.out.println("chart_challenging_list " + chart_challenging_list.toString());
 		
+=======
+>>>>>>> branch 'YJS' of https://github.com/n02607/Haebollangce.git
 		JsonArray jsonArr = new JsonArray();
 		
 		if(chart_challenging_list != null && chart_challenging_list.size() > 0) {
@@ -692,6 +712,7 @@ public class MypageService implements InterMypageService {
 		
 		return new Gson().toJson(jsonArr);
 	}
+<<<<<<< HEAD
 	@Override
 	public String chart_category(Map<String, String> paraMap) {
 
@@ -716,6 +737,8 @@ public class MypageService implements InterMypageService {
 		
 		return new Gson().toJson(jsonArr);
 	}
+=======
+>>>>>>> branch 'YJS' of https://github.com/n02607/Haebollangce.git
 	
 
 }

@@ -49,6 +49,14 @@
 	<script src="<%= ctxPath%>/Highcharts-11.0.1/code/modules/export-data.js"></script>
 	<script src="<%= ctxPath%>/Highcharts-11.0.1/code/modules/accessibility.js"></script>
 	
+<<<<<<< HEAD
+=======
+=======
+	<script src="<%= ctxPath%>/Highcharts-11.0.1/code/modules/exporting.js"></script>
+	<script src="<%= ctxPath%>/Highcharts-11.0.1/code/modules/export-data.js"></script>
+	<script src="<%= ctxPath%>/Highcharts-11.0.1/code/modules/accessibility.js"></script>
+>>>>>>> refs/heads/main
+>>>>>>> branch 'YJS' of https://github.com/n02607/Haebollangce.git
 	
 </head>
 

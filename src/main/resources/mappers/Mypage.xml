@@ -366,5 +366,20 @@
 		order by percentage desc
 	</select>
 
+<<<<<<< HEAD
+=======
+=======
+		select extract(month from C.startdate) AS month, 
+       		   count(*) as count
+		from tbl_challenge C join tbl_challenge_info I
+                        		on C.challenge_code = I.fk_challenge_code
+		where I.fk_userid = #{userid}
+    		  and <![CDATA[extract(month from C.startdate) <= extract(month from sysdate)]]>
+   			  and <![CDATA[extract(month from C.startdate) > extract(month from sysdate)-12]]>
+		group by extract(month from C.startdate)
+		order by count desc
+	</select>
+>>>>>>> refs/heads/main
+>>>>>>> branch 'YJS' of https://github.com/n02607/Haebollangce.git
 
 </mapper>
