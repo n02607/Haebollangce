@@ -114,9 +114,6 @@ public class MypageDAO implements InterMypageDAO {
 	}
 
 	
-<<<<<<< HEAD
-}
-=======
 	// 찜한 챌린지 불러오기
 	@Override
 	public List<Map<String, Object>> select_like_challenge(String userid) {
@@ -201,4 +198,3 @@ public class MypageDAO implements InterMypageDAO {
 
 
 }
->>>>>>> branch 'main' of https://github.com/n02607/Haebollangce.git

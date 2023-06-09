@@ -38,9 +38,6 @@ public interface InterMypageMapper {
 	// 사용자 정보 수정하기
 	int mypage_info_edit(Map<String, Object> paraMap);
 
-	
-<<<<<<< HEAD
-=======
 	// 찜한 라운지 불러오기
 	List<Map<String, Object>> select_like_lounge(String userid);
 
@@ -70,5 +67,4 @@ public interface InterMypageMapper {
 	List<Map<String, String>> chart_category(Map<String, String> paraMap);
 
 
->>>>>>> branch 'main' of https://github.com/n02607/Haebollangce.git
 }

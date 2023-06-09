@@ -36,8 +36,6 @@ public interface InterMypageDAO {
 	// 사용자 정보 수정하기
 	int mypage_info_edit(Map<String, Object> paraMap);
 
-<<<<<<< HEAD
-=======
 	// 회원 탈퇴하기
 	int delete_user(Map<String, String> paraMap);
 
@@ -68,6 +66,6 @@ public interface InterMypageDAO {
 
 
 	
->>>>>>> branch 'main' of https://github.com/n02607/Haebollangce.git
+
 
 }
