@@ -1,6 +1,8 @@
 package com.sist.haebollangce.common;
 
 import java.io.BufferedInputStream;
+
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -10,6 +12,7 @@ import java.util.Calendar;
 
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletResponse;
+
 
 import org.springframework.stereotype.Component;
 
@@ -125,7 +128,7 @@ public class FileManager {
 		is.close();
 		
 		return newFilename;
-	}	
+	}
 	
 	
 	
@@ -284,7 +287,6 @@ public class FileManager {
 		}
 	}
 	
-
 }
 
 
