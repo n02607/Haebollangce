@@ -1,7 +1,6 @@
 package com.sist.haebollangce.config;
 
-import java.io.UnsupportedEncodingException;
-
+import com.sist.haebollangce.user.util.AES256;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
@@ -15,7 +14,7 @@ import org.springframework.web.servlet.view.tiles3.TilesConfigurer;
 import org.springframework.web.servlet.view.tiles3.TilesView;
 import org.springframework.web.servlet.view.tiles3.TilesViewResolver;
 
-import com.sist.haebollangce.user.util.AES256;
+import java.io.UnsupportedEncodingException;
 @Configuration
 @EnableWebMvc
 @ComponentScan(basePackages = "com.sist")
