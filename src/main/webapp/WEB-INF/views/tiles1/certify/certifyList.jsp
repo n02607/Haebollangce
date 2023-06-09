@@ -78,7 +78,11 @@
 		// 1분 마다 챌린지의 인증시간을 체크함 (버튼활성화, 비활성화)
 		setInterval(function() {
 			checkCertifyTime();
+<<<<<<< HEAD
 			console.log("인증시간 체크완료");
+=======
+			console.log("인증시간 체크완료");
+>>>>>>> refs/heads/main
 		}, 60000);
 		
 	}); // end $(document).ready
@@ -225,7 +229,11 @@
 					<c:if test="${chaDTO.startDate <= today && today <= chaDTO.enddate}">
 				  		<div class="challengeList my-4" style="width: 100%; height: 250px; display: flex; border-radius: 20px;">
 				  			<div style="height: 100%; width: 30%;">
+<<<<<<< HEAD
 					  			<img src="<%= ctxPath%>/images/${chaDTO.thumbnail}" style="object-fit: cover; height:90%; width: 90%; margin-top:12px; border-radius: 20px;"/>
+=======
+					  			<img src="${chaDTO.thumbnail}" style="object-fit: cover; height:90%; width: 90%; margin-top:12px; border-radius: 20px;"/>
+>>>>>>> refs/heads/main
 				  			</div>
 				  			<div style="text-align: left; width: 70%;">
 				  				<div style="display: flex; justify-content: space-between;">
@@ -282,7 +290,11 @@
 					<c:if test="${chaDTO.startDate > today}">
 				  		<div class="challengeList my-4" style="width: 100%; height: 250px; display: flex; border-radius: 20px;">
 				  			<div style="height: 100%; width: 30%;">
+<<<<<<< HEAD
 					  			<img src="<%= ctxPath%>/images/${chaDTO.thumbnail}" style="object-fit: cover; height:90%; width: 90%; margin-top:12px; border-radius: 20px;"/>
+=======
+					  			<img src="${chaDTO.thumbnail}" style="object-fit: cover; height:90%; width: 90%; margin-top:12px; border-radius: 20px;"/>
+>>>>>>> refs/heads/main
 				  			</div>
 				  			<div style="text-align: left; width: 70%;">
 				  				<div style="display: flex; justify-content: space-between;">
