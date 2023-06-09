@@ -101,17 +101,6 @@
 	}
 	
 	/* 사진 hover CSS */
-	div.img_info {
-		display: none;
-		position: absolute;
-		top: 33%;
-		left: 33%;
-	}
-	.my_image:hover + div.img_info 	{
-		display: block;
-		/* 애니메이션 추가하기 */
-	}
-	
 	span.report {
 		display: flex; 
 		justify-content:center; 
@@ -122,8 +111,79 @@
 		color: white; 
 		border-radius: 10px;
 		opacity:0.8;
+		cursor: pointer;
 	}
 	
+	.my_image {
+		opacity: 1;
+		display: block;
+		width: 100%;
+		height: auto;
+		transition: .5s ease;
+		backface-visibility: hidden;
+	}
+	div.img_info {
+		transition: .5s ease;
+		opacity: 0;
+		position: absolute;
+		top: 50%;
+		left: 50%;
+		transform: translate(-50%, -50%);
+		-ms-transform: translate(-50%, -50%);
+		text-align: center;
+	}
+	.imgContainer:hover .my_image {
+		opacity: 0.3;
+	}
+	
+	.imgContainer:hover .img_info {
+		opacity: 1;
+	}
+	
+	
+	/* 모든 참가자의 인증샷 */
+	.user_image {
+		opacity: 1;
+		display: block;
+		width: 100%;
+		height: auto;
+		transition: .5s ease;
+		backface-visibility: hidden;
+	}
+	div.user_img_info {
+		transition: .5s ease;
+		opacity: 0;
+		position: absolute;
+		top: 50%;
+		left: 50%;
+		transform: translate(-50%, -50%);
+		-ms-transform: translate(-50%, -50%);
+		text-align: center;
+	}
+	.imgContainer:hover .user_image {
+		opacity: 0.3;
+	}
+	
+	.imgContainer:hover .user_img_info {
+		opacity: 1;
+	}
+	
+	.modal-content{  
+	  -webkit-animation-name: zoom;
+	  -webkit-animation-duration: 0.6s;
+	  animation-name: zoom;
+	  animation-duration: 0.6s;
+	}
+	
+	@-webkit-keyframes zoom {
+	  from {-webkit-transform:scale(0)} 
+	  to {-webkit-transform:scale(1)}
+	}
+	
+	@keyframes zoom {
+	  from {transform:scale(0)} 
+	  to {transform:scale(1)}
+	}
 	
 </style>
 
@@ -181,7 +241,7 @@ const imgInfo = document.querySelector('.img_info');
 		);
 		
 	}); // end ready
-	
+	 
 	// 나의 인증 현황 바 채워지는 함수
 	<%-- 
 	function move() {
@@ -280,13 +340,25 @@ const imgInfo = document.querySelector('.img_info');
   						<c:if test="${status.index % 3 == 0}">
 				  			<tr style="height:250px; width:100%;">
   						</c:if>
-	  							<td style="height:300px; width:33%; position: relative;">
-	  								<img class="my_image" style="width: 100%; height:100%; object-fit: cover;" alt="대체이미지 준비중" src="${certifyDTO.certify_img}">
+	  							<td class="imgContainer" style="height:300px; width:33%; position: relative;">
+	  								<img class="my_image" style="width: 100%; height:100%; object-fit: cover;" alt="대체이미지 준비중" src="${certifyDTO.certifyImg}">
 	  								<div class="img_info">
-	  									<div><span class="report">신고하기</span></div>
-	  									<div class="mt-3"><span class="report" style="background-color: gray; opacity:0.8;">사진보기</span></div>
+	  									<div><span data-toggle="modal" data-target="#myImage${status.index }" class="report" style="background-color: gray; opacity:0.8;">사진보기</span></div>
 	  								</div>
 	  							</td>
+	  							
+  								<!-- 사진 확대 Modal -->
+								<div class="modal fade" id="myImage${status.index }">
+								  <div class="modal-dialog modal-dialog-centered">
+								    <div class="modal-content">
+								      <div class="modal-body">
+									      <button type="button" class="close" data-dismiss="modal">&times;</button>
+									      <img class="my_image mt-5" style="width: 100%; height:100%;" alt="대체이미지 준비중" src="${certifyDTO.certifyImg}">
+								      </div>
+								    </div>
+								  </div>
+								</div>
+									
 		  				<c:if test="${(status.index+1) % 3 == 0}">
 			  				</tr>
 			  			</c:if>
@@ -341,7 +413,26 @@ const imgInfo = document.querySelector('.img_info');
   						<c:if test="${status.index % 3 == 0}">
 				  			<tr style="height:250px; width:100%;">
   						</c:if>
-	  							<td style="height:250px; width:33%;"><img style="width: 100%; height:100%; object-fit: cover;" alt="대체이미지" src="${allcertifyDTO.certify_img}"></td>
+	  							<td class="imgContainer" style="height:300px; width:33%; position: relative;">
+	  								<img class="user_image" style="width: 100%; height:100%; object-fit: cover;" alt="대체이미지" src="${allcertifyDTO.certifyImg}">
+	  								<div class="user_img_info">
+	  									<div><span class="report">신고하기</span></div>
+	  									<div class="mt-3"><span data-toggle="modal" data-target="#userImage${status.index }" class="report" style="background-color: gray; opacity:0.8;">사진보기</span></div>
+	  								</div>
+	  							</td>
+	  							
+	  							<!-- 사진 확대 Modal -->
+								<div class="modal fade" id="userImage${status.index }">
+								  <div class="modal-dialog modal-dialog-centered">
+								    <div class="modal-content">
+								      <div class="modal-body">
+									      <button type="button" class="close" data-dismiss="modal">&times;</button>
+									      <img class="user_image mt-5" style="width: 100%; height:100%;" alt="대체이미지 준비중" src="${allcertifyDTO.certifyImg}">
+								      </div>
+								    </div>
+								  </div>
+								</div>
+								
 		  				<c:if test="${(status.index+1) % 3 == 0}">
 			  				</tr>
 			  			</c:if>

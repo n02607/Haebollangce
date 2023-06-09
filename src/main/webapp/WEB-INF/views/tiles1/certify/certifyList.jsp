@@ -230,16 +230,16 @@
 				  			<div style="text-align: left; width: 70%;">
 				  				<div style="display: flex; justify-content: space-between;">
 					  				<div class="mt-3" style="width: 180px; height: 35px; line-height: 34px; background-color: rgb(244, 244, 244); text-align: center; border-radius: 20px;">
-					  					<div>${chaDTO.category_name}</div>
+					  					<div>${chaDTO.categoryName}</div>
 					  				</div>
 					  				<div class="mt-3 pr-3" style="font-weight: bold;">
-					  					<span class="mr-2">현재 달성률</span><span>(준비중)</span>
+					  					<span class="mr-2">현재 달성률</span><span>${chaDTO.achievementPct}%</span>
 					  				</div>
 				  				</div>
-				  				<h4 class="my-3" style="font-weight: bold;">${chaDTO.challenge_name}</h4>
+				  				<h4 class="my-3" style="font-weight: bold;">${chaDTO.challengeName}</h4>
 				  				<div class="pr-3" style="margin-top: 30px; display: flex; justify-content: space-between;">
 				  					<div><span>인증빈도 - </span><span>${chaDTO.frequency }</span></div>
-				  					<div><span>인증시간 - </span><span>${chaDTO.hour_start} ~ ${chaDTO.hour_end}</span></div>
+				  					<div><span>인증시간 - </span><span>${chaDTO.hourStart} ~ ${chaDTO.hourEnd}</span></div>
 				  				</div>
 				  				<div class="mr-3" style="display: flex; justify-content: space-between; margin-top: 30px;">
 					  				<div>
@@ -248,10 +248,10 @@
 					  				</div>
 					  				<%-- 순서 건들면 스크립트 틀어짐 --%>
 					  				<button id="certify" style="width: 300px; background-color: #EB534C;" type="button" class="btn btn-secondary btn-lg btn_certify">인증하기</button>
-				  					<input class="hour_start" type="hidden" value="${chaDTO.hour_start}">
-				  					<input class="hour_end" type="hidden" value="${chaDTO.hour_end}">
-				  					<input class="fk_freq_type" type="hidden" value="${chaDTO.fk_freq_type}">
-				  					<input id="challenge_code" type="hidden" value="${chaDTO.challenge_code}">
+				  					<input class="hour_start" type="hidden" value="${chaDTO.hourStart}">
+				  					<input class="hour_end" type="hidden" value="${chaDTO.hourEnd}">
+				  					<input class="fk_freq_type" type="hidden" value="${chaDTO.fkFreqType}">
+				  					<input id="challenge_code" type="hidden" value="${chaDTO.challengeCode}">
 				  					<%-- 챌린지의 참가중인 userid 들어와야함 get방식으로 보낼때 아이디 추가--%>
 				  					<%-- 순서 건들면 스크립트 틀어짐 --%>
 				  				</div>
@@ -287,16 +287,16 @@
 				  			<div style="text-align: left; width: 70%;">
 				  				<div style="display: flex; justify-content: space-between;">
 					  				<div class="mt-3" style="width: 180px; height: 35px; line-height: 34px; background-color: rgb(244, 244, 244); text-align: center; border-radius: 20px;">
-					  					<div>${chaDTO.category_name}</div>
+					  					<div>${chaDTO.categoryName}</div>
 					  				</div>
 					  				<div class="mt-3 pr-3" style="font-weight: bold;">
-					  					<span class="mr-2">현재 달성률</span><span>(준비중)</span>
+					  					<span class="mr-2">현재 달성률</span><span>${chaDTO.achievementPct}%</span>
 					  				</div>
 				  				</div>
-				  				<h4 class="my-3" style="font-weight: bold;">${chaDTO.challenge_name}</h4>
+				  				<h4 class="my-3" style="font-weight: bold;">${chaDTO.challengeName}</h4>
 				  				<div class="pr-3" style="margin-top: 30px; display: flex; justify-content: space-between;">
 				  					<div><span>인증빈도 - </span><span>${chaDTO.frequency }</span></div>
-				  					<div><span>인증시간 - </span><span>${chaDTO.hour_start} ~ ${chaDTO.hour_end}</span></div>
+				  					<div><span>인증시간 - </span><span>${chaDTO.hourStart} ~ ${chaDTO.hourEnd}</span></div>
 				  				</div>
 				  				<div class="mr-3" style="display: flex; justify-content: space-between; margin-top: 30px;">
 					  				<div>
@@ -304,7 +304,7 @@
 						  				<h5 class="pt-3" style="display: inline-block;">${chaDTO.startDate} ~ ${chaDTO.enddate}</h5>
 					  				</div>
 					  				<button id="certify" disabled="disabled" style="width: 300px; background-color: #EB534C;" type="button" class="btn btn-secondary btn-lg btn_certify" onclick="location.href='<%= request.getContextPath()%>/challenge/certify'">인증하기</button>
-				  					<input id="challenge_code" type="hidden" value="${chaDTO.challenge_code}">
+				  					<input id="challenge_code" type="hidden" value="${chaDTO.challengeCode}">
 				  					<%-- 챌린지의 참가중인 userid 들어와야함 get방식으로 보낼때 아이디 추가--%>
 				  				</div>
 				  			</div>
@@ -329,7 +329,7 @@
 	<br><br>
 	
 	<div class="container">
-		<button type="button" class="btn btn-success" onclick="location.href='<%= request.getContextPath()%>/challenge/certifyMyInfo'">챌린지 인증 정보</button>
+		테스트용도 ->
 		<button type="button" class="btn btn-success" onclick="location.href='<%= request.getContextPath()%>/challenge/certify'">인증하기</button>
 		<button type="button" class="btn btn-success" onclick="location.href='<%= request.getContextPath()%>/challenge/join'">참가하기</button>
 	</div>

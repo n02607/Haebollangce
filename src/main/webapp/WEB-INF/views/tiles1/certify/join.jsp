@@ -314,19 +314,19 @@
   			<div style="text-align: left; width: 70%;">
   				<div style="display: flex; justify-content: space-between;">
 	  				<div class="mt-1" style="width: 180px; height: 35px; line-height: 34px; background-color: rgb(244, 244, 244); text-align: center; border-radius: 20px;">
-	  					<div>${chaDTO.category_name}</div>
+	  					<div>${chaDTO.categoryName}</div>
 	  				</div>
 	  				<div class="mt-1 pr-3" style="font-weight: bold;">
-	  					<span class="mr-2">${chaDTO.member_count}명 참가 중</span>
+	  					<span class="mr-2">${chaDTO.memberCount}명 참가 중</span>
 	  				</div>
   				</div>
   				<div style="display: flex; justify-content: space-between;">
-	  				<h4 class="my-3" style="font-weight: bold; display:inline-block;">${chaDTO.challenge_name}</h4>
-	  				<span class="pr-3" style="display:flex; align-items: center;">개설자 : ${chaDTO.fk_userid}</span>
+	  				<h4 class="my-3" style="font-weight: bold; display:inline-block;">${chaDTO.challengeName}</h4>
+	  				<span class="pr-3" style="display:flex; align-items: center;">개설자 : ${chaDTO.fkUserid}</span>
   				</div>
   				<div class="mt-4 pr-3" style="display: flex; justify-content: space-between;">
   					<div><span>인증빈도 - </span><span>${chaDTO.frequency }</span></div>
-  					<div><span>인증시간 - </span><span>${chaDTO.hour_start} ~ ${chaDTO.hour_end}</span></div>
+  					<div><span>인증시간 - </span><span>${chaDTO.hourStart} ~ ${chaDTO.hourEnd}</span></div>
   				</div>
   				<div class="mr-3" style="display: flex; justify-content: space-between; margin-top: 30px;">
 	  				<div></div>
@@ -419,6 +419,6 @@
 <form name="challenge_info">
 	<input type="text" id="userid" name="fk_userid" value="${userid}">
 	<input type="number" id="price" name="entry_fee" value="">
-	<input type="text" id="challenge_code" name="fk_challenge_code" value="${chaDTO.challenge_code}">
+	<input type="text" id="challenge_code" name="fk_challenge_code" value="${chaDTO.challengeCode}">
 	<input type="text" id="after_deposit" name="after_deposit" value="">
 </form>

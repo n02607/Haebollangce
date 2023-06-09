@@ -2,43 +2,43 @@ package com.sist.haebollangce.challenge.dto;
 
 public class CertifyDTO {
 
-	private String certify_no;			// 인증일련번호
-	private String fk_userid;			// 회원 아이디
-	private String fk_challenge_code;	// 챌린지 일련번호
-	private String certify_time; 		// 인증시각
-	private String certify_img; 		// 인증사진 파일명
+	private String certifyNo;			// 인증일련번호
+	private String fkUserid;			// 회원 아이디
+	private String fkChallengeCode;	// 챌린지 일련번호
+	private String certifyTime; 		// 인증시각
+	private String certifyImg; 		// 인증사진 파일명
 	
 	
 	
-	public String getCertify_no() {
-		return certify_no;
+	public String getcertifyNo() {
+		return certifyNo;
 	}
-	public void setCertify_no(String certify_no) {
-		this.certify_no = certify_no;
+	public void setcertifyNo(String certifyNo) {
+		this.certifyNo = certifyNo;
 	}
-	public String getFk_userid() {
-		return fk_userid;
+	public String getfkUserid() {
+		return fkUserid;
 	}
-	public void setFk_userid(String fk_userid) {
-		this.fk_userid = fk_userid;
+	public void setfkUserid(String fkUserid) {
+		this.fkUserid = fkUserid;
 	}
-	public String getFk_challenge_code() {
-		return fk_challenge_code;
+	public String getfkChallengeCode() {
+		return fkChallengeCode;
 	}
-	public void setFk_challenge_code(String fk_challenge_code) {
-		this.fk_challenge_code = fk_challenge_code;
+	public void setfkChallengeCode(String fkChallengeCode) {
+		this.fkChallengeCode = fkChallengeCode;
 	}
-	public String getCertify_time() {
-		return certify_time;
+	public String getcertifyTime() {
+		return certifyTime;
 	}
-	public void setCertify_time(String certify_time) {
-		this.certify_time = certify_time;
+	public void setcertifyTime(String certifyTime) {
+		this.certifyTime = certifyTime;
 	}
-	public String getCertify_img() {
-		return certify_img;
+	public String getcertifyImg() {
+		return certifyImg;
 	}
-	public void setCertify_img(String certify_img) {
-		this.certify_img = certify_img;
+	public void setcertifyImg(String certifyImg) {
+		this.certifyImg = certifyImg;
 	}
 	
 	
