@@ -469,11 +469,6 @@
 		
 		
 		<%-- 챌린지 그래프 시작 --%>
-<<<<<<< HEAD
-=======
-	
-		
->>>>>>> refs/heads/main
 		$.ajax({
 			url: "/mypage/chart_challenging",
 			data:{
@@ -494,10 +489,7 @@
 				$.each(json1, function(index, item){
 					month_challenging_arr.push({
 						 					name: item.month,
-<<<<<<< HEAD
 						 					y: Number(item.count),
-=======
->>>>>>> refs/heads/main
 		                 					cnt: item.count,
 		                 					drilldown: item.month
 										});
@@ -534,7 +526,7 @@
 					                			data: subArr
 											});
 							
-<<<<<<< HEAD
+
 							Highcharts.chart('chart_container', {
 							    chart: {
 							        type: 'column'
@@ -597,7 +589,7 @@
 							}); // end of chart
 							////////////////////////
 								
-=======
+
 							ajaxCounter++; // 호출이 완료될 때마다 카운터 증가
 							
 							if (ajaxCounter === totalAjaxCalls) {
@@ -666,7 +658,7 @@
 								
 				            }
 							
->>>>>>> refs/heads/main
+
 						},
 						error: function(request, status, error){
 							alert("code: "+request.status+"\n"+"message: "+request.responseText+"\n"+"error: "+error);
