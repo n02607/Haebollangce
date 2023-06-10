@@ -444,7 +444,7 @@
 								 +	"	<td>"
 								 +	"		<div class='div_info div_title'>" + json[i].challenge_name + " 챌린지</div>"
 								 +	"		<div class='div_info'>챌린지 시작일자 : " + json[i].startdate + "</div>"
-								 +	"		<div class='div_info'>개설자 : " + json[i].fk_userid +"</div>"
+								 +	"		<div class='div_info'>개설자 :" + json[i].fk_userid +"</div>"
 								 +	"	</td>"
 								 +	"	<td>"
 								 +	"		<button type='button' class='go_cite'>상세보기</button>"
@@ -481,42 +481,36 @@
 				
 				let month_challenging_arr = []; // 월별 참여한 챌린지
 				
-				let category_arr = []; // 참여한 챌린지별 태그 비율
-				
-				var ajaxCounter = 0;
-				var totalAjaxCalls = json1.length;
-				
 				$.each(json1, function(index, item){
 					month_challenging_arr.push({
 						 					name: item.month,
 						 					y: Number(item.count),
-		                 					cnt: item.count,
 		                 					drilldown: item.month
 										});
 				}); // end of $.each(json, function(index, item){}) -----
+				
+				let category_arr = []; // 참여한 챌린지별 태그 비율
 				
 				$.each(json1, function(index1, item1){
 					
 					$.ajax({
 						url:"/mypage/chart_category",
-						type:"get",
 						data:{
 							"userid":"jisu",
 							"month":item1.month
 						},
 						dataType:"json",
-						async: false,
 						success: function(json2){
 							// 달 별 참여한 챌린지 태그 비율
 							
-							// console.log(JSON.stringify(json2));
+							//console.log(JSON.stringify(json1));
 							
-							// console.log(item1.month);
+							//console.log(item1.month +"  " + JSON.stringify(json2));
 							
 							let subArr = [];
 							
 							$.each(json2, function(index2, item2){
-								subArr.push([item2.category_name+"("+item2.percentage+" %)",
+								subArr.push([item2.category_name,
 				                        	 Number(item2.percentage)]);
 							}); // end of $.each(json2, function(index2, item2){}) -----
 							
@@ -526,7 +520,6 @@
 					                			data: subArr
 											});
 							
-
 							Highcharts.chart('chart_container', {
 							    chart: {
 							        type: 'column'
@@ -537,7 +530,7 @@
 							    },
 							    subtitle: {
 							        align: 'left',
-							        text: 'Click the columns to view versions. Source: <a href="http://statcounter.com" target="_blank">statcounter.com</a>'
+							        text: ''
 							    },
 							    accessibility: {
 							        announceNewData: {
@@ -588,87 +581,17 @@
 							    }
 							}); // end of chart
 							////////////////////////
-								
-
-							ajaxCounter++; // 호출이 완료될 때마다 카운터 증가
 							
-							if (ajaxCounter === totalAjaxCalls) {
-				                
-								Highcharts.chart('chart_container', {
-								    chart: {
-								        type: 'column'
-								    },
-								    title: {
-								        align: 'left',
-								        text: '올 해 챌린지 참여 횟수'
-								    },
-								    subtitle: {
-								        align: 'left',
-								        text: 'Click the columns to view versions. Source: <a href="http://statcounter.com" target="_blank">statcounter.com</a>'
-								    },
-								    accessibility: {
-								        announceNewData: {
-								            enabled: true
-								        }
-								    },
-								    xAxis: {
-								        type: 'category'
-								    },
-								    yAxis: {
-								        title: {
-								            text: '참여했던 챌린지 수(개)'
-								        }
-
-								    },
-								    legend: {
-								        enabled: false
-								    },
-								    plotOptions: {
-								        series: {
-								            borderWidth: 0,
-								            dataLabels: {
-								                enabled: true,
-								                format: '{point.y}'
-								            }
-								        }
-								    },
-
-								    tooltip: {
-								        headerFormat: '<span style="font-size:11px">{series.name}</span><br>',
-								        pointFormat: '<span style="color:{point.color}">{point.name}</span>: <b>{point.y}</b> of total<br/>'
-								    },
-
-								    series: [
-								        {
-								            name: '챌린지명',
-								            colorByPoint: true,
-								            data:month_challenging_arr
-								        }
-								    ],
-								    drilldown: {
-								        breadcrumbs: {
-								            position: {
-								                align: 'right'
-								            }
-								        },
-								        series: category_arr
-								    }
-								}); // end of chart
-								////////////////////////
-								
-				            }
-							
-
-						},
-						error: function(request, status, error){
-							alert("code: "+request.status+"\n"+"message: "+request.responseText+"\n"+"error: "+error);
-			            }
-					}); // end of ajax json2
-					
-				}); // end of each
-							
-				///////////////////////////////////////////////////////////////
+					},
+					error: function(request, status, error){
+						alert("code: "+request.status+"\n"+"message: "+request.responseText+"\n"+"error: "+error);
+		            }
+				}); // end of ajax json2
 				
+			}); // end of each
+						
+			///////////////////////////////////////////////////////////////
+			
 				
 			},
 			error: function(request, status, error){
