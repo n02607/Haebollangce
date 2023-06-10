@@ -530,7 +530,7 @@
 							    },
 							    subtitle: {
 							        align: 'left',
-							        text: 'Click the columns to view versions. Source: <a href="http://statcounter.com" target="_blank">statcounter.com</a>'
+							        text: ''
 							    },
 							    accessibility: {
 							        announceNewData: {
