@@ -45,6 +45,10 @@ public interface InterLoungeService {
 	// === #9. 댓글쓰기(transaction 처리) ===
 	// --- 댓글쓰기(insert) / 원게시물에 댓글수 증가(update)
 	int loungeaddComment(LoungeCommentDTO lgcommentdto) throws Throwable;
+	
+	// === #14. 라운지 특정 글에서 댓글  삭제하기(Ajax 처리) ===
+	// --- 댓글삭제(delete) / 원게시물에 댓글수 감소(update1)
+	int lgcommentDel(LoungeCommentDTO lgcommentdto);
 
 	// === #10. 원 게시물에 딸린 댓글들을 조회 ===
 	List<LoungeCommentDTO> lggetCommentList(String parentSeq);
@@ -58,6 +62,7 @@ public interface InterLoungeService {
 	// --- #13-3.tbl_lounge_like 테이블에 좋아요 취소하기(delete)
 	int loungelikeCancel(LoungelikeDTO lglikedto);
 
+	
 	
 	
 	

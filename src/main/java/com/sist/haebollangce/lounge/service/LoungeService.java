@@ -124,6 +124,7 @@ public class LoungeService implements InterLoungeService {
 	// === #9. 댓글쓰기(transaction 처리) ===
 	// --- 댓글쓰기(insert) / 원게시물에 댓글수 증가(update)
 	@Override
+	@Transactional(propagation=Propagation.REQUIRED, isolation=Isolation.READ_COMMITTED, rollbackFor= {Throwable.class})
 	public int loungeaddComment(LoungeCommentDTO lgcommentdto) throws Throwable {
 		
 		// 댓글쓰기가 원댓글쓰기인지 아니면 답변댓글쓰기인지를 구분하여  tbl_lounge_comment 테이블에 insert 를 해주어야 한다.
@@ -150,6 +151,30 @@ public class LoungeService implements InterLoungeService {
 		return m;
 	}
 
+	// === #14. 라운지 특정 글에서 댓글  삭제하기(Ajax 처리) ===
+	// --- 댓글삭제(delete) / 원게시물에 댓글수 감소(update1)
+	@Override
+	@Transactional(propagation=Propagation.REQUIRED, isolation=Isolation.READ_COMMITTED, rollbackFor= {Throwable.class})
+	public int lgcommentDel(LoungeCommentDTO lgcommentdto) {
+		
+		int n=0, m=0;
+		
+		// --- #14-1. tbl_lounge_comment 댓글삭제(delete)--- 
+		n = dao.lgcommentDel(lgcommentdto); 
+		//System.out.println("~~~댓글삭제 n : " + n);
+		
+		if(n > 0) {
+			// --- #14-2. tbl_lounge_board 댓글수감소(update)--- 
+			for(int i=0; i<n; i++) {
+				m = dao.lgcommentDelupdateCount(lgcommentdto.getParentSeq()); 
+				//System.out.println("~~~댓글삭제 m : " + m);
+			}
+		}
+		
+		return m;
+	}
+		
+	
 	// === #10. 원 게시물에 딸린 댓글들을 조회 ===
 	@Override
 	public List<LoungeCommentDTO> lggetCommentList(String parentSeq) {
@@ -174,12 +199,12 @@ public class LoungeService implements InterLoungeService {
 		int n=0, result=0;
 		
 		n = dao.loungelikeAdd(lglikedto); // --- #13-1.tbl_lounge_like 테이블에 좋아요 추가하기(insert)
-		System.out.println("~~~ 확인용 n : " + n);
+		// System.out.println("~~~ 확인용 n : " + n);
 		// ~~~ 확인용 n : 1
 		
 		if(n==1) {
 			result = dao.loungeupdatelikeCount(lglikedto.getFk_seq()); // --- #13-2.tbl_lounge_board 테이블에 likeCount 컬럼이 1 증가 (update)
-			System.out.println("~~~ 확인용 result : " + result);
+			// System.out.println("~~~ 확인용 result : " + result);
 			// ~~~ 확인용 result : 1
 		}
 		return result;
@@ -187,17 +212,18 @@ public class LoungeService implements InterLoungeService {
 
 	// --- 좋아요 취소(transaction 처리) ---
 	@Override
+	@Transactional(propagation=Propagation.REQUIRED, isolation=Isolation.READ_COMMITTED, rollbackFor= {Throwable.class})
 	public int loungelikeCancel(LoungelikeDTO lglikedto) {
 		
 		int n=0, result=0;
 		
 		n = dao.loungelikeCancel(lglikedto); // --- #13-3.tbl_lounge_like 테이블에 좋아요 취소하기(delete)
-		System.out.println("~~~ 확인용 n : " + n);
+		// System.out.println("~~~ 확인용 n : " + n);
 		// ~~~ 확인용 n : 1
 		
 		if(n==1) {
 			result = dao.loungecancellikeCount(lglikedto.getFk_seq()); // --- #13-4.tbl_lounge_board 테이블에 likeCount 컬럼이 1 감소 (update)
-			System.out.println("~~~ 확인용 result : " + result);
+			// System.out.println("~~~ 확인용 result : " + result);
 			// ~~~ 확인용 result : 1
 		}
 		return result;

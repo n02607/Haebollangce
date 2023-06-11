@@ -93,7 +93,7 @@
 			//	console.log("~~~ 확인뇽 : " + JSON.stringify(json));
 			//	console.log("~~~ 확인뇽 json.length : " + json.length); //-> 여기서 값은 잘 나오지만 $ 앞에 \ 를 안써줘서 값이 안나왔었다
 				
-				let html = ``;
+				let html = `<form name="CmtFrm">`;
   				if(json.length > 0) {
   					$.each(json, function(index, item){
   						
@@ -102,6 +102,7 @@
 			                		 	<img style="border: solid 3px #eee; border-radius: 100%; width:45px; height: 45px; vertical-align: top;" src="<%= ctxPath%>/images/\${item.lgcprofile}" /> 
 			  	              		 	<div class="c-details"> 
 			  	                     		<h5 class="mb-1 ml-3 lounge_comment_userid"><span class="lounge_comment_name">(댓글번호 \${item.seq}) \${item.name}</span></h5> 
+			  	                     		<input type="hidden" name="seq" id="seq" value="\${item.seq}" /> 
 			  	                     		<div class="c-details">
 			  		                 			<h6 class="mb-0 ml-3 lounge_comment_content">\${item.content}</h6>
 			  	                	 		</div>
@@ -109,10 +110,10 @@
 			  	                				<small class="mb-0 ml-3" style="color:gray;">\${item.regdate}</small>
 			  	                				<small type="button" class="mb-0 ml-2" style="color:gray;" onclick="javascript:location.href='/lounge/loungeView?seq=\${item.parentSeq}&fk_seq=\${item.seq}&groupno=\${item.groupno}&depthno=\${item.depthno}'">답글달기</small> 
 			  	                				<small type="button" class="mb-0 ml-2 p-1" style="color:gray; background-color:#eee; border-radius:5px;">수정</small>
-			  	                				<small type="button" class="mb-0 ml-1 p-1" style="color:gray; background-color:#eee; border-radius:5px;">삭제</small>
+			  	                				<small type="button" class="mb-0 ml-1 p-1" style="color:gray; background-color:#eee; border-radius:5px;" onclick="lgcommentDel('\${item.seq}')">삭제</small>
 			  	                			</div>
 			  	                		</div> 
-		  	              		 	  </div>`; 
+		  	              		 	  </div></form>`; 
   						} 
   						
   						else if (item.depthno > 0) {
@@ -121,6 +122,7 @@
   										<img style="border: solid 3px #eee; border-radius: 100%; width:45px; height: 45px; vertical-align: top;" src="<%= ctxPath%>/images/\${item.lgcprofile}" /> 
 			  	              		 	<div class="c-details"> 
 			  	                     		<h5 class="mb-1 ml-3 lounge_comment_userid"><span class="lounge_comment_name">(댓글번호 \${item.seq}) \${item.name}</span></h5> 
+			  	                     		<input type="hidden" name="seq" id="seq" value="\${item.seq}" /> 
 			  	                     		<div class="c-details">
 			  		                 			<h6 class="mb-0 ml-3 lounge_comment_content">\${item.content}</h6>
 			  	                	 		</div>
@@ -128,15 +130,15 @@
 			  	                				<small class="mb-0 ml-3" style="color:gray;">\${item.regdate}</small>
 			  	                				<small type="button" class="mb-0 ml-2" style="color:gray;" onclick="javascript:location.href='/lounge/loungeView?seq=\${item.parentSeq}&fk_seq=\${item.seq}&groupno=\${item.groupno}&depthno=\${item.depthno}'">답글달기</small>
 			  	                				<small type="button" class="mb-0 ml-2 p-1" style="color:gray; background-color:#eee; border-radius:5px;">수정</small>
-			  	                				<small type="button" class="mb-0 ml-1 p-1" style="color:gray; background-color:#eee; border-radius:5px;" onclick="javascript:location.href='<%= ctxPath%>/lounge/loungeCmtDel?seq=\${item.seq}'">삭제</small>
+			  	                				<small type="button" class="mb-0 ml-1 p-1" style="color:gray; background-color:#eee; border-radius:5px;" onclick="lgcommentDel('\${item.seq}')">삭제</small>
 			  	                			</div> 
 			  	                		</div> 
-			              		 	</div>`;
+			              		 	</div></form>`;
   						}
   					});
   				}
   				else {
-  					html += ` <div>댓글이 존재하지 않습니다.</div> `
+  					html += ` <div>댓글이 존재하지 않습니다.</div>`
   				}
   				$("div#lgcommentDisplay").html(html);
   			},
@@ -149,7 +151,41 @@
   	}//end of function lggoReadComment()----------------
   	
   	
- 	// 라운지 특정글에 대한 좋아요 등록하기 // 
+  	// 라운지 특정 글에서 댓글  삭제하기  CmtFrm
+  	function lgcommentDel(seq) {
+  		
+  		if(confirm("댓글을 삭제하면 하위 댓글들도 모두 삭제됩니다. 삭제 하시겠습니까?")) {
+  			
+  			$.ajax({
+  	  			url:"<%= ctxPath%>/lounge/lgcommentDel",
+  	  			data:{"parentSeq":"${requestScope.lgboarddto.seq}",
+  				  	  "seq":seq},
+  			    type:"post",
+  	    		dataType:"json",
+  	    		success:function(json){
+  	    			console.log("~~~ 확인 : " + JSON.stringify(json));
+  	    			// ~~~ 확인뇽 : {"name":"망나뇽수진","n":0}
+  	    			
+  	    			if(json.n == 0) {
+  	    				alert("댓글삭제 실패");
+  	    			}
+  	    			else {
+  	    				lggoReadComment();	// 페이징 처리 안한 댓글 읽어오기
+  					}
+  	    			location.href="javascript:history.go(0)";
+  	    		},
+  	    		error: function(request, status, error){
+  	                alert("code: "+request.status+"\n"+"message: "+request.responseText+"\n"+"error: "+error);
+  	            }
+  	  			      
+  	  		});//end of $.ajax()----------------------------------
+
+		}
+  		
+  	}//end of function lgcommentDel()-------------------
+  	
+  	
+ 	// 라운지 특정글에 대한 좋아요 등록하기 
    	function lggoLikeAdd(seq) {
    
       	/* if(${empty sessionScope.loginuser}) {
@@ -164,7 +200,7 @@
 				  "fk_seq":seq},
 			dataType:"json",
 			success: function(json){
-				console.log(JSON.stringify(json));
+				// console.log(JSON.stringify(json));
 			
 				alert(json.message);
 				location.href="javascript:history.go(0)";
@@ -172,7 +208,7 @@
 			},
 			error: function(request, status, error){
              		alert("code: "+request.status+"\n"+"message: "+request.responseText+"\n"+"error: "+error);
-          		}
+          	}
 		});//end of ajax()--------------------------
       
    	}// end of golikeAdd(pnum)---------------------------
@@ -264,9 +300,9 @@
 			                    	</c:if>
 			                    	
 								   	<%-- === #9-4. 답변글쓰기가 추가된 경우 시작 === --%>
-								   	<input type="hidden" name="fk_seq" size="1" value="${requestScope.fk_seq}" /> 
-								   	<input type="hidden" name="groupno" size="1" value="${requestScope.groupno}" />   	
-								   	<input type="hidden" name="depthno" size="1" value="${requestScope.depthno}" />  
+								   	<input type="hidden" name="fk_seq" value="${requestScope.fk_seq}" /> 
+								   	<input type="hidden" name="groupno" value="${requestScope.groupno}" />   	
+								   	<input type="hidden" name="depthno" value="${requestScope.depthno}" />  
 								   	<%--=== 답변글쓰기가 추가된 경우 끝 === --%>
    	
 			                    	<%-- 댓글에 달리는 원게시물의 글번호(즉, 부모글 글번호) --%>

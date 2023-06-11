@@ -110,6 +110,19 @@ public class LoungeDAO implements InterLoungeDAO {
 		return groupno;
 	}
 	
+	// --- #14-1. tbl_lounge_comment 댓글삭제(delete)--- 
+	@Override
+	public int lgcommentDel(LoungeCommentDTO lgcommentdto) {
+		int n = mapper.lgcommentDel(lgcommentdto);
+		return n;
+	}
+	
+	// --- #14-2. tbl_lounge_board 댓글수증가(update)--- 
+	@Override
+	public int lgcommentDelupdateCount(String parentSeq) {
+		int n = mapper.lgcommentDelupdateCount(parentSeq);
+		return n;
+	}
 
 	// === #10. 원 게시물에 딸린 댓글들을 조회 ===
 	@Override
@@ -152,6 +165,7 @@ public class LoungeDAO implements InterLoungeDAO {
 		int n = mapper.loungecancellikeCount(fk_seq);
 		return n;
 	}
+	
 	
 	
 	

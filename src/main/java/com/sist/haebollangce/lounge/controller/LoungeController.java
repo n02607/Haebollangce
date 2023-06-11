@@ -281,7 +281,7 @@ public class LoungeController {
 	    
 		// --- #3-1. 페이징 처리 한 검색어 있는 전체 글 목록 보기 (#102. -> #114.)
 		lgboardList = service.lgboardListSearch(paraMap);
-		System.out.println("lgboardList : " + lgboardList);
+		// System.out.println("lgboardList : " + lgboardList);
 		
 		
 		// ""이 아닐때만 view 단에 보내주겠따.
@@ -654,7 +654,6 @@ public class LoungeController {
 	@PostMapping(value = "/loungeaddComment", produces="text/plain;charset=UTF-8")
 	public String loungeaddComment(LoungeCommentDTO lgcommentdto, HttpServletRequest request) {
 		
-		// 댓글쓰기에 첨부파일이 없는 경우
 		int n = 0;
 		try {
 			n = service.loungeaddComment(lgcommentdto);
@@ -671,6 +670,29 @@ public class LoungeController {
 		return jsonObj.toString(); // "{"n":1, "name":"???"}" -> "{"n":1, "name":"용수진"}" by produces="text/plain;charset=UTF-8"
 								   // 또는 "{"n":0, "name":"용수진"}"
 	}
+	
+
+	// === #14. 라운지 특정 글에서 댓글  삭제하기(Ajax 처리) ===
+	@ResponseBody 
+	@PostMapping(value="/lgcommentDel", produces="text/plain;charset=UTF-8")
+	public String lgcommentDel(LoungeCommentDTO lgcommentdto) {
+		
+		int n = 0;
+		try {
+			n = service.lgcommentDel(lgcommentdto);
+			// 댓글삭제(delete) 및 원게시물(tbl_board 테이블)에 댓글의 개수 감소(update 1씩 감소)하기 
+	       
+		} catch (Throwable e) {
+			e.printStackTrace();
+		}
+		
+		JSONObject jsonObj = new JSONObject();
+		jsonObj.put("n", n); // 정상이면 1, rollback 당하면 0 이 나올 것이다.
+		jsonObj.put("name", lgcommentdto.getName());
+		
+		return jsonObj.toString();
+	}
+		
 	
 	
 	// === #10. 라운지 글에 댓글읽기 요청 (Ajax 처리)  ===
@@ -807,6 +829,8 @@ public class LoungeController {
 		
 		return jsonObj.toString(); 
 	}
+	
+	
 	
 	
 }

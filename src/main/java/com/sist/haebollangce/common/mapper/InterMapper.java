@@ -62,6 +62,12 @@ public interface InterMapper {
 	// -> 원댓글쓰기 : groupno 컬럼의 최대값(max)+1 로 해서 insert 해야한다
 	int getGroupno_max();
 	
+	// --- #14-1. tbl_lounge_comment 댓글삭제(delete)---
+	int lgcommentDel(LoungeCommentDTO lgcommentdto);
+	
+	// --- #14-2. tbl_lounge_board 댓글수증가(update)--- 
+	int lgcommentDelupdateCount(String parentSeq);
+	
 	// === #10. 원 게시물에 딸린 댓글들을 조회 ===
 	List<LoungeCommentDTO> lggetCommentList(String parentSeq);
 	
@@ -103,7 +109,7 @@ public interface InterMapper {
 
 	// 카테고리 리스트 가져오기
 	List<ChallengeDTO> getcategoryList();
-
+	
 	
 	
 	
