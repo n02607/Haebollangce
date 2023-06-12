@@ -18,6 +18,7 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tempusdominus-bootstrap-4/5.0.1/css/tempusdominus-bootstrap-4.min.css" />
 <link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" >
 
+
 <style type="text/css">
 
 	th {width: 20%; background-color: #DDDDDD;}
@@ -128,6 +129,7 @@
             format: 'YYYY-MM-DD',
             minDate: moment().add(1, 'day').toDate()
         });
+        
        
 	    //전역변수
 	    var obj = [];
@@ -147,7 +149,7 @@
 	        }
 	    });
 	    
-	    
+ 
 	    $("#btnWrite").click(function(){
 
 	     	<%-- === 스마트 에디터 구현 시작 === --%>
@@ -175,8 +177,6 @@
 	            return;
 	     	 }
 	     	<%-- 글내용 유효성 검사(스마트 에디터 사용 할 경우) 끝 --%>  
-<<<<<<< HEAD
-=======
 	     	
 	     	
 	     	 // 경험치 유효성 검사
@@ -185,7 +185,6 @@
 	            alert("경험치를 입력하세요!!");
 	            return;
 	         }
->>>>>>> refs/heads/main
 	         
 	      	 // 카테고리 유효성 검사
 	         const category_code = $("select#category_code").val().trim();

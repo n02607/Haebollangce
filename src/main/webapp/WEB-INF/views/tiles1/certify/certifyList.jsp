@@ -71,7 +71,7 @@
 			
 			let challenge_code = $(this).find("input#challenge_code").val();
 			
-			location.href='<%= ctxPath%>/challenge/certifyMyInfo?challenge_code='+challenge_code;
+			location.href='<%= ctxPath%>/challenge/challengeView?challengeCode='+challenge_code;
 		});
 		
 		

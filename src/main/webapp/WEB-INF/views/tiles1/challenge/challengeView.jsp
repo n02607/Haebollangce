@@ -67,7 +67,7 @@
 	    border-radius: 16px;
 	    top: -100px;
     		height: 300px;
-    		overflow: auto;
+    		overflow: inherit;
 	    
 	}
 	
@@ -344,7 +344,7 @@
 						<div class="Info_memberCount_info">${challengedto.memberCount} 명</div>
 					</div>
 				</div>
-				<div class="edit_delete"  style="float: right;">
+				<div class="edit_delete"  style="float: right; width:95%;">
 						<button type="button" style="float: right;">삭제</button>
 				</div>
 			</div>
@@ -366,7 +366,6 @@
 				
 				<div class="row justify-content-around" style="height: auto; display: flex; width: 100%;">
 
-<<<<<<< HEAD
 	                 <div class="col-lg-5">
 					    <div class="square-image-container">
 					        <div class="square-image-inner">
@@ -386,30 +385,7 @@
 					    <div style="height: 30px; margin-top: -5px; background-color:red; color:white; text-align:center; line-height: 30px; font-size:15pt; border-radius: 0 0 12px 12px;">X</div>
 					    <div style="text-align: center; font-weight: bold;">잘못된 인증 사진</div>
 					</div>
-=======
-	                 <div class="col-lg-4">
-	                 <img class="img-fluid" src="<%= ctxPath%>/images/${challengedto.successImg}" style=" width: 100%; height: auto; object-fit: cover; border-radius: 12px 12px 0 0;" alt="인증성공예시" />
-	                 <div style="height: 30px; margin-top: -5px; background-color:green; color:white; text-align:center;  line-height: 30px; font-size:15pt; border-radius: 0 0 12px 12px;">O</div>
-<<<<<<< HEAD
-	                 <div>올바른 인증 사진</div>
-=======
-	                 <div style="text-align: center; font-weight: bold;">올바른 인증 사진</div>
->>>>>>> branch 'main' of https://github.com/n02607/Haebollangce.git
-					 </div>
->>>>>>> refs/heads/main
-
-<<<<<<< HEAD
-=======
-	                 <div class="col-lg-4">
-	                 <img class="img-fluid" src="<%= ctxPath%>/images/${requestScope.challengedto.failImg}" style="width: 100%; height: auto; object-fit: cover; border-radius: 12px 12px 0 0;" alt="인증실패예시" />
-	                 <div style="height: 30px; margin-top: -5px; background-color:red; color:white; text-align:center;  line-height: 30px; font-size:15pt; border-radius: 0 0 12px 12px;">X</div>
-<<<<<<< HEAD
-	                 <div>잘못된 인증 사진</div>
-=======
-	                 <div style="text-align: center; font-weight: bold;">잘못된 인증 사진</div>
->>>>>>> branch 'main' of https://github.com/n02607/Haebollangce.git
-	                 </div>
->>>>>>> refs/heads/main
+	         
   
 			    </div>
 				

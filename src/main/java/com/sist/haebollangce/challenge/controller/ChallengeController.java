@@ -22,18 +22,15 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.servlet.ModelAndView;
 
-<<<<<<< HEAD
 //@Controller
 //@RequestMapping("/challenge")
-=======
 import com.sist.haebollangce.challenge.dao.challengeVO;
 import com.sist.haebollangce.challenge.dto.ChallengeDTO;
 import com.sist.haebollangce.challenge.service.InterChallengeService;
 import com.sist.haebollangce.common.FileManager;
 
-@Controller
+//@Controller
 @RequestMapping("/challenge")
->>>>>>> refs/heads/main
 public class ChallengeController {
 
     @Autowired
@@ -85,13 +82,13 @@ public class ChallengeController {
   		// WAS 의 webapp 의 절대경로를 알아와야 한다.
   		HttpSession session = request.getSession();
   		String root = session.getServletContext().getRealPath("/").substring(0, 40);
-  		System.out.println(root);
+  //		System.out.println(root);
 
   		
   		// path 가 첨부파일들을 저장할 WAS(톰캣)의 폴더가 된다.
   		String path = root + "resources" + File.separator + "static" + File.separator +"photo_upload";
   		
-  		System.out.println("~~~~ 확인용 스마트 에디터 path => " + path);
+  //		System.out.println("~~~~ 확인용 스마트 에디터 path => " + path);
   		// ~~~~ 확인용  스마트 에디터  path => 
   		
   		File dir = new File(path);
@@ -114,7 +111,7 @@ public class ChallengeController {
   				request.getHeader("host");              // Host 네임  예: 로컬 환경일 경우 ==> localhost:9090    
   			*/
   			
-  			System.out.println(">>> 스마트에디터 확인용 filename ==> " + filename);
+  	//		System.out.println(">>> 스마트에디터 확인용 filename ==> " + filename);
   			// >>> 스마트에디터 확인용 filename ==> 
   			
   			InputStream is = request.getInputStream(); // is는 네이버 스마트 에디터를 사용하여 사진첨부하기 된 이미지 파일임.
@@ -122,7 +119,7 @@ public class ChallengeController {
   			String newFilename = fileManager.doFileUpload(is, filename, path);
   			
   			String ctxPath = request.getContextPath(); // 
-  			System.out.println("확인용 ctxPath" + ctxPath);
+  	//		System.out.println("확인용 ctxPath" + ctxPath);
   			
   			String strURL = "";
   			strURL += "&bNewLine=true&sFileName="+newFilename; 
@@ -153,7 +150,7 @@ public class ChallengeController {
 			HttpSession session = mrequest.getSession();
 			String root = session.getServletContext().getRealPath("/").substring(0, 40); 
 			
-		    System.out.println("~~~~~~ 썸네일 확인용 webapp 의 절대경로=> " + root);
+	//	    System.out.println("~~~~~~ 썸네일 확인용 webapp 의 절대경로=> " + root);
 		 //  ~~~~~~ 확인용 webapp 의 절대경로=> C:/Users/user/git/Haebollangce/src/main/
 			
 		    String path = root + "resources" + File.separator + "static" + File.separator + "images";
@@ -163,7 +160,7 @@ public class ChallengeController {
 		    */
 			
 			// path 가 첨부파일이 저장될 WAS(톰캣)의 폴더가 된다.
-			System.out.println("~~~~~~ 확인용 썸네일  path => " + path);
+	//		System.out.println("~~~~~~ 확인용 썸네일  path => " + path);
 			//  ~~~~~~ 확인용 path => C:/Users/user/git/Haebollangce/src/main/webapp/resources/files
 			
 			
