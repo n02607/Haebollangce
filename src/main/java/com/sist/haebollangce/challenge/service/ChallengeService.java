@@ -1,8 +1,5 @@
 package com.sist.haebollangce.challenge.service;
 
-import com.sist.haebollangce.challenge.dao.InterChallengeDAO;
-import com.sist.haebollangce.challenge.dto.ChallengeDTO;
-
 import java.util.List;
 import java.util.Map;
 
@@ -10,18 +7,19 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.sist.haebollangce.challenge.dao.InterChallengeDAO;
+import com.sist.haebollangce.challenge.dao.challengeVO;
+import com.sist.haebollangce.challenge.dto.ChallengeDTO;
+
 @Service
 public class ChallengeService implements InterChallengeService {
 
     @Autowired
     private InterChallengeDAO dao;
 
-    // 참가중인 챌린지 리스트 가져오기
-	@Override
-	public List<ChallengeDTO> getJoinedChaList() {
-		List<ChallengeDTO> chaList = dao.getJoinedChaList();
-		return chaList;
-	}
+   
+ 	// ===============================================================================================
+ 	
 	
 	// 카테고리 리스트 가져오기 
 	@Override
@@ -73,4 +71,35 @@ public class ChallengeService implements InterChallengeService {
 	}
 
 	
+	
+	// 챌린지 불러오기
+	@Override
+	public List<challengeVO> challengeList() {
+		
+		List<challengeVO> challengeList = dao.challengeList();
+		
+		return challengeList;
+		
+	}
+
+	// 카테고리 불러오기
+	@Override
+	public List<challengeVO> categoryList() {
+		
+		List<challengeVO> categoryLsit = dao.categoryList();
+		
+		return categoryLsit;
+	}
+
+	// 카테고리별 챌린지 불러오기
+	@Override
+	public List<challengeVO> challengelist() {
+		
+		List<challengeVO> challengelist = dao.challengelist();
+		
+		
+		return challengelist;
+		
+		
+	}
 }

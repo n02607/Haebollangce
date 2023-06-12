@@ -23,6 +23,8 @@ public class ChallengeDTO {
 	private String hourStart;
 	private String hourEnd;
 	private String enddate;
+	private String achievementPct;
+	private String todayCheckCertify;
 	// join 용도
 	
 	private String categoryCode;
@@ -250,9 +252,30 @@ public class ChallengeDTO {
 	public void setProfilePic(String profilePic) {
 		this.profilePic = profilePic;
 	}
-	
-	
-	
+
+
+
+
+	public String getAchievementPct() {
+		return achievementPct;
+	}
+
+
+
+
+	public void setAchievementPct(String achievementPct) {
+		this.achievementPct = achievementPct;
+	}
+
+
+
+
+	public String getTodayCheckCertify() {
+		return todayCheckCertify;
+	}
+	public void setTodayCheckCertify(String todayCheckCertify) {
+		this.todayCheckCertify = todayCheckCertify;
+	}
 	
 	
 	

@@ -1,14 +1,9 @@
 package com.sist.haebollangce.challenge.controller;
 
-import com.sist.haebollangce.challenge.dto.ChallengeDTO;
-import com.sist.haebollangce.challenge.service.InterChallengeService;
-import com.sist.haebollangce.common.FileManager;
-
 import java.io.File;
 import java.io.InputStream;
 import java.io.PrintWriter;
-import java.text.SimpleDateFormat;
-import java.util.Date;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -19,10 +14,18 @@ import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.servlet.ModelAndView;
+
+import com.sist.haebollangce.challenge.dao.challengeVO;
+import com.sist.haebollangce.challenge.dto.ChallengeDTO;
+import com.sist.haebollangce.challenge.service.InterChallengeService;
+import com.sist.haebollangce.common.FileManager;
 
 @Controller
 @RequestMapping("/challenge")
@@ -34,86 +37,8 @@ public class ChallengeController {
     @Autowired // 파일 업로드
 	private FileManager fileManager;
 
- // 헤더의 챌린지 인증 페이지 클릭시 (참여중인 챌린지 목록)
-    @RequestMapping(value="/certifyList")
-    public ModelAndView challenge_certify(ModelAndView mav, HttpServletRequest request) {
-    	
-    	// 로그인 유저인지 확인
-    	
-    	int ing_count = 0;  // 초기값 설정
-    	int before_count = 0;  // 초기값 설정
-    	
-    	List<ChallengeDTO> chaList = service.getJoinedChaList();
-    	
-    	
-    	for (ChallengeDTO chaDTO : chaList) {
-    	    
-    	    String str_startDate = chaDTO.getStartDate(); // chaDTO에서 시작 날짜를 가져옴
-    	    String str_endDate = chaDTO.getEnddate();
-            String pattern = "yyyy-MM-dd"; // 시작 날짜의 형식에 맞는 패턴을 지정
-            Date startDate = null;
-            Date endDate = null;
-            
-            SimpleDateFormat sdf = new SimpleDateFormat(pattern);
-            try {
-                startDate = sdf.parse(str_startDate);
-                endDate = sdf.parse(str_endDate);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-    	    Date today = new Date();  // 현재 날짜
-
-    	    // 현재 날짜와 챌린지의 시작일, 종료일을 비교하여 증가시킬 변수 값을 계산
-    	    if (startDate.compareTo(today) <= 0 && endDate.compareTo(today) >= 0) {
-    	    	ing_count++;
-    	    } else if (startDate.compareTo(today) > 0) {
-    	    	before_count++;
-    	    }
-    	}
-
-    	mav.addObject("ing_count", ing_count);
-    	mav.addObject("before_count", before_count);
-    	mav.addObject("chaList", chaList);
-    	
-    	mav.setViewName("certify/certifyList.tiles1");
-    	// /WEB-INF/views/tiles1/certify/certifyList.jsp
-    	return mav;
-    }
     
-    // 챌린지 참가하는 페이지
-    @RequestMapping(value="/join")
-    public ModelAndView challenge_join(ModelAndView mav) {
-    	
-    	mav.setViewName("certify/join.tiles1");
-    	// /WEB-INF/views/tiles1/certify/join.jsp
-    	return mav;
-    }
-    
-    // 참가하기 완료버튼 클릭시 팝업창 연결
-    @RequestMapping(value="/joinEnd")
-    public ModelAndView joinEnd(ModelAndView mav) {
-    	
-    	// 로그인 검사
-    	// tbl_challenge_info 에 insert 
-    	mav.setViewName("tiles1/certify/joinEnd");
-    	return mav;
-    }
- 
-    // 인증하기 버튼 클릭시
-    @RequestMapping(value="/certify")
-    public ModelAndView certify(ModelAndView mav) {
-
-    	mav.setViewName("certify/certify.tiles1");
-    	return mav;
-    }
-    
-    // 참가중인 챌린지 클릭시 내 인증정보 페이지 이동
-    @RequestMapping(value="/certifyMyInfo")
-    public ModelAndView certifyMyInfo(ModelAndView mav) {
-
-    	mav.setViewName("certify/certifyMyInfo.tiles1");
-    	return mav;
-    }
+    // =====================================================================================================
     
     
     @RequestMapping(value="/add_challenge")
@@ -391,6 +316,70 @@ public class ChallengeController {
     		mav.setViewName("redirect:/challengeView?challengeCode="+challengeCode);
     		
     		return mav;
+    }
+    
+    
+    
+ // 메인페이지
+    @RequestMapping(value="/main")
+   public String mainpage(HttpServletRequest request) {
+       
+       
+       
+       return "main_page.tiles1";
+       // /WEB-INF/views/tiles1/main_page.jsp 페이지를 만들어야 한다.
+    }
+
+    
+    // 챌린지 불러오기
+    @RequestMapping(value="/challenge_all")
+    public ModelAndView challenge_all(ModelAndView mav, HttpServletRequest request) {
+
+       List<challengeVO> challengeList = null;
+       List<challengeVO> categoryList = null;
+       
+       challengeList = service.challengeList();
+       categoryList = service.categoryList();
+       
+       mav.addObject("challengeList", challengeList);
+       mav.addObject("categoryList", categoryList);
+       
+      mav.setViewName("board/challenge_all.tiles1");
+      
+       return mav;
+       
+    }
+    
+    
+ 
+    // 카테고리별 챌린지 불러오기
+    @ResponseBody
+    @RequestMapping(value="/challengelist", method=RequestMethod.GET)
+    public Map<String, List<challengeVO>> challengelist(@RequestParam(value = "categoryCode", required = false) String categoryCode) {
+        List<challengeVO> challengelist = service.challengelist();
+        Map<String, List<challengeVO>> categoryMap = new HashMap<>();
+        
+        // 카테고리 별로 데이터 그룹화
+        for (challengeVO cvo : challengelist) {
+            String category = cvo.getfkCategoryCode();
+            
+            // 전체 카테고리인 경우 모든 데이터 추가
+            if (categoryCode == null) {
+                if (!categoryMap.containsKey(category)) {
+                    categoryMap.put(category, new ArrayList<>());
+                }
+                categoryMap.get(category).add(cvo);
+            }
+            // 특정 카테고리인 경우 해당 카테고리에 속하는 데이터만 추가
+            else if (category.equals(categoryCode)) {
+                if (!categoryMap.containsKey(category)) {
+                    categoryMap.put(category, new ArrayList<>());
+                }
+                categoryMap.get(category).add(cvo);
+            }
+        }
+
+        return categoryMap;
     }
     
 }
