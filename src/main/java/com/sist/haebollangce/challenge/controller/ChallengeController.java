@@ -28,8 +28,8 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.servlet.ModelAndView;
 
-@Controller
-@RequestMapping("/challenge")
+//@Controller
+//@RequestMapping("/challenge")
 public class ChallengeController {
 
     @Autowired

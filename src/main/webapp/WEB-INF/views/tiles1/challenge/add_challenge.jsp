@@ -175,14 +175,6 @@
 	            return;
 	     	 }
 	     	<%-- 글내용 유효성 검사(스마트 에디터 사용 할 경우) 끝 --%>  
-	     	
-	     	
-	     	 // 경험치 유효성 검사
-	         const challenge_exp = $("input#challenge_exp").val().trim();
-	         if(challenge_exp == "") {
-	            alert("경험치를 입력하세요!!");
-	            return;
-	         }
 	         
 	      	 // 카테고리 유효성 검사
 	         const category_code = $("select#category_code").val().trim();
