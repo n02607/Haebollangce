@@ -84,7 +84,7 @@
 			frm.method = "POST";
 			frm.action = "<%= ctxPath%>/lounge/loungeAddEnd";
 			frm.submit();
-        	
+			
 	  });
      
   });// end of $(document).ready(function(){})-------------------------------

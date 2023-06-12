@@ -155,7 +155,8 @@ public class LoungeController {
 	}
 
 	// === #2-2. 스마트에디터. 드래그앤드롭을 사용한 다중사진 파일업로드 ===
-	@PostMapping(value="/challenge/image/multiplePhotoUpload")
+	// 이미 챌린지 컨트롤러에 있어서 또 안 만들어도됨
+/*	@PostMapping(value="/challenge/image/multiplePhotoUpload.action")
 	public void multiplePhotoUpload(HttpServletRequest request, HttpServletResponse response) {
 	
 		// 1. 사용자가 보낸 파일을 WAS(톰캣)의 특정 폴더에 저장해주어야 한다.
@@ -175,7 +176,7 @@ public class LoungeController {
 			String filename = request.getHeader("file-name"); // 파일명(문자열)을 받는다 - 일반 원본파일명
 			// 네이버 스마트에디터를 사용한 파일업로드시 싱글파일업로드와는 다르게 멀티파일업로드는 파일명이 header 속에 담겨져 넘어오게 되어있다. 
 			
-			System.out.println(">>> 확인용 filename ==> " + filename);
+			// System.out.println(">>> 확인용 filename ==> " + filename);
 			// >>> 확인용 filename ==> %EB%90%90%EC%96%B4%EC%9A%94.jpg
 			
 			InputStream is = request.getInputStream(); // is는 네이버 스마트 에디터를 사용하여 사진첨부하기 된 이미지 파일임.
@@ -183,7 +184,7 @@ public class LoungeController {
 			String newFilename = fileManager.doFileUpload(is, filename, path);
 			
 			String ctxPath = request.getContextPath(); //  /
-			System.out.println("ctxPath : " + ctxPath);
+			// System.out.println("ctxPath : " + ctxPath);
 			
 			String strURL = "";
 			strURL += "&bNewLine=true&sFileName="+newFilename; 
@@ -199,7 +200,7 @@ public class LoungeController {
 			e.printStackTrace();
 		}
 	}
-	
+*/	
 	
 	// === #3. 라운지 글목록 보기 페이지 요청 === (#58.)
 	@GetMapping(value = "/loungeList")
@@ -479,7 +480,7 @@ public class LoungeController {
 		// === #2-1. 첨부파일이 있는 경우 작업  ===
 		MultipartFile attach =  lgboarddto.getAttach();
 		
-		if( !attach.isEmpty() ) { // attach(첨부파일)가 비어있지 않으면(즉, 첨부파일이 있는 경우라면)
+		if(attach != null && !attach.isEmpty()) { // attach(첨부파일)가 비어있지 않으면(즉, 첨부파일이 있는 경우라면)
 			
 			// 1. 사용자가 보낸 첨부파일을 WAS(톰캣)의 특정 폴더에 저장해주어야 한다. 
 			HttpSession session = mrequest.getSession();
@@ -515,13 +516,13 @@ public class LoungeController {
 				
 			} catch (Exception e) { // 모든 익셉션 수용가능
 				e.printStackTrace();
-			}	
+			}//end of try~catch()------------------------------------------
 			
-		}//end of try~catch()------------------------------------------
+		}//end of if()------------------------------------------------
 		
 		int n = 0;
 		
-		if( attach.isEmpty() ) {
+		if(attach == null || attach.isEmpty() ) {
 			n = service.lgedit(lgboarddto); // -> #6.파일첨부 없음
 		}
 		else {
