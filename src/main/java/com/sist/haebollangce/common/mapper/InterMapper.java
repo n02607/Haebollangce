@@ -11,14 +11,8 @@ import org.apache.ibatis.annotations.Mapper;
 
 @Mapper
 public interface InterMapper {
- 
-    int test_insert(String userid);
 
-    int fromBoard2(String userid);
-
-    String findById(String id);
-
-    UserDTO getDetail(String userid);
+	UserDTO findByUserid(String userid);
 
     // === #2. 게시판 글쓰기 완료 요청 ===
 	int loungeAdd(LoungeBoardDTO lgboarddto) throws Exception;
@@ -40,4 +34,11 @@ public interface InterMapper {
 	
 	List<ChallengeDTO> getJoinedChaList();
 	// 참가중인 챌린지 리스트 가져오기
+
+	// 네이버 로그인 DB 저장
+	void loginNaver(UserDTO userDTO);
+
+	void formSignup(UserDTO signupUser);
+
+    void oauthSignup(UserDTO user);
 }
