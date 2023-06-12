@@ -4,6 +4,8 @@ import com.sist.haebollangce.user.util.AES256;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.scheduling.annotation.EnableScheduling;
+import org.springframework.web.multipart.commons.CommonsMultipartResolver;
 import org.springframework.web.servlet.ViewResolver;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
@@ -17,6 +19,7 @@ import java.io.UnsupportedEncodingException;
 @Configuration
 @EnableWebMvc
 @ComponentScan(basePackages = "com.sist")
+@EnableScheduling // 스케줄러 사용 어노테이션 추가 - jaesik
 public class ServletConfig implements WebMvcConfigurer {
 
     private static final String[] CLASSPATH_RESOURCE_LOCATIONS = {"classpath:/resources/", "classpath:/static/" };
@@ -51,13 +54,13 @@ public class ServletConfig implements WebMvcConfigurer {
         return tilesViewResolver;
     }
 
-//    @Bean
-//    public CommonsMultipartResolver multipartResolver() {
-//        CommonsMultipartResolver multipartResolver = new CommonsMultipartResolver();
-//        multipartResolver.setDefaultEncoding("UTF-8");
-//        multipartResolver.setMaxUploadSize(10485760);
-//        return multipartResolver;
-//    }
+    @Bean
+    public CommonsMultipartResolver multipartResolver() {
+        CommonsMultipartResolver multipartResolver = new CommonsMultipartResolver();
+        multipartResolver.setDefaultEncoding("UTF-8");
+        multipartResolver.setMaxUploadSize(10485760);
+        return multipartResolver;
+    }
 
     @Bean
     public AES256 aes() throws UnsupportedEncodingException {

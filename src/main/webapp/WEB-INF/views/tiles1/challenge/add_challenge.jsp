@@ -45,6 +45,14 @@
    			height: -webkit-fill-available;
    			line-height: 45px;
 	}
+	
+	.btn-challenge {
+		color: white;
+		font-weight: bold;
+		background-color: #F43630;
+    		border-color: #F43630;
+    		border-radius: 10px;
+	}
 	 
 	/* Checked */
 	.certify_freq_form input[type=radio]:checked + label, .challenge_during_form input[type=radio]:checked + label {
@@ -56,11 +64,22 @@
 	.certify_freq_form label:hover, .challenge_during_form label:hover {
 		color: #666;
 	}
+	
+	.btn-challenge:hover {
+		color: white;
+    		font-weight: bold;
+    		border-color: #bd2130;
+    		background-color: #c82333;
+	}
 	 
 	/* Disabled */
 	.certify_freq_form input[type=radio] + label, .challenge_during_form input[type=radio] + label {
 		background: #F9FAFC;
 		color: #666;
+	}
+	
+	#preview {
+  		display: none;
 	}
 
 </style>    
@@ -68,7 +87,7 @@
 <script type="text/javascript">
 
 	$(document).ready(function(){
-		
+
 		$('#startTime').datetimepicker({
 			format: 'HH:mm',
 			stepping: 15,
@@ -107,7 +126,7 @@
 		
         $('#startdate').datetimepicker({
             format: 'YYYY-MM-DD',
-            minDate: new Date()
+            minDate: moment().add(1, 'day').toDate()
         });
        
 	    //전역변수
@@ -124,9 +143,10 @@
 	            // 입력창 크기 조절바 사용 여부 (true:사용/ false:사용하지 않음)
 	            bUseVerticalResizer : true,    
 	            // 모드 탭(Editor | HTML | TEXT) 사용 여부 (true:사용/ false:사용하지 않음)
-	            bUseModeChanger : true,
+	            bUseModeChanger : true
 	        }
 	    });
+	    
 	    
 	    $("#btnWrite").click(function(){
 
@@ -228,18 +248,18 @@
 	         }
 	         
 	         
-	     	 // 폼(form)을 전송(submit)
-	         const frm = document.addFrm;
-	         frm.method = "POST";
-	         frm.action = "<%= ctxPath%>/addEnd";
-	         frm.submit();
+	         if (confirm("챌린지 등록시 인증관련 사진은 수정이 불가합니다. 정말로 등록하시겠습니까?")) {
+	             const frm = document.addFrm;
+	             frm.method = "POST";
+	             frm.action = "<%= ctxPath %>/challenge/addEnd";
+	             frm.submit();
+	         }
 	         
 	         
 		}); // end of $("#btnWrite").click(function()-----------------------
  	 	
 		
-	});	    
-	
+});
 
 </script>
 
@@ -251,81 +271,97 @@
 		<form name="addFrm" enctype="multipart/form-data">
 			<table style="width: 1200px; table-layout:fixed;" class="table table-bordered" >
 		    	<tr>
-	        	<th style="width: 20%; background-color: #DDDDDD;">성명</th>
+	        		<th>성명</th>
 	         	<td>
-	            	<input type="text" name="name" value="${sessionScope.loginuser.name}" readonly/>
-	            	<input type="hidden" name="fk_userid" value="${sessionScope.loginuser.userid}" readonly/>
+	            	<input type="text" name="fkUserid" />
+	           <!--  	<input type="hidden" name="fk_userid" value="${sessionScope.loginuser.userid}" readonly/> -->
 	         	</td>
 	      	</tr>
 	      	
 	      	<tr>
 	      	   <th>챌린지 제목</th>
 	      	   <td>
-	      	      	<input type="text" name="challenge_name" id="challenge_name" size="100" maxlength="30" placeholder="예)1만보 걷기"/>    
+	      	      	<input type="text" name="challengeName" id="challenge_name" size="100" maxlength="30" placeholder="예)1만보 걷기"/>    
 	      	   </td>
 	      	</tr>
 	      	
 	      	<tr>
 	      	   <th>경험치</th>
 	      	   <td>
-	      	      	<input type="text" pattern="\d*" maxlength="3" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');" name="challenge_exp" id="challenge_exp" size="10" placeholder="최대 999"/>    
+	      	      	<input type="text" pattern="\d*" maxlength="3" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');" name="challengeExp" id="challenge_exp" size="10" value="50" readonly/>    
 	      	   </td>
 	      	</tr>
 	      	
 	      	<tr>
 	      		<th>카테고리</th>
 	      		<td>
-	      			<select name="fk_category_code" id="category_code"> 
+	      			<select name="fkCategoryCode" id="category_code"> 
 			            <option value="">:::선택하세요:::</option> 
-			            <c:forEach var="categoryList" items="${requestScope.categoryList}">
-			            	<option value="${categoryList.category_code}">${categoryList.category_name}</option>
+			            <c:forEach var="map" items="${requestScope.categoryList}">
+			            	<option value="${map.categoryCode}">${map.categoryName}</option>
 			            </c:forEach>  
 			         </select>
 	      		</td>
 	      	</tr>
 	      	
+	      	<tr>
+		         <th>대표사진 등록</th>
+		         <td>
+		             <input type="file" name="attach" id="thumbnail" accept="image/gif, image/jpeg, image/png" onchange="previewImage(event, 'preview')"/>
+		             <br>
+		             <br>
+        				<img id="preview" src="#" alt="미리보기" style="max-width: 200px; max-height: 200px; display: none;"/>
+		         </td>
+	      	</tr>
+	      	
 			<tr>
-	      		<th style="width: 20%; background-color: #DDDDDD;">챌린지 소개</th>
+	      		<th>챌린지 소개</th>
 	      		<td>
 	      	    	<textarea style="width: 100%; height: 612px;" name="content" id="content"></textarea>
 	      	   	</td>
 	      	</tr>
 	      	
 	      	<tr>
-	      	   <th style="width: 20%; background-color: #DDDDDD;">인증 방법</th>
+	      	   <th>인증 방법</th>
 	      	   <td>
 	      	      	<input type="text" name="example" id="example" size="105" maxlength="100" placeholder="예)오늘 날짜와 걸음 수가 적힌 만보기 캡쳐 화면 업로드"/>    
 	      	   </td>
 	      	</tr>
 	      	
 	      	<tr>
-		         <th style="width: 20%; background-color: #DDDDDD;">인증성공 예시첨부</th>
+		         <th>인증성공 예시첨부</th>
 		         <td>
-		             <input type="file" name="success_img" id="success_img" />
+		             <input type="file" name="successImgAttach" id="success_img" accept="image/gif, image/jpeg, image/png" onchange="previewImage(event, 'preview1')"/>
+		             <br>
+		             <br>
+		             <img id="preview1" src="#" alt="미리보기" style="max-width: 200px; max-height: 200px; display: none;"/>
 		         </td>
 	      	</tr>
 	      
 	      	<tr>
-		         <th style="width: 20%; background-color: #DDDDDD;">인증실패 예시첨부</th>
+		         <th>인증실패 예시첨부</th>
 		         <td>
-		             <input type="file" name="fail_img" id="fail_img" />
+		             <input type="file" name="failImgAttach" id="fail_img" accept="image/gif, image/jpeg, image/png" onchange="previewImage(event, 'preview2')"/>
+		             <br>
+		             <br>
+		             <img id="preview2" src="#" alt="미리보기" style="max-width: 200px; max-height: 200px; display: none;"/>
 		         </td>
 	      </tr>
-	      
+	     
 	      <tr>
 	 	  	<th>챌린지 기간</th>
 	 	  		<td>
 	 	  			<div class="challenge_during_group">
-		 	  			<c:forEach var="duringList" items="${requestScope.duringList}">	
+		 	  			<c:forEach var="during" items="${requestScope.duringList}">	
 		 	  				<div class="challenge_during_form">
-		 	  					<input type="radio" class="challenge_during" name="during_type" id="${duringList.set_date}" value="${duringList.during_type}" />
-		 	  					<label for="${duringList.set_date}">${duringList.set_date}</label>
+		 	  					<input type="radio" class="challenge_during" name="fkDuringType" id="${during.setDate}" value="${during.duringType}" />
+		 	  					<label for="${during.setDate}">${during.setDate}</label>
 		 	  				</div>
 		 	  			</c:forEach>	
 	 	  			</div>
 	 	  		</td>
 	 	  </tr>
-	 	  
+	 	 
 	 	  <tr>
 	 	  	<th>챌린지 시작일</th>
 	 	  	<td>	
@@ -333,7 +369,7 @@
 			        <div class="col-sm-4">
 			            <div class="form-group">
 			                <div class="input-group date" data-target-input="nearest">
-			                    <input type="text" class="form-control datetimepicker-input" id="startdate" data-target="#startdate"/>
+			                    <input type="text" class="form-control datetimepicker-input" name="startDate" id="startdate" data-target="#startdate"/>
 			                    <div class="input-group-append" data-target="#startdate" data-toggle="datetimepicker">
 			                        <div class="input-group-text"><i class="fa fa-calendar"></i></div>
 			                    </div>
@@ -351,7 +387,7 @@
 	 	  		<div class="certify_freq_group">
 	 	  			<c:forEach var="freq" items="${requestScope.freqList}">
 			 	  		<div class="certify_freq_form">
-				 	  		<input type="radio" class="certify_freq" name="freq_type" id="${freq.frequency}" value="${freq.freq_type}"/>
+				 	  		<input type="radio" class="certify_freq" name="fkFreqType" id="${freq.frequency}" value="${freq.freqType}"/>
 				 	  		<label for="${freq.frequency}">${freq.frequency}</label>
 			 	  		</div>
 		 	  		</c:forEach>
@@ -368,7 +404,7 @@
 					  <div class="col-sm-3">
 					      <div class="form-group">
 					          <div class="input-group date" id="startTimePicker" data-target-input="nearest">
-					              <input type="text" name="hour_start" class="form-control datetimepicker-input" id="startTime" data-target="#startTime" placeholder="시작시간" />
+					              <input type="text" name="hourStart" class="form-control datetimepicker-input" id="startTime" data-target="#startTime" placeholder="시작시간" autocomplete='off'/>
 					              <div class="input-group-append" data-target="#startTime" data-toggle="datetimepicker">
 					                  <div class="input-group-text"><i class="fa fa-clock-o"></i></div>
 					              </div>
@@ -379,7 +415,7 @@
 					  <div class="col-sm-3">
 					      <div class="form-group">
 					          <div class="input-group date" id="endTimePicker" data-target-input="nearest">
-					              <input type="text" name="hour_end" class="form-control datetimepicker-input" data-target="#endTime" id="endTime" placeholder="종료시간" />
+					              <input type="text" name="hourEnd" class="form-control datetimepicker-input" data-target="#endTime" id="endTime" placeholder="종료시간" autocomplete='off'/>
 					              <div class="input-group-append" data-target="#endTime" data-toggle="datetimepicker">
 					                  <div class="input-group-text"><i class="fa fa-clock-o"></i></div>
 					              </div>
@@ -395,11 +431,33 @@
   	
 		   </table>
 		   
-		   <div style="margin: 20px;">
-		      <button type="button" class="btn btn-secondary btn-sm mr-3" id="btnWrite">글쓰기</button>
-		      <button type="button" class="btn btn-secondary btn-sm" onclick="javascript:history.back()">취소</button>
+		   <div style="margin: 20px; text-align: center;">
+		      <button type="button" class="btn btn-challenge mr-3" id="btnWrite">글쓰기</button>
+		      <button type="button" class="btn btn-challenge" onclick="javascript:history.back()">취소</button>
 		   </div>
 		   
 		</form>   
 	</div>
 </div> 
+
+<script>
+// 첨부한 이미지 미리보기 
+function previewImage(event, previewId) {
+	var input = event.target;
+	if (input.files && input.files[0]) {
+		var reader = new FileReader();
+
+		reader.onload = function(e) {
+			var preview = document.getElementById(previewId);
+			preview.src = e.target.result;
+			preview.style.display = 'block'; // 이미지 표시
+		};
+
+		reader.readAsDataURL(input.files[0]);
+	} else {
+		var preview = document.getElementById(previewId);
+		preview.src = '#';
+		preview.style.display = 'none'; // 이미지 감춤
+	}
+}
+</script>
