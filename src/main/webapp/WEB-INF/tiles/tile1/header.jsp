@@ -250,7 +250,7 @@
 		<!-- 상단 네비게이션 시작 -->
 		<nav class="navbar navbar-expand-lg navbar-light py-3 " style="padding: 15px 100px; background-color: #e6e1e1; color: black;">
 		
-			<a class="navbar-brand headerlogo active" href="<%=ctxPath%>/main">HAEBOLLANGCE</a>
+			<a class="navbar-brand headerlogo active" href="<%=ctxPath%>/challenge/main">HAEBOLLANGCE</a>
 			
 			<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
 		        <span class="navbar-toggler-icon"></span>
@@ -263,7 +263,7 @@
 			        	<a class="nav-link dropdown-toggle headerfont" id="navbardrop_chlg" data-toggle="dropdown">챌린지</a>
 			      		<div class="dropdown-menu" style="border:none;">
 					        <a class="dropdown-item" href="<%=ctxPath%>/challenge/add_challenge">챌린지 개설하기</a>
-					        <a class="dropdown-item" href="<%=ctxPath%>/challenge/chanllenge_all">챌린지 둘러보기</a>
+					        <a class="dropdown-item" href="<%=ctxPath%>/challenge/challenge_all">챌린지 둘러보기</a>
 					    </div>
 			      	</li>
 			      	<li class="nav-item dropdown active mr-3">
