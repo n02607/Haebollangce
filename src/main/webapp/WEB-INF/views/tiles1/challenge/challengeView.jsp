@@ -327,7 +327,7 @@
 
 <script type="text/javascript">
 
-	function participate() {
+	function participate() { // 참가하기 클릭시 
 		
 		location.href='<%= ctxPath%>/challenge/join?challenge_code='+${challengedto.challengeCode};
 		

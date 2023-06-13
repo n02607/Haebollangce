@@ -80,13 +80,13 @@ public class ChallengeController {
   		// WAS 의 webapp 의 절대경로를 알아와야 한다.
   		HttpSession session = request.getSession();
   		String root = session.getServletContext().getRealPath("/").substring(0, 40);
-  //		System.out.println(root);
+  		System.out.println(root);
 
   		
   		// path 가 첨부파일들을 저장할 WAS(톰캣)의 폴더가 된다.
   		String path = root + "resources" + File.separator + "static" + File.separator +"photo_upload";
   		
-  //		System.out.println("~~~~ 확인용 스마트 에디터 path => " + path);
+  		System.out.println("~~~~ 확인용 스마트 에디터 path => " + path);
   		// ~~~~ 확인용  스마트 에디터  path => 
   		
   		File dir = new File(path);
@@ -148,7 +148,7 @@ public class ChallengeController {
 			HttpSession session = mrequest.getSession();
 			String root = session.getServletContext().getRealPath("/").substring(0, 40); 
 			
-	//	    System.out.println("~~~~~~ 썸네일 확인용 webapp 의 절대경로=> " + root);
+		    System.out.println("~~~~~~ 썸네일 확인용 webapp 의 절대경로=> " + root);
 		 //  ~~~~~~ 확인용 webapp 의 절대경로=> C:/Users/user/git/Haebollangce/src/main/
 			
 		    String path = root + "resources" + File.separator + "static" + File.separator + "images";
@@ -181,7 +181,7 @@ public class ChallengeController {
 				newFileName = fileManager.doFileUpload(bytes, originalFilename, path);
 				
 				
-		//		System.out.println(">>> 확인용 newFileName => " + newFileName);
+				System.out.println(">>> 확인용 newFileName => " + newFileName);
 				// >>> 확인용 newFileName => 20230522103648816893054943800.JPG
 				// >>> 확인용 newFileName => 20230522103856817021097001000.JPG
 				
@@ -302,6 +302,8 @@ public class ChallengeController {
     		} catch (NumberFormatException e) {
     			
     		}
+    		
+    		
     		
     		mav.addObject("challengedto", challengedto);
     		

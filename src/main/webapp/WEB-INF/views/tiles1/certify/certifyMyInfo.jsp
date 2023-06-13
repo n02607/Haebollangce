@@ -257,7 +257,7 @@ const imgInfo = document.querySelector('.img_info');
 	 
 	// 상세 페이지로 이동하는 함수
 	function goDetail() {
-		location.href='<%= ctxPath%>/challenge/challengeView?challenge_code='+'${joinedChallInfo.challenge_code}';
+		location.href='<%= ctxPath%>/challenge/challengeView?challengeCode='+'${joinedChallInfo.challenge_code}';
 	}
 	
 	// 유저가 신고했을 때
