@@ -26,12 +26,9 @@ public interface InterMypageService {
 	// 결제 더보기 페이징 처리하기
 	String search_paging_data(Map<String, String> paraMap);
 	String get_pagebar(Map<String, String> paraMap);
-<<<<<<< HEAD
 	
 	// 예치금 그래프 보여주기
 	String deposit_chart(Map<String, String> paraMap);
-=======
->>>>>>> refs/heads/main
 	
 	// 취소 가능 건 알아오기
 	String cancel_data(Map<String, String> paraMap);

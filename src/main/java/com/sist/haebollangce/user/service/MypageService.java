@@ -316,17 +316,13 @@ public class MypageService implements InterMypageService {
 		
 		return new Gson().toJson(jsonArr);
 	}
-
+	
 	
 	// 예치금 그래프 보여주기
 	@Override
 	public String deposit_chart(Map<String, String> paraMap) {
 		
 		List<Map<String, String>> chart_list = dao.deposit_chart(paraMap);
-		
-		if(chart_list.size() > 0) {
-			
-		}
 		
 		return "";
 	}
