@@ -25,12 +25,6 @@ public class UserDTO {
     private String mobile;
     private String roleId;
 
-    // Naver 로그인 전용
-    public UserDTO(String name, String mobile) {
-        this.name = name;
-        this.mobile = mobile;
-    }
-
     @Builder
     public UserDTO(String userid, String email, String name, String mobile, String roleId) {
         this.userid = userid;

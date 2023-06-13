@@ -67,7 +67,10 @@ public class WebConfig implements WebMvcConfigurer {
     }
 
 
-    // CSR 대비
+    // 추후 CSR 대비
+    // CORS(Cross Origin Resource Sharing)에 대한 설정.
+    // 프론트엔드는 보통 port:3000에서 많이 개발(React).
+    // http://localhost:3030에서 http://localhost:7070 API를 호출할 수 있도록 설정.
     @Override
     public void addCorsMappings(CorsRegistry registry) {
         registry.addMapping("/**")

@@ -39,7 +39,7 @@ public class SecurityConfig {
                 .formLogin().disable()
                 .httpBasic().disable()
                 .cors()
-                .configurationSource(corsConfigurationSource())
+                    .configurationSource(corsConfigurationSource())
                 .and()
                 .apply(authenticationManagerConfig)
                 .and()
@@ -52,14 +52,14 @@ public class SecurityConfig {
                     .anyRequest().permitAll()
                 .and()
                 .exceptionHandling()
-                .authenticationEntryPoint(customAuthenticationEntryPoint)
+                    .authenticationEntryPoint(customAuthenticationEntryPoint)
                 .and()
                 .oauth2Login()
-                .loginPage("/user/form-login")
-                .userInfoEndpoint()
-                .userService(principalOauth2UserService)
-                .and()
-                .defaultSuccessUrl("/user/tiles-test")
+                    .loginPage("/user/form-login")
+                    .userInfoEndpoint()
+                    .userService(principalOauth2UserService)
+                    .and()
+                    .defaultSuccessUrl("/user/tiles-test")
                 .and()
                 .build();
     }
@@ -67,7 +67,7 @@ public class SecurityConfig {
     public CorsConfigurationSource corsConfigurationSource() {
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         CorsConfiguration config = new CorsConfiguration();
-         config.setAllowCredentials(true);
+        config.setAllowCredentials(true);
         config.addAllowedOriginPattern("*");
         config.addAllowedHeader("*");
         config.addAllowedMethod("*");
