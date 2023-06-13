@@ -1,16 +1,12 @@
 ---
-name: Bug Report Template
-about: 버그 발견 및 대응
+name: Enhancement Template
+about: 기능 추가, 또는 기존 코드 개선
 title: ''
-labels: bug
+labels: enhancement
 assignees: ''
 
 ---
 
-## [이곳에 버그 내용을 적어주세요.]
+## [이곳에 추가한 기능,  또는 개선한 내용 요약을 적어주세요]
 
-
-### 버그 재현 방법
-
-
-### 기대 동작
+### 작업 상세 내용
