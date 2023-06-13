@@ -176,6 +176,7 @@ public class MypageDAO implements InterMypageDAO {
 		
 		return total_count;
 	}
+<<<<<<< HEAD
 	
 	// 예치금 그래프 보여주기
 	@Override
@@ -185,6 +186,8 @@ public class MypageDAO implements InterMypageDAO {
 		
 		return chart_list;
 	}
+=======
+>>>>>>> refs/heads/main
 		
 	// 비밀번호 확인 후 회원 정보수정 페이지 가기
 	@Override
@@ -347,5 +350,5 @@ public class MypageDAO implements InterMypageDAO {
 		
 		return category_list;
 	}
-	
+
 }

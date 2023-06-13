@@ -316,7 +316,7 @@ public class MypageService implements InterMypageService {
 		
 		return new Gson().toJson(jsonArr);
 	}
-	
+
 	
 	// 예치금 그래프 보여주기
 	@Override
