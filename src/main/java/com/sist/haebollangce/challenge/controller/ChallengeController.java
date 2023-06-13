@@ -29,7 +29,7 @@ import com.sist.haebollangce.challenge.dto.ChallengeDTO;
 import com.sist.haebollangce.challenge.service.InterChallengeService;
 import com.sist.haebollangce.common.FileManager;
 
-//@Controller
+@Controller
 @RequestMapping("/challenge")
 public class ChallengeController {
 
@@ -311,19 +311,6 @@ public class ChallengeController {
     		return mav;
     }
     
-    @RequestMapping(value="/challengeView_2")
-    public ModelAndView challengeView_2(ModelAndView mav, HttpServletRequest request) {
-    		String challengeCode = request.getParameter("challengeCode");
-    		
-    		Integer.parseInt(challengeCode);
-			
-		Map<String, String> paraMap = new HashMap<>();
-		paraMap.put("challengeCode", challengeCode);
-    		
-    		mav.setViewName("redirect:/challengeView?challengeCode="+challengeCode);
-    		
-    		return mav;
-    }
     
     
     
