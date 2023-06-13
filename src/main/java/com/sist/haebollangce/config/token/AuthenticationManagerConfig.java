@@ -1,4 +1,4 @@
-package com.sist.haebollangce.config.security;
+package com.sist.haebollangce.config.token;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Configuration;

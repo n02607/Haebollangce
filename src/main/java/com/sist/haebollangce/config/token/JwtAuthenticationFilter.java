@@ -1,6 +1,6 @@
-package com.sist.haebollangce.config.security;
+package com.sist.haebollangce.config.token;
 
-import com.sist.haebollangce.config.security.exception.JwtExceptionCode;
+import com.sist.haebollangce.config.token.exception.JwtExceptionCode;
 import io.jsonwebtoken.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

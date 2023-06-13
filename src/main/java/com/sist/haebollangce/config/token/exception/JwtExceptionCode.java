@@ -1,4 +1,4 @@
-package com.sist.haebollangce.config.security.exception;
+package com.sist.haebollangce.config.token.exception;
 
 import lombok.Getter;
 

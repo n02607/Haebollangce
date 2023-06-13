@@ -1,4 +1,4 @@
-package com.sist.haebollangce.config.security;
+package com.sist.haebollangce.config.token;
 
 import lombok.Getter;
 import org.springframework.security.authentication.AbstractAuthenticationToken;

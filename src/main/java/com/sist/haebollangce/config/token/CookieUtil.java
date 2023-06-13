@@ -1,4 +1,4 @@
-package com.sist.haebollangce.config.security;
+package com.sist.haebollangce.config.token;
 
 import org.springframework.http.ResponseCookie;
 import org.springframework.stereotype.Component;

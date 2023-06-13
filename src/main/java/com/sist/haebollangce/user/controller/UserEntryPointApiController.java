@@ -1,7 +1,7 @@
 package com.sist.haebollangce.user.controller;
 
-import com.sist.haebollangce.config.security.CookieUtil;
-import com.sist.haebollangce.config.security.JwtTokenizer;
+import com.sist.haebollangce.config.token.CookieUtil;
+import com.sist.haebollangce.config.token.JwtTokenizer;
 import com.sist.haebollangce.user.Role;
 import com.sist.haebollangce.user.dto.UserDTO;
 import com.sist.haebollangce.user.service.InterUserService;

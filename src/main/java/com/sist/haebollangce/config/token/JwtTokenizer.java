@@ -1,4 +1,4 @@
-package com.sist.haebollangce.config.security;
+package com.sist.haebollangce.config.token;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;

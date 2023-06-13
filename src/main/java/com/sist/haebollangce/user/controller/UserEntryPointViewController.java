@@ -1,7 +1,7 @@
 package com.sist.haebollangce.user.controller;
 
-import com.sist.haebollangce.config.security.CookieUtil;
-import com.sist.haebollangce.config.security.JwtTokenizer;
+import com.sist.haebollangce.config.token.CookieUtil;
+import com.sist.haebollangce.config.token.JwtTokenizer;
 import org.springframework.stereotype.Controller;
 import com.sist.haebollangce.user.service.InterUserService;
 import org.springframework.web.bind.annotation.*;
