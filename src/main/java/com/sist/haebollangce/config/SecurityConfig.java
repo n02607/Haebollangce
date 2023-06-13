@@ -48,7 +48,7 @@ public class SecurityConfig {
 //                    .mvcMatchers("/api/v1/user/**").access("hasAnyRole('ADMIN', 'MANAGER', 'USER')")
                     .mvcMatchers("/manager/**").access("hasAnyRole('ADMIN', 'MANAGER')")
                     .mvcMatchers("/admin/**").access("hasRole('ADMIN')")
-                    .mvcMatchers("/mypage/**").authenticated()
+                    .mvcMatchers("/mypage/**", "/challenge/add_challenge").authenticated()
                     .anyRequest().permitAll()
                 .and()
                 .exceptionHandling()
