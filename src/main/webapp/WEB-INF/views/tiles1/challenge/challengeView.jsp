@@ -76,7 +76,7 @@
     		height: auto;
 	    object-fit: cover;
 	    position: relative;
-	    margin-top: -30px;
+	    margin-top: -60px;
 	}
 	
 	.Host_img {
@@ -87,12 +87,13 @@
     		object-fit: cover;
    		border-radius: 50%;
    		margin: auto;
+   		border: solid 1px gray;
 	}
 	
 	.Host_name {
 		font-family: Pretendard;
     		font-weight: bold;
-    		font-size: 14px;
+    		font-size: 20px;
 	    line-height: 12px;
 	    text-align: center;
 	    letter-spacing: -.2px;
@@ -100,7 +101,6 @@
 	    justify-content: center;
 	    align-items: center;
 	    color: #383535;
-	    height: 40px;
 	    white-space: nowrap;
 	    margin-top: 10px;
 	}
@@ -110,13 +110,14 @@
 		width: fit-content;
 	    font-style: normal;
 	    font-weight: 600;
-	    font-size: 25px;
+	    font-size: 35px;
 	    text-align: center;
-	    margin-top: 20px;
+	    margin-top: 40px;
 	}
 	
 	.challenge_frequency {
 		margin-top: 10px;
+		font-size: 20px;
 	}
 	
 	.Commenter_introduce {
@@ -216,6 +217,7 @@
     		line-height: 33px;
     		float: left;
     		color: #242424;
+    		border-bottom: 2px solid;
 	}
 	
 	.Info_notification__detail {
@@ -292,7 +294,6 @@
 	
 	.Info_certifyTime, .Info_startDate, .Info_challengeTerm {
 		display: flex;
-		border: 1px gray solid;
 	}
 	
 	.square-image-container {
@@ -323,6 +324,16 @@
 	
 
 </style>
+
+<script type="text/javascript">
+
+	function participate() {
+		
+		location.href='<%= ctxPath%>/challenge/join?challenge_code='+${challengedto.challengeCode};
+		
+	}
+
+</script>
 
 <div class="detail_challenge_template">
 		<div class="detail_challenge_content">
@@ -394,20 +405,20 @@
 			<div class="Info_notification">
 				<div class="Info_notification__title">안내사항</div>
 				<div class="Info_notification__introduce">자세한 정보를 알려드릴게요</div>
-				
+				<br>
 				<div class="Info_certifyTime">
 				<i class="far fa-clock" style="color: #db4d4d; padding-top:5px;"></i>
-				<div class="Info_certifyTime_info">인증가능시간 : ${challengedto.hourStart} ~ ${challengedto.hourEnd}</div>
+				<div class="Info_certifyTime_info">&nbsp;인증가능시간 : ${challengedto.hourStart} ~ ${challengedto.hourEnd}</div>
 				</div>
 				
 				<div class="Info_startDate">
-				<i class="far fa-clock" style="color: #db4d4d;"></i>
-				<div class="Info_startDate_info">시작일 : ${challengedto.startDate}</div>
+				<i class="fas fa-calendar-day" style="color: #db4d4d; padding-top:5px;"></i>
+				<div class="Info_startDate_info">&nbsp;시작일 : ${challengedto.startDate}</div>
 				</div>
 				
 				<div class="Info_challengeTerm">
-				<i class="far fa-clock" style="color: #db4d4d;"></i>
-				<div class="Info_startDate_info">챌린지 기간 : ${challengedto.startDate} ~ ${challengedto.enddate} 까지</div>
+				<i class="far fa-calendar-alt" style="color: #db4d4d;  padding-top:5px;"></i>
+				<div class="Info_startDate_info">&nbsp;챌린지 기간 : ${challengedto.startDate} ~ ${challengedto.enddate} 까지</div>
 				</div>
 		</div>
 		
@@ -420,7 +431,7 @@
 		<div class="Banner_baner">
 		
 			<div class="banner_content">
-				<button class="challenge_join" type="button">챌린지 참가</button>
+				<button class="challenge_join" type="button" onclick="participate()">챌린지 참가</button>
 			</div>
 			
 		</div>	
