@@ -27,8 +27,7 @@ public class UserEntryPointViewController {
     ////////////////////////////////////////////////////////////////////////////////////////////////
     @GetMapping("/tiles-test")
     public String tiles(HttpServletRequest request) {
-    String token = CookieUtil.getToken("accessToken");
-    jwtTokenizer.getUseridFromToken(token);
+
         String accessToken = CookieUtil.getToken(request,"accessToken");
         if(accessToken != null) {
             System.out.println(jwtTokenizer.getUseridFromToken(accessToken));
