@@ -226,7 +226,7 @@
 			url: "/mypage/user_deposit_ajax",
 			type: "GET",
 			data: {
-				"userid":${requestScope.userid}
+				"userid":"jisu"/* ${requestScope.userid} */
 			},
 			dataType:"json",
 			success:function(json){
@@ -253,6 +253,25 @@
 			}
 		});
 		<%-- 두번째문단 보유예치금,상금 보여주기 끝 --%>
+		
+		
+		<%-- 예치금 그래프 보여주기 시작 --%>
+		$.ajax {(
+			url:"/mypage/deposit_chart_ajax",
+			type:"GET",
+			data:{
+				"userid":"jisu"
+			},
+			dataType:"json",
+			success:function(json) {
+				console.log()
+			},
+			error: function(request, status, error){
+				alert("code: "+request.status+"\n"+"message: "+request.responseText+"\n"+"error: "+error);
+			}
+		)};
+		<%-- 예치금 그래프 보여주기 끝 --%>
+		
 		
 		<%-- 결제 취소하기 시작 --%>
 		cancel_data();
@@ -555,6 +574,7 @@
 	};
 	<%-- 취소 가능한 결제내역 보여주기 끝 --%>
 	
+	
 	<%-- 더보기 페이지로 가기 시작 --%>
 	function go_detail() {
 
@@ -566,6 +586,7 @@
 		
 	}
 	<%-- 더보기 페이지로 가기 끝 --%>
+	
 	
 	<%-- 결제 취소하기 시작 --%>
 	function purchase_cancel(code) {
@@ -648,7 +669,7 @@
 		
 			<!-- 두번째 문단 시작 -->
 			<div class="row mb-4">
-				<!-- 코인 시작 -->
+				<!-- 코인 시작 
 				<div class="col-lg-6 mb-4">
 					<div id="notice" class="card shadow mb-4">
 						<div class="card-header py-3">
@@ -677,7 +698,25 @@
 						</div>
 					</div>
 				</div>
-				<!-- 코인 끝 -->
+				코인 끝 -->
+				
+				
+				<!-- 챌린지 리포트 시작-->
+					<div class="col-lg-6 mb-8">
+						<div class="card shadow mb-4">
+							<div class="card-header py-3">
+								<h5 class="m-0 font-weight-bold">챌린지 리포트</h5>
+							</div>
+							<div class="card-body">
+								<div id="chart_container" class="chart-bar">
+								</div>
+								<hr>
+								올 해 챌린지 참여 횟수에는 진행중인 챌린지와 완료된 챌린지 모두 포함된 횟수입니다.
+							</div>
+						</div>
+					</div>
+				<!-- 챌린지 리포트 끝 -->
+				
 				
 				<!-- 상금 시작 -->
 				<div class="col-lg-6 mb-4">
@@ -764,6 +803,7 @@
 			
 			</div>
 			<!-- 두번째문단 끝 -->
+			
 			
 		</div>
 		<!-- 메인 끝 -->
