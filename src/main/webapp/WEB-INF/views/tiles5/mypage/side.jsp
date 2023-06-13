@@ -7,11 +7,10 @@
 
 <style>
 	body {
-		font-family: "Lato", sans-serif;
 		background-color:#f4f4f4
 	}
 
-	a#mypage {
+	button#mypage {
 		padding: 36px 8px 73px 16px;
 		text-decoration: none;
 		font-size: 23px;
@@ -73,6 +72,20 @@
 		float: right;
 		padding-right: 8px;
 	}
+	
+	button.submit_button {
+		border: none;
+		background-color: white;
+		padding: 23px 8px 23px 16px;
+		text-decoration: none;
+		font-size: 18px;
+		display: block;
+		width: 100%;
+		text-align: left;
+		cursor: pointer;
+		outline: none;
+		font-weight: bold;
+	}
 
 </style>
 
@@ -97,48 +110,48 @@
 		}
 		
 	});
-	
+
 </script>
 
 </head>
 <body>
 <!-- 마이페이지 메뉴바 시작 -->
 	<div class="sidenav">
-		<a id="mypage" href="<%=ctxPath%>/mypage/mypageHome">마이페이지</a>
+		<form action="mypageHome" method="post">
+			<input type="hidden" name="userid" value="jisu" /> 
+			<button type="submit" id="mypage">마이페이지</button>
+		</form>
 		
-		<button class="dropdown-btn">챌린지 현황 
-			<i class="fa fa-caret-down"></i>
-		</button>
-		<div class="dropdown-container">
-			<a href="<%=ctxPath%>/mypage/mypageChallenging" style="color:black;">진행중</a>
-			<a href="<%=ctxPath%>/mypage/mypageFinish" style="color:black;">완료</a>
-			<a href="<%=ctxPath%>/mypage/mypageCreate" style="color:black;">개설한 챌린지</a>
-		</div>
+		<a href="<%=ctxPath%>/mypage/mypageChallenging">챌린지 현황</a>
 		
-		<button class="dropdown-btn">결제
+		<button class="dropdown-btn">결제·환전
 			<i class="fa fa-caret-down"></i>
 		</button>
 		<div class="dropdown-container">
 			<a href="<%=ctxPath%>/mypage/depositPurchase" style="color:black;">예치금 충전</a>
-			<a href="<%=ctxPath%>/mypage/change_reward" style="color:black;">상금 전환</a>
+			<a href="<%=ctxPath%>/mypage/change_reward" style="color:black;">상금 환전</a>
 		</div>
 		
-		<a href="<%=ctxPath%>/mypage/mypageDepositUsing">결재 현황</a>
+		<a href="<%=ctxPath%>/mypage/mypageUsing">결재 현황</a>
 		
 		<button class="dropdown-btn">찜현황
 			<i class="fa fa-caret-down"></i>
 		</button>
 		<div class="dropdown-container">
-			<a href="#" style="color:black;">찜한 챌린지</a>
-			<a href="#" style="color:black;">찜한 라운지글</a>
+			<a href="<%=ctxPath%>/mypage/mypageChallengeLike" style="color:black;">찜한 챌린지</a>
+			<a href="<%=ctxPath%>/mypage/mypageLoungeLike" style="color:black;">찜한 라운지글</a>
 		</div>
 		
 		<button class="dropdown-btn">개인정보 수정 
 		    <i class="fa fa-caret-down"></i>
 		</button>
 		<div class="dropdown-container">
-			<a href="<%=ctxPath%>/mypage/mypagePwdIdentify" style="color:black;">회원정보 수정</a>
-			<a href="<%=ctxPath%>/mypage/mypagePwdIdentify" style="color:black;">회원탈퇴</a>
+			<form action="mypagePwdIdentify" method="post">
+				<input type="hidden" name="result" value="0" />
+				<button type="submit" class="submit_button">회원정보수정</button>
+				
+				<button type="submit" class="submit_button">회원탈퇴하기</button>
+			</form>
 		</div>
 	</div>
 	<!-- 마이페이지 메뉴바 끝 -->
