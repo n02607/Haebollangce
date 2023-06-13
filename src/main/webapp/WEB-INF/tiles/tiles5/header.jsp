@@ -257,7 +257,7 @@
 		<!-- 상단 네비게이션 시작 -->
 		<nav class="navbar navbar-expand-lg navbar-light py-3 " style="padding: 15px 100px 15px 19%; background-color: #e6e1e1; color: black;">
 		
-			<a class="navbar-brand headerlogo active" href="<%=ctxPath%>/main">HAEBOLLANGCE</a>
+			<a class="navbar-brand headerlogo active" href="<%=ctxPath%>/challenge/main">HAEBOLLANGCE</a>
 			
 			<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
 		        <span class="navbar-toggler-icon"></span>
@@ -269,12 +269,12 @@
 			        <li class="nav-item dropdown active mr-3">
 			        	<a class="nav-link dropdown-toggle headerfont" id="navbardrop_chlg" data-toggle="dropdown">챌린지</a>
 			      		<div class="dropdown-menu" style="border:none;">
-					        <a class="dropdown-item" href="<%=ctxPath%>/main">챌린지 개설하기</a>
-					        <a class="dropdown-item" href="<%=ctxPath%>/chanllenge_all">챌린지 둘러보기</a>
+					        <a class="dropdown-item" href="<%=ctxPath%>/challenge/add_challenge">챌린지 개설하기</a>
+					        <a class="dropdown-item" href="<%=ctxPath%>/challenge/challenge_all">챌린지 둘러보기</a>
 					    </div>
 			      	</li>
 			      	<li class="nav-item dropdown active mr-3">
-			        	<a class="nav-link dropdown-toggle headerfont" href="<%= ctxPath %>/challenge_certify">챌린지 인증하기</a>
+			        	<a class="nav-link dropdown-toggle headerfont" href="<%= ctxPath %>/challenge/certifyList">챌린지 인증</a>
 			      	</li>
 			     	<li class="nav-item dropdown active mr-3">
 			        	<a class="nav-link dropdown-toggle headerfont" id="navbardrop_lng" data-toggle="dropdown">라운지</a>
@@ -289,12 +289,10 @@
 			      	</li>
 		    <%--</c:if> --%>
 			    </ul>
-			    <form name="mypageFrm" class="form-inline my-2 my-lg-0">
-			    	<button type="button" class="  btn btn-sm btn-habol mx-2 my-2" style="color:white; font-weight:bold;" href="<%= ctxPath %>/login">회원가입</a>
-			    	<button type="button" class="  btn btn-sm btn-habol mx-2 my-2 " style="color:white; font-weight:bold;" href="<%= ctxPath %>/register">로그인</a>
-			    	<input type="text" id="userid" name="userid" value="jisu" />
-			    	<button type="button" onclick='go_mypage();' class="btn btn-sm btn-habol mx-2 my-2 " style="color:white; font-weight:bold;" href="<%= ctxPath %>/mypage/mypageHome">마이페이지</a>
-			    	
+			    <form class="form-inline my-2 my-lg-0">
+			    	<i type="button" class="fa-solid fa-paper-plane mx-2" onclick="javascript:location.href='<%= ctxPath%>/messenger/messengerView'"></i>
+			    	<button type="button" class="btn btn-sm btn-habol mx-2 my-2" style="color:white; font-weight:bold;" href="<%= ctxPath %>/login">회원가입</a>
+			    	<button type="button" class="btn btn-sm btn-habol mx-2 my-2 " style="color:white; font-weight:bold;" href="<%= ctxPath %>/register">로그인</a>
 			    </form>
 			</div>
 			
