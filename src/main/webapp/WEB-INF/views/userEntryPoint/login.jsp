@@ -8,8 +8,6 @@
             margin: 20% 30% 0 30%;
             text-align: center;
         }
-
-
     </style>
 
     <script type="text/javascript" src="/js/jquery-3.6.4.min.js"></script>
@@ -64,9 +62,8 @@
             if (xhr.readyState === XMLHttpRequest.DONE) {
                 if (xhr.status === 200) {
                     const redirectUrl = xhr.responseURL;
-                    window.location.href = redirectUrl; // Navigate to the redirect URL
+                    window.location.href = redirectUrl;
                 } else {
-                    // Handle other response statuses
                 }
             }
         };
@@ -74,10 +71,11 @@
     });
 
 </script>
-<script type="text/javascript">
-    const naverLogin = new window.naver.LoginWithNaverId( {
-        loginButton: {color: "green", type: 3, height: 50}
-    } ); /* 설정정보를 초기화하고 연동을 준비 */
-    // naverLogin.init();
-</script>
+<%--적용 X--%>
+<%--<script type="text/javascript">--%>
+<%--    const naverLogin = new window.naver.LoginWithNaverId( {--%>
+<%--        loginButton: {color: "green", type: 3, height: 50}--%>
+<%--    } ); /* 설정정보를 초기화하고 연동을 준비 */--%>
+<%--    naverLogin.init();--%>
+<%--</script>--%>
 </body>

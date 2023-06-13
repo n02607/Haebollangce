@@ -7,15 +7,15 @@
 
 
 	<select id="findByUserid" parameterType="String" resultType="com.sist.haebollangce.user.dto.UserDTO">
-		select * from tbl_user_token_test where userid = #{userid}
+		select * from tbl_user where userid = #{userid}
 	</select>
 
 	<insert id="formSignup" parameterType="com.sist.haebollangce.user.dto.UserDTO">
-			insert into tbl_user_token_test(userid, name, pw, mobile) values(#{userid}, #{name}, #{pw}, #{mobile})
+		insert into tbl_user(userid, name, pw, mobile) values(#{userid}, #{name}, #{pw}, #{mobile})
 	</insert>
 
 	<insert id="oauthSignup" parameterType="com.sist.haebollangce.user.dto.UserDTO">
-		insert into tbl_user_token_test(userid, email, name, mobile, role_id) values(#{userid}, #{email}, #{name}, #{mobile}, #{roleId})
+		insert into tbl_user(userid, email, name, mobile, role_id) values(#{userid}, #{email}, #{name}, #{mobile}, #{roleId})
 	</insert>
 
 
