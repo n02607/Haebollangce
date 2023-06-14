@@ -1,8 +1,8 @@
 package com.sist.haebollangce.user.controller;
 
 import com.sist.haebollangce.config.token.CookieUtil;
-import com.sist.haebollangce.config.token.JwtTokenizer;
 import com.sist.haebollangce.user.Role;
+import com.sist.haebollangce.user.dto.TokenDTO;
 import com.sist.haebollangce.user.dto.UserDTO;
 import com.sist.haebollangce.user.service.InterUserService;
 import lombok.RequiredArgsConstructor;
@@ -16,35 +16,23 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/api/v1/user")
 @RequiredArgsConstructor
-public class UserEntryPointApiController {
+public class EntryPointApiController {
 
     private final InterUserService service;
-    private final JwtTokenizer jwtTokenizer;
     private final PasswordEncoder passwordEncoder;
     private final CookieUtil cookieUtil;
 
     @PostMapping("/login")
     public ResponseEntity login(@RequestBody UserDTO.UserLoginDTO loginUser) {
-        UserDTO user = service.findByUserid(loginUser.getUserid());
-        
+
+        UserDTO user = service.formLogin(loginUser);
+
         if(user == null) {
-            return new ResponseEntity("No Such User Found.", HttpStatus.UNAUTHORIZED);
-        }
-        if( !passwordEncoder.matches(loginUser.getPw(), user.getPw() )) {
-            return new ResponseEntity("Wrong Password.", HttpStatus.UNAUTHORIZED);
+            return new ResponseEntity("Wrong Password", HttpStatus.UNAUTHORIZED);
         }
 
-        String accessToken = jwtTokenizer.createAccessToken(user.getUserid(),
-                                                            user.getName(),
-                                                            user.getEmail(),
-                                                            user.getRoleId());
-
-        String refreshToken = jwtTokenizer.createRefreshToken(user.getUserid(),
-                                                              user.getName(),
-                                                              user.getEmail(),
-                                                              user.getRoleId());
-
-        ResponseCookie cookie = cookieUtil.saveAccessToken("accessToken", accessToken);
+        TokenDTO tokens = service.getTokens(user);
+        ResponseCookie cookie = cookieUtil.saveAccessToken("accessToken", tokens.getAccessToken());
 
         HttpHeaders headers = new HttpHeaders();
         headers.add(HttpHeaders.SET_COOKIE, String.valueOf(cookie));

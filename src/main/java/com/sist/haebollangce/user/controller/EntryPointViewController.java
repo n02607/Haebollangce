@@ -10,7 +10,7 @@ import javax.servlet.http.HttpServletRequest;
 @Controller
 @RequestMapping("/user")
 @RequiredArgsConstructor
-public class UserEntryPointViewController {
+public class EntryPointViewController {
 
     private final JwtTokenizer jwtTokenizer;
 
