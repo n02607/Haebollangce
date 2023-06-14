@@ -1,6 +1,9 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jstl/fmt" %>
+
 
 <%
    String ctxPath = request.getContextPath();
@@ -65,6 +68,7 @@ font-weight: 400;
   align-items: center;
   flex-direction: column;
   background-color: #f4f4f4;
+  margin-top: 50px
 }
 
 
@@ -234,8 +238,55 @@ font-weight: 400;
   row-gap: 24px;
   justify-content: center;
   padding-top: 40px;
+  
+  
 }
 
+
+.All_content__card__e {
+  background-color: #f4f4f4;
+  width: 100%;
+  height: auto;
+  margin-left: auto;
+  margin-right: auto;
+  position: relative;
+  list-style: none;
+  padding: 0;
+  display: flex;
+}
+
+.All_content__card__f {
+  height: auto;
+  position: relative;
+  width: 100%;
+  display: flex;
+}
+
+.All_content__card__g {
+  width: 1536px;
+  margin-right: 100px;
+  height: auto;
+  display: flex;
+  justify-content: center;
+  flex-shrink: 0;
+  position: relative;
+  
+} 
+
+.All_content__card__h {
+  background-color: #f4f4f4;
+  display: grid;
+  grid-template-columns: repeat(2,571px);
+  grid-auto-rows: 215px;
+  grid-column-gap: 24px;
+  column-gap: 24px;
+  grid-row-gap: 24px;
+  row-gap: 24px;
+  justify-content: center;
+  padding-top: 40px;
+  
+  
+}
 
 .ChallengeCard_card {
   padding: 20px 16px;
@@ -290,16 +341,16 @@ a:hover { text-decoration: none;}
 }
 
 .ChallengeCard_info__title {
-  font-size: 24px;
-  line-height: 40px;
-  line-height: 24px;
+ font-size: 26px;
+  line-height: 28px;
   letter-spacing: -.4px;
   color: #383535;
   text-overflow: ellipsis;
   overflow: hidden;
   white-space: nowrap;
-  margin-bottom: 4px;
   display: block;
+  font-weight: bold;
+  margin-bottom: 10px
 }
 
 .ChallengeCard_info__describe {
@@ -355,15 +406,12 @@ a:hover { text-decoration: none;}
 }
 
 .ChallengeCard_participant_image {
-  width: 36px!important;
-  height: 36px!important;
-  object-fit: cover;
-  border-radius: 100%;
-  position: relative;
-  flex-shrink: 0;
-  aspect-ratio: auto 36 / 36;
-  overflow-clip-margin: content-box;
-  overflow: clip;
+   font-size: 16px;
+    line-height: 19px;
+    font-family: Pretendard;
+    font-weight: 400;
+    letter-spacing: -.4px;
+    color: #999696;
   
   
 }
@@ -461,10 +509,10 @@ a:hover { text-decoration: none;}
   align-items: center;
   text-align: center;
   letter-spacing: -.4px;
-  margin-top: 15px;
+  margin-top: 25px;
   text-decoration: none;
-  margin-left: 500px;
-  color: inherit; 
+  margin-left: 649px;
+  color: inherit;
 
 }
 
@@ -559,7 +607,155 @@ a:hover { text-decoration: none;}
   height: auto;
 }
 
+.All_content__card__e:not(:nth-child(-n+4)) {
+        display: none;
+    }
+    
 </style>
+
+
+<script type="text/javascript">
+
+	$(document).ready(function(){
+		
+		$.ajax({
+			url: '<%=ctxPath%>/challenge/main_a',
+			method: 'GET',
+			dataType: 'json',
+			success: function(json) {
+				
+				let html = "";
+
+				// 데이터가 존재하는 경우
+				
+					$.each(json, function(index, item) {
+						 var startDate = new Date(item.startDate);
+		                 var month = startDate.getMonth() + 1; 
+		                 var day = startDate.getDate();
+		                 var dayOfWeek = startDate.getDay(); 
+		                 var daysOfWeek = ['일', '월', '화', '수', '목', '금', '토'];
+		                 var dayString = daysOfWeek[dayOfWeek];
+						
+						console.log(item.challengeName);
+						html += `
+							<div class="All_content__card__e">
+								<a class="ChallengeCard_card">
+						            <span><img src="/images/`+item.thumbnail+`" class="ChallengeCard_card_image"/></span>
+									<div class="ChallengeCard_info">
+										<div class="ChallengeCard_info__subject">
+											<div class="ChallengeCard_tag">`+item.categoryName+`</div>
+										</div>
+										<div class="ChallengeCard_info__title">` + item.challengeName + `</div>
+										<div class="ChallengeCard_info__describe">
+										     챌린지 ·&nbsp;<img alt="info-calender" class="ChallengeCard_info_calender" src="/images/캘린더.png"/>
+		        	                      <div style="font-size:18px;">` + month + `.` + day + `(`+dayString+`)</div> `+ `&nbsp;· `+ item.setDate +` 
+		        	                      <img alt="info-check" src="https://images.munto.kr/munto-web/ic_action_check_off_24px.svg?s=48x48" class="ChallengeCard_info_check"/>주
+		        	                      <div>` + item.fkDuringType + `</div>
+		        	                                                 회
+										</div>
+										<div class="ChallengeCard_info_participants">
+		        	                     <div class="ChallengeCard_participant_image"> 개설자ID`+ `&nbsp; : `+ item.fkUserid + `</div>	        	                      
+
+											<div class="ChallengeCard_member">
+			        	                    &nbsp;&nbsp;<img alt="people" srcSet="https://images.munto.kr/munto-web/ic_info_person_14px.svg?s=16x16 1x, https://images.munto.kr/munto-web/ic_info_person_14px.svg?s=32x32 2x" src="https://images.munto.kr/munto-web/ic_info_person_14px.svg?s=32x32"/>
+			        	                    <div class="ChallengeCard_member_count">` + item.memberCount + `명</div>
+			        	                     </div>
+										</div>
+									</div>
+								</a>
+							</div>
+						`;
+					});
+				
+
+				// html 변수에 저장된 코드를 기존 요소에 추가
+				$(".All_content__card__d").append(html);
+			},
+			error: function(request, status, error){
+	            alert("code: "+request.status+"\n"+"message: "+request.responseText+"\n"+"error: "+error);
+	        }
+		});
+
+		
+		
+		$.ajax({
+			url: '<%=ctxPath%>/challenge/main_b',
+			method: 'GET',
+			dataType: 'json',
+			success: function(json) {
+				
+				let html = "";
+
+				// 데이터가 존재하는 경우
+				
+				$.each(json, function(index, item) {
+					 var startDate = new Date(item.startDate);
+	                 var month = startDate.getMonth() + 1; 
+	                 var day = startDate.getDate();
+	                 var dayOfWeek = startDate.getDay(); 
+	                 var daysOfWeek = ['일', '월', '화', '수', '목', '금', '토'];
+	                 var dayString = daysOfWeek[dayOfWeek];
+					
+					console.log(item.challengeName);
+					html += `
+						<div class="All_content__card__e">
+							<a class="ChallengeCard_card">
+					            <span><img src="/images/`+item.thumbnail+`" class="ChallengeCard_card_image"/></span>
+								<div class="ChallengeCard_info">
+									<div class="ChallengeCard_info__subject">
+										<div class="ChallengeCard_tag">`+item.categoryName+`</div>
+									</div>
+									<div class="ChallengeCard_info__title">` + item.challengeName + `</div>
+									<div class="ChallengeCard_info__describe">
+									     챌린지 ·&nbsp;<img alt="info-calender" class="ChallengeCard_info_calender" src="/images/캘린더.png"/>
+	        	                      <div style="font-size:18px;">` + month + `.` + day + `(`+dayString+`)</div> `+ `&nbsp;· `+ item.setDate +` 
+	        	                      <img alt="info-check" src="https://images.munto.kr/munto-web/ic_action_check_off_24px.svg?s=48x48" class="ChallengeCard_info_check"/>주
+	        	                      <div>` + item.fkDuringType + `</div>
+	        	                                                 회
+									</div>
+									<div class="ChallengeCard_info_participants">
+	        	                     <div class="ChallengeCard_participant_image"> 개설자ID`+ `&nbsp; : `+ item.fkUserid + `</div>	        	                      
+
+										<div class="ChallengeCard_member">
+		        	                    &nbsp;&nbsp;<img alt="people" srcSet="https://images.munto.kr/munto-web/ic_info_person_14px.svg?s=16x16 1x, https://images.munto.kr/munto-web/ic_info_person_14px.svg?s=32x32 2x" src="https://images.munto.kr/munto-web/ic_info_person_14px.svg?s=32x32"/>
+		        	                    <div class="ChallengeCard_member_count">` + item.memberCount + `명</div>
+		        	                     </div>
+									</div>
+								</div>
+							</a>
+						</div>
+					`;
+				});
+			
+
+			// html 변수에 저장된 코드를 기존 요소에 추가
+			$(".All_content__card__h").append(html);
+		},
+		error: function(request, status, error){
+            alert("code: "+request.status+"\n"+"message: "+request.responseText+"\n"+"error: "+error);
+        }
+	});
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+	});
+		
+	
+		
+	
+
+
+
+</script>
 
     
     
@@ -576,12 +772,12 @@ a:hover { text-decoration: none;}
                              관심사 기반 커뮤니티, <b>&nbsp;Heabollangce</b>
                          </div>
                      
-                     <img alt="people" src="https://o.remove.bg/downloads/94331cc2-5931-4a7d-b6b4-7c0a5bbc718e/6472096-removebg-preview.png" width="800" height="566" decoding="async" data-nimg="1" class="Main_people__qOdFR" style="color:transparent"/>
+                     <img alt="people" src="<%= ctxPath%>/images/메인페이지.png" width="800" height="566" decoding="async" data-nimg="1" class="Main_people__qOdFR" style="color:transparent"/>
                  </div>
 </section>     
     
     
-
+<div style="background-color: #f4f4f4">
 <div class="carousel">
   <div class="carousel-container">
     <div class="carousel-item">
@@ -608,202 +804,15 @@ a:hover { text-decoration: none;}
 <div class="All_content__card__a">
   <div class="All_content__card__b">
       <div class="All_content__card__c">
-      <div class="All_content__card__d">
+      <div class="All_content__card__d" >
 
-        <div class="All_content__card__e">
-          <a class="ChallengeCard_card" href="/detail-challenge?id=1676">
-          <span><figure><img alt="recommemd" srcSet="http://images.munto.kr/socialing-category/cover_category-7_%E1%84%89%E1%85%A5%E1%86%BC%E1%84%8C%E1%85%A1%E1%86%BC%E1%84%8C%E1%85%A1%E1%84%80%E1%85%B5%E1%84%80%E1%85%A8%E1%84%87%E1%85%A1%E1%86%AF_5.png?s=256x256 1x, http://images.munto.kr/socialing-category/cover_category-7_%E1%84%89%E1%85%A5%E1%86%BC%E1%84%8C%E1%85%A1%E1%86%BC%E1%84%8C%E1%85%A1%E1%84%80%E1%85%B5%E1%84%80%E1%85%A8%E1%84%87%E1%85%A1%E1%86%AF_5.png?s=384x384 2x" src="http://images.munto.kr/socialing-category/cover_category-7_%E1%84%89%E1%85%A5%E1%86%BC%E1%84%8C%E1%85%A1%E1%86%BC%E1%84%8C%E1%85%A1%E1%84%80%E1%85%B5%E1%84%80%E1%85%A8%E1%84%87%E1%85%A1%E1%86%AF_5.png?s=384x384" class="ChallengeCard_card_image" /></figure></span>
-              <div class="ChallengeCard_info">
-                  <div class="ChallengeCard_info__subject">
-                      <div class="ChallengeCard_tag">자존감</div>
-                  </div>
-                  <div class="ChallengeCard_info__title">[감사일기] 매일 감사하고 다행한 일을 찾아 긍정 습관 만들어요💛</div>
-                  <div class="ChallengeCard_info__describe">
-                      챌린지 ·<img alt="info-calender" srcSet="https://images.munto.kr/munto-web/ic_info_calender.svg?s=32x32 1x, https://images.munto.kr/munto-web/ic_info_calender.svg?s=48x48 2x" src="https://images.munto.kr/munto-web/ic_info_calender.svg?s=48x48" class="ChallengeCard_info_calender"/>
-                      5.21(일)
-                      <!-- -->
-                      · 
-                      <!-- -->
-                      3주
-                      <!-- -->
-                      간<img alt="info-check" srcSet="https://images.munto.kr/munto-web/ic_action_check_off_24px.svg?s=32x32 1x, https://images.munto.kr/munto-web/ic_action_check_off_24px.svg?s=48x48 2x" src="https://images.munto.kr/munto-web/ic_action_check_off_24px.svg?s=48x48" class="ChallengeCard_info_check"/>주 
-                      <!-- -->
-                      5
-                      <!-- -->
-                      회
-                  </div>
-                  
-              </div>
-          </a>
+
+
       </div>
-
-      <div class="All_content__card__e" >
-          <a class="ChallengeCard_card" href="/detail-challenge?id=1676">
-              <span><figure><img alt="recommemd" srcSet="http://images.munto.kr/socialing-category/cover_category-7_%E1%84%89%E1%85%A5%E1%86%BC%E1%84%8C%E1%85%A1%E1%86%BC%E1%84%8C%E1%85%A1%E1%84%80%E1%85%B5%E1%84%80%E1%85%A8%E1%84%87%E1%85%A1%E1%86%AF_5.png?s=256x256 1x, http://images.munto.kr/socialing-category/cover_category-7_%E1%84%89%E1%85%A5%E1%86%BC%E1%84%8C%E1%85%A1%E1%86%BC%E1%84%8C%E1%85%A1%E1%84%80%E1%85%B5%E1%84%80%E1%85%A8%E1%84%87%E1%85%A1%E1%86%AF_5.png?s=384x384 2x" src="http://images.munto.kr/socialing-category/cover_category-7_%E1%84%89%E1%85%A5%E1%86%BC%E1%84%8C%E1%85%A1%E1%86%BC%E1%84%8C%E1%85%A1%E1%84%80%E1%85%B5%E1%84%80%E1%85%A8%E1%84%87%E1%85%A1%E1%86%AF_5.png?s=384x384" class="ChallengeCard_card_image" /></figure></span>
-              <div class="ChallengeCard_info">
-                  <div class="ChallengeCard_info__subject">
-                      <div class="ChallengeCard_tag">자존감</div>
-                  </div>
-                  <div class="ChallengeCard_info__title">[감사일기] 매일 감사하고 다행한 일을 찾아 긍정 습관 만들어요💛</div>
-                  <div class="ChallengeCard_info__describe">
-                      챌린지 ·<img alt="info-calender" srcSet="https://images.munto.kr/munto-web/ic_info_calender.svg?s=32x32 1x, https://images.munto.kr/munto-web/ic_info_calender.svg?s=48x48 2x" src="https://images.munto.kr/munto-web/ic_info_calender.svg?s=48x48" class="ChallengeCard_info_calender"/>
-                      5.21(일)
-                      <!-- -->
-                      · 
-                      <!-- -->
-                      3주
-                      <!-- -->
-                      간<img alt="info-check" srcSet="https://images.munto.kr/munto-web/ic_action_check_off_24px.svg?s=32x32 1x, https://images.munto.kr/munto-web/ic_action_check_off_24px.svg?s=48x48 2x" src="https://images.munto.kr/munto-web/ic_action_check_off_24px.svg?s=48x48" class="ChallengeCard_info_check"/>주 
-                      <!-- -->
-                      5
-                      <!-- -->
-                      회
-                  </div>
-                  <div class="ChallengeCard_info_participants">
-                      <span class="ChallengeCard_participant">
-                          <img alt="participant" srcSet="http://images.munto.kr/production-user/1684331739071-photo-k5fkj-27080-0?s=48x48 1x, http://images.munto.kr/production-user/1684331739071-photo-k5fkj-27080-0?s=96x96 2x" src="http://images.munto.kr/production-user/1684331739071-photo-k5fkj-27080-0?s=96x96" class="ChallengeCard_participant_image"/>
-                      </span>
-                      <span class="ChallengeCard_participant">
-                          <img alt="participant" srcSet="http://images.munto.kr/production-user/1684331739071-photo-k5fkj-27080-0?s=48x48 1x, http://images.munto.kr/production-user/1684331739071-photo-k5fkj-27080-0?s=96x96 2x" src="http://images.munto.kr/production-user/1684331739071-photo-k5fkj-27080-0?s=96x96" class="ChallengeCard_participant_image"/>
-                      </span>
-                      <span class="ChallengeCard_participant">
-                          <img alt="participant" srcSet="http://images.munto.kr/production-user/1684331739071-photo-k5fkj-27080-0?s=48x48 1x, http://images.munto.kr/production-user/1684331739071-photo-k5fkj-27080-0?s=96x96 2x" src="http://images.munto.kr/production-user/1684331739071-photo-k5fkj-27080-0?s=96x96" class="ChallengeCard_participant_image"/>
-                      </span>
-                      <span class="ChallengeCard_participant">
-                          <img alt="participant" srcSet="http://images.munto.kr/production-user/1684331739071-photo-k5fkj-27080-0?s=48x48 1x, http://images.munto.kr/production-user/1684331739071-photo-k5fkj-27080-0?s=96x96 2x" src="http://images.munto.kr/production-user/1684331739071-photo-k5fkj-27080-0?s=96x96" class="ChallengeCard_participant_image"/>
-                      </span>
-                      <span class="ChallengeCard_participant">
-                          <img alt="participant" srcSet="http://images.munto.kr/production-user/1684331739071-photo-k5fkj-27080-0?s=48x48 1x, http://images.munto.kr/production-user/1684331739071-photo-k5fkj-27080-0?s=96x96 2x" src="http://images.munto.kr/production-user/1684331739071-photo-k5fkj-27080-0?s=96x96" class="ChallengeCard_participant_image"/>
-                          <img alt="more" srcSet="https://images.munto.kr/munto-web/action_more_24px.svg?s=48x48 1x, https://images.munto.kr/munto-web/action_more_24px.svg?s=96x96 2x" src="https://images.munto.kr/munto-web/action_more_24px.svg?s=96x96" class="ChallengeCard_participant_more"/>
-                      </span>
-                   
-                      <div class="ChallengeCard_member">
-                          <img alt="people" srcSet="https://images.munto.kr/munto-web/ic_info_person_14px.svg?s=16x16 1x, https://images.munto.kr/munto-web/ic_info_person_14px.svg?s=32x32 2x" src="https://images.munto.kr/munto-web/ic_info_person_14px.svg?s=32x32"/>
-                          <div class="ChallengeCard_member_count">66
-                          <!-- -->
-                          /
-                          <!-- -->
-                          99</div>
-                      </div>
-                  </div>
-              </div>
-          </a>
       </div>
-
-      <div class="All_content__card__e">
-          <a class="ChallengeCard_card" href="/detail-challenge?id=1676">
-              <span><figure><img alt="recommemd" srcSet="http://images.munto.kr/socialing-category/cover_category-7_%E1%84%89%E1%85%A5%E1%86%BC%E1%84%8C%E1%85%A1%E1%86%BC%E1%84%8C%E1%85%A1%E1%84%80%E1%85%B5%E1%84%80%E1%85%A8%E1%84%87%E1%85%A1%E1%86%AF_5.png?s=256x256 1x, http://images.munto.kr/socialing-category/cover_category-7_%E1%84%89%E1%85%A5%E1%86%BC%E1%84%8C%E1%85%A1%E1%86%BC%E1%84%8C%E1%85%A1%E1%84%80%E1%85%B5%E1%84%80%E1%85%A8%E1%84%87%E1%85%A1%E1%86%AF_5.png?s=384x384 2x" src="http://images.munto.kr/socialing-category/cover_category-7_%E1%84%89%E1%85%A5%E1%86%BC%E1%84%8C%E1%85%A1%E1%86%BC%E1%84%8C%E1%85%A1%E1%84%80%E1%85%B5%E1%84%80%E1%85%A8%E1%84%87%E1%85%A1%E1%86%AF_5.png?s=384x384" class="ChallengeCard_card_image" /></figure></span>
-              <div class="ChallengeCard_info">
-                  <div class="ChallengeCard_info__subject">
-                      <div class="ChallengeCard_tag">자존감</div>
-                  </div>
-                  <div class="ChallengeCard_info__title">[감사일기] 매일 감사하고 다행한 일을 찾아 긍정 습관 만들어요💛</div>
-                  <div class="ChallengeCard_info__describe">
-                      챌린지 ·<img alt="info-calender" srcSet="https://images.munto.kr/munto-web/ic_info_calender.svg?s=32x32 1x, https://images.munto.kr/munto-web/ic_info_calender.svg?s=48x48 2x" src="https://images.munto.kr/munto-web/ic_info_calender.svg?s=48x48" class="ChallengeCard_info_calender"/>
-                      5.21(일)
-                      <!-- -->
-                      · 
-                      <!-- -->
-                      3주
-                      <!-- -->
-                      간<img alt="info-check" srcSet="https://images.munto.kr/munto-web/ic_action_check_off_24px.svg?s=32x32 1x, https://images.munto.kr/munto-web/ic_action_check_off_24px.svg?s=48x48 2x" src="https://images.munto.kr/munto-web/ic_action_check_off_24px.svg?s=48x48" class="ChallengeCard_info_check"/>주 
-                      <!-- -->
-                      5
-                      <!-- -->
-                      회
-                  </div>
-                  <div class="ChallengeCard_info_participants">
-                      <span class="ChallengeCard_participant">
-                          <img alt="participant" srcSet="http://images.munto.kr/production-user/1684331739071-photo-k5fkj-27080-0?s=48x48 1x, http://images.munto.kr/production-user/1684331739071-photo-k5fkj-27080-0?s=96x96 2x" src="http://images.munto.kr/production-user/1684331739071-photo-k5fkj-27080-0?s=96x96" class="ChallengeCard_participant_image"/>
-                      </span>
-                      <span class="ChallengeCard_participant">
-                          <img alt="participant" srcSet="http://images.munto.kr/production-user/1684331739071-photo-k5fkj-27080-0?s=48x48 1x, http://images.munto.kr/production-user/1684331739071-photo-k5fkj-27080-0?s=96x96 2x" src="http://images.munto.kr/production-user/1684331739071-photo-k5fkj-27080-0?s=96x96" class="ChallengeCard_participant_image"/>
-                      </span>
-                      <span class="ChallengeCard_participant">
-                          <img alt="participant" srcSet="http://images.munto.kr/production-user/1684331739071-photo-k5fkj-27080-0?s=48x48 1x, http://images.munto.kr/production-user/1684331739071-photo-k5fkj-27080-0?s=96x96 2x" src="http://images.munto.kr/production-user/1684331739071-photo-k5fkj-27080-0?s=96x96" class="ChallengeCard_participant_image"/>
-                      </span>
-                      <span class="ChallengeCard_participant">
-                          <img alt="participant" srcSet="http://images.munto.kr/production-user/1684331739071-photo-k5fkj-27080-0?s=48x48 1x, http://images.munto.kr/production-user/1684331739071-photo-k5fkj-27080-0?s=96x96 2x" src="http://images.munto.kr/production-user/1684331739071-photo-k5fkj-27080-0?s=96x96" class="ChallengeCard_participant_image"/>
-                      </span>
-                      <span class="ChallengeCard_participant">
-                          <img alt="participant" srcSet="http://images.munto.kr/production-user/1684331739071-photo-k5fkj-27080-0?s=48x48 1x, http://images.munto.kr/production-user/1684331739071-photo-k5fkj-27080-0?s=96x96 2x" src="http://images.munto.kr/production-user/1684331739071-photo-k5fkj-27080-0?s=96x96" class="ChallengeCard_participant_image"/>
-                          <img alt="more" srcSet="https://images.munto.kr/munto-web/action_more_24px.svg?s=48x48 1x, https://images.munto.kr/munto-web/action_more_24px.svg?s=96x96 2x" src="https://images.munto.kr/munto-web/action_more_24px.svg?s=96x96" class="ChallengeCard_participant_more"/>
-                      </span>
-                   
-                      <div class="ChallengeCard_member">
-                          <img alt="people" srcSet="https://images.munto.kr/munto-web/ic_info_person_14px.svg?s=16x16 1x, https://images.munto.kr/munto-web/ic_info_person_14px.svg?s=32x32 2x" src="https://images.munto.kr/munto-web/ic_info_person_14px.svg?s=32x32"/>
-                          <div class="ChallengeCard_member_count">66
-                          <!-- -->
-                          /
-                          <!-- -->
-                          99</div>
-                      </div>
-                  </div>
-              </div>
-          </a>
       </div>
-
-      <div class="All_content__card__e" >
-          <a class="ChallengeCard_card" href="/detail-challenge?id=1676">
-              <span><figure><img alt="recommemd" srcSet="http://images.munto.kr/socialing-category/cover_category-7_%E1%84%89%E1%85%A5%E1%86%BC%E1%84%8C%E1%85%A1%E1%86%BC%E1%84%8C%E1%85%A1%E1%84%80%E1%85%B5%E1%84%80%E1%85%A8%E1%84%87%E1%85%A1%E1%86%AF_5.png?s=256x256 1x, http://images.munto.kr/socialing-category/cover_category-7_%E1%84%89%E1%85%A5%E1%86%BC%E1%84%8C%E1%85%A1%E1%86%BC%E1%84%8C%E1%85%A1%E1%84%80%E1%85%B5%E1%84%80%E1%85%A8%E1%84%87%E1%85%A1%E1%86%AF_5.png?s=384x384 2x" src="http://images.munto.kr/socialing-category/cover_category-7_%E1%84%89%E1%85%A5%E1%86%BC%E1%84%8C%E1%85%A1%E1%86%BC%E1%84%8C%E1%85%A1%E1%84%80%E1%85%B5%E1%84%80%E1%85%A8%E1%84%87%E1%85%A1%E1%86%AF_5.png?s=384x384" class="ChallengeCard_card_image" /></figure></span>
-              <div class="ChallengeCard_info">
-                  <div class="ChallengeCard_info__subject">
-                      <div class="ChallengeCard_tag">자존감</div>
-                  </div>
-                  <div class="ChallengeCard_info__title">[감사일기] 매일 감사하고 다행한 일을 찾아 긍정 습관 만들어요💛</div>
-                  <div class="ChallengeCard_info__describe">
-                      챌린지 ·<img alt="info-calender" srcSet="https://images.munto.kr/munto-web/ic_info_calender.svg?s=32x32 1x, https://images.munto.kr/munto-web/ic_info_calender.svg?s=48x48 2x" src="https://images.munto.kr/munto-web/ic_info_calender.svg?s=48x48" class="ChallengeCard_info_calender"/>
-                      5.21(일)
-                      <!-- -->
-                      · 
-                      <!-- -->
-                      3주
-                      <!-- -->
-                      간<img alt="info-check" srcSet="https://images.munto.kr/munto-web/ic_action_check_off_24px.svg?s=32x32 1x, https://images.munto.kr/munto-web/ic_action_check_off_24px.svg?s=48x48 2x" src="https://images.munto.kr/munto-web/ic_action_check_off_24px.svg?s=48x48" class="ChallengeCard_info_check"/>주 
-                      <!-- -->
-                      5
-                      <!-- -->
-                      회
-                  </div>
-                  <div class="ChallengeCard_info_participants">
-                      <span class="ChallengeCard_participant">
-                          <img alt="participant" srcSet="http://images.munto.kr/production-user/1684331739071-photo-k5fkj-27080-0?s=48x48 1x, http://images.munto.kr/production-user/1684331739071-photo-k5fkj-27080-0?s=96x96 2x" src="http://images.munto.kr/production-user/1684331739071-photo-k5fkj-27080-0?s=96x96" class="ChallengeCard_participant_image"/>
-                      </span>
-                      <span class="ChallengeCard_participant">
-                          <img alt="participant" srcSet="http://images.munto.kr/production-user/1684331739071-photo-k5fkj-27080-0?s=48x48 1x, http://images.munto.kr/production-user/1684331739071-photo-k5fkj-27080-0?s=96x96 2x" src="http://images.munto.kr/production-user/1684331739071-photo-k5fkj-27080-0?s=96x96" class="ChallengeCard_participant_image"/>
-                      </span>
-                      <span class="ChallengeCard_participant">
-                          <img alt="participant" srcSet="http://images.munto.kr/production-user/1684331739071-photo-k5fkj-27080-0?s=48x48 1x, http://images.munto.kr/production-user/1684331739071-photo-k5fkj-27080-0?s=96x96 2x" src="http://images.munto.kr/production-user/1684331739071-photo-k5fkj-27080-0?s=96x96" class="ChallengeCard_participant_image"/>
-                      </span>
-                      <span class="ChallengeCard_participant">
-                          <img alt="participant" srcSet="http://images.munto.kr/production-user/1684331739071-photo-k5fkj-27080-0?s=48x48 1x, http://images.munto.kr/production-user/1684331739071-photo-k5fkj-27080-0?s=96x96 2x" src="http://images.munto.kr/production-user/1684331739071-photo-k5fkj-27080-0?s=96x96" class="ChallengeCard_participant_image"/>
-                      </span>
-                      <span class="ChallengeCard_participant">
-                          <img alt="participant" srcSet="http://images.munto.kr/production-user/1684331739071-photo-k5fkj-27080-0?s=48x48 1x, http://images.munto.kr/production-user/1684331739071-photo-k5fkj-27080-0?s=96x96 2x" src="http://images.munto.kr/production-user/1684331739071-photo-k5fkj-27080-0?s=96x96" class="ChallengeCard_participant_image"/>
-                          <img alt="more" srcSet="https://images.munto.kr/munto-web/action_more_24px.svg?s=48x48 1x, https://images.munto.kr/munto-web/action_more_24px.svg?s=96x96 2x" src="https://images.munto.kr/munto-web/action_more_24px.svg?s=96x96" class="ChallengeCard_participant_more"/>
-                      </span>
-                   
-                      <div class="ChallengeCard_member">
-                          <img alt="people" srcSet="https://images.munto.kr/munto-web/ic_info_person_14px.svg?s=16x16 1x, https://images.munto.kr/munto-web/ic_info_person_14px.svg?s=32x32 2x" src="https://images.munto.kr/munto-web/ic_info_person_14px.svg?s=32x32"/>
-                          <div class="ChallengeCard_member_count">66
-                          <!-- -->
-                          /
-                          <!-- -->
-                          99</div>
-                      </div>
-                  </div>
-              </div>
-          </a>
       </div>
-
           <a class="Socialing_more" href="<%=ctxPath%>/challenge/challenge_all"><div class="Socialing_more__text" style="color: black;">더보기<img src="https://images.munto.kr/munto-web/ic_arrow_right_14px.svg"></div></a>
-
-
-
-      </div>
-      </div>
-      </div>
-      </div>
 
       <div class="challenge_title_e">
         <div class="challenge_title_h">
@@ -812,232 +821,20 @@ a:hover { text-decoration: none;}
         <div class="challenge_title_g">비슷한 관심사를 가진<br/>멤버들의 취향 피드 구독하기</div>
       </div>
     
-    <div class="All_content__card__a">
-      <div class="All_content__card__b">
-          <div class="All_content__card__c">
-          <div class="All_content__card__d">
+    <div class="All_content__card__e">
+      <div class="All_content__card__f">
+          <div class="All_content__card__g">
+          <div class="All_content__card__h" id="All_content__card__h">
     
-            <div class="All_content__card__e">
-              <a class="ChallengeCard_card" href="/detail-challenge?id=1676">
-              <span><figure><img alt="recommemd" srcSet="http://images.munto.kr/socialing-category/cover_category-7_%E1%84%89%E1%85%A5%E1%86%BC%E1%84%8C%E1%85%A1%E1%86%BC%E1%84%8C%E1%85%A1%E1%84%80%E1%85%B5%E1%84%80%E1%85%A8%E1%84%87%E1%85%A1%E1%86%AF_5.png?s=256x256 1x, http://images.munto.kr/socialing-category/cover_category-7_%E1%84%89%E1%85%A5%E1%86%BC%E1%84%8C%E1%85%A1%E1%86%BC%E1%84%8C%E1%85%A1%E1%84%80%E1%85%B5%E1%84%80%E1%85%A8%E1%84%87%E1%85%A1%E1%86%AF_5.png?s=384x384 2x" src="http://images.munto.kr/socialing-category/cover_category-7_%E1%84%89%E1%85%A5%E1%86%BC%E1%84%8C%E1%85%A1%E1%86%BC%E1%84%8C%E1%85%A1%E1%84%80%E1%85%B5%E1%84%80%E1%85%A8%E1%84%87%E1%85%A1%E1%86%AF_5.png?s=384x384" class="ChallengeCard_card_image" /></figure></span>
-                  <div class="ChallengeCard_info">
-                      <div class="ChallengeCard_info__subject">
-                          <div class="ChallengeCard_tag">자존감</div>
-                      </div>
-                      <div class="ChallengeCard_info__title">[감사일기] 매일 감사하고 다행한 일을 찾아 긍정 습관 만들어요💛</div>
-                      <div class="ChallengeCard_info__describe">
-                          챌린지 ·<img alt="info-calender" srcSet="https://images.munto.kr/munto-web/ic_info_calender.svg?s=32x32 1x, https://images.munto.kr/munto-web/ic_info_calender.svg?s=48x48 2x" src="https://images.munto.kr/munto-web/ic_info_calender.svg?s=48x48" class="ChallengeCard_info_calender"/>
-                          5.21(일)
-                          <!-- -->
-                          · 
-                          <!-- -->
-                          3주
-                          <!-- -->
-                          간<img alt="info-check" srcSet="https://images.munto.kr/munto-web/ic_action_check_off_24px.svg?s=32x32 1x, https://images.munto.kr/munto-web/ic_action_check_off_24px.svg?s=48x48 2x" src="https://images.munto.kr/munto-web/ic_action_check_off_24px.svg?s=48x48" class="ChallengeCard_info_check"/>주 
-                          <!-- -->
-                          5
-                          <!-- -->
-                          회
-                      </div>
-                      <div class="ChallengeCard_info_participants">
-                          <span class="ChallengeCard_participant">
-                              <img alt="participant" srcSet="http://images.munto.kr/production-user/1684331739071-photo-k5fkj-27080-0?s=48x48 1x, http://images.munto.kr/production-user/1684331739071-photo-k5fkj-27080-0?s=96x96 2x" src="http://images.munto.kr/production-user/1684331739071-photo-k5fkj-27080-0?s=96x96" class="ChallengeCard_participant_image"/>
-                          </span>
-                          <span class="ChallengeCard_participant">
-                              <img alt="participant" srcSet="http://images.munto.kr/production-user/1684331739071-photo-k5fkj-27080-0?s=48x48 1x, http://images.munto.kr/production-user/1684331739071-photo-k5fkj-27080-0?s=96x96 2x" src="http://images.munto.kr/production-user/1684331739071-photo-k5fkj-27080-0?s=96x96" class="ChallengeCard_participant_image"/>
-                          </span>
-                          <span class="ChallengeCard_participant">
-                              <img alt="participant" srcSet="http://images.munto.kr/production-user/1684331739071-photo-k5fkj-27080-0?s=48x48 1x, http://images.munto.kr/production-user/1684331739071-photo-k5fkj-27080-0?s=96x96 2x" src="http://images.munto.kr/production-user/1684331739071-photo-k5fkj-27080-0?s=96x96" class="ChallengeCard_participant_image"/>
-                          </span>
-                          <span class="ChallengeCard_participant">
-                              <img alt="participant" srcSet="http://images.munto.kr/production-user/1684331739071-photo-k5fkj-27080-0?s=48x48 1x, http://images.munto.kr/production-user/1684331739071-photo-k5fkj-27080-0?s=96x96 2x" src="http://images.munto.kr/production-user/1684331739071-photo-k5fkj-27080-0?s=96x96" class="ChallengeCard_participant_image"/>
-                          </span>
-                          <span class="ChallengeCard_participant">
-                              <img alt="participant" srcSet="http://images.munto.kr/production-user/1684331739071-photo-k5fkj-27080-0?s=48x48 1x, http://images.munto.kr/production-user/1684331739071-photo-k5fkj-27080-0?s=96x96 2x" src="http://images.munto.kr/production-user/1684331739071-photo-k5fkj-27080-0?s=96x96" class="ChallengeCard_participant_image"/>
-                              <img alt="more" srcSet="https://images.munto.kr/munto-web/action_more_24px.svg?s=48x48 1x, https://images.munto.kr/munto-web/action_more_24px.svg?s=96x96 2x" src="https://images.munto.kr/munto-web/action_more_24px.svg?s=96x96" class="ChallengeCard_participant_more"/>
-                          </span>
-                       
-                          <div class="ChallengeCard_member">
-                              <img alt="people" srcSet="https://images.munto.kr/munto-web/ic_info_person_14px.svg?s=16x16 1x, https://images.munto.kr/munto-web/ic_info_person_14px.svg?s=32x32 2x" src="https://images.munto.kr/munto-web/ic_info_person_14px.svg?s=32x32"/>
-                              <div class="ChallengeCard_member_count">66
-                              <!-- -->
-                              /
-                              <!-- -->
-                              99</div>
-                          </div>
-                      </div>
-                  </div>
-              </a>
-          </div>
-    
-          <div class="All_content__card__e" >
-              <a class="ChallengeCard_card" href="/detail-challenge?id=1676">
-                  <span><figure><img alt="recommemd" srcSet="http://images.munto.kr/socialing-category/cover_category-7_%E1%84%89%E1%85%A5%E1%86%BC%E1%84%8C%E1%85%A1%E1%86%BC%E1%84%8C%E1%85%A1%E1%84%80%E1%85%B5%E1%84%80%E1%85%A8%E1%84%87%E1%85%A1%E1%86%AF_5.png?s=256x256 1x, http://images.munto.kr/socialing-category/cover_category-7_%E1%84%89%E1%85%A5%E1%86%BC%E1%84%8C%E1%85%A1%E1%86%BC%E1%84%8C%E1%85%A1%E1%84%80%E1%85%B5%E1%84%80%E1%85%A8%E1%84%87%E1%85%A1%E1%86%AF_5.png?s=384x384 2x" src="http://images.munto.kr/socialing-category/cover_category-7_%E1%84%89%E1%85%A5%E1%86%BC%E1%84%8C%E1%85%A1%E1%86%BC%E1%84%8C%E1%85%A1%E1%84%80%E1%85%B5%E1%84%80%E1%85%A8%E1%84%87%E1%85%A1%E1%86%AF_5.png?s=384x384" class="ChallengeCard_card_image" /></figure></span>
-                  <div class="ChallengeCard_info">
-                      <div class="ChallengeCard_info__subject">
-                          <div class="ChallengeCard_tag">자존감</div>
-                      </div>
-                      <div class="ChallengeCard_info__title">[감사일기] 매일 감사하고 다행한 일을 찾아 긍정 습관 만들어요💛</div>
-                      <div class="ChallengeCard_info__describe">
-                          챌린지 ·<img alt="info-calender" srcSet="https://images.munto.kr/munto-web/ic_info_calender.svg?s=32x32 1x, https://images.munto.kr/munto-web/ic_info_calender.svg?s=48x48 2x" src="https://images.munto.kr/munto-web/ic_info_calender.svg?s=48x48" class="ChallengeCard_info_calender"/>
-                          5.21(일)
-                          <!-- -->
-                          · 
-                          <!-- -->
-                          3주
-                          <!-- -->
-                          간<img alt="info-check" srcSet="https://images.munto.kr/munto-web/ic_action_check_off_24px.svg?s=32x32 1x, https://images.munto.kr/munto-web/ic_action_check_off_24px.svg?s=48x48 2x" src="https://images.munto.kr/munto-web/ic_action_check_off_24px.svg?s=48x48" class="ChallengeCard_info_check"/>주 
-                          <!-- -->
-                          5
-                          <!-- -->
-                          회
-                      </div>
-                      <div class="ChallengeCard_info_participants">
-                          <span class="ChallengeCard_participant">
-                              <img alt="participant" srcSet="http://images.munto.kr/production-user/1684331739071-photo-k5fkj-27080-0?s=48x48 1x, http://images.munto.kr/production-user/1684331739071-photo-k5fkj-27080-0?s=96x96 2x" src="http://images.munto.kr/production-user/1684331739071-photo-k5fkj-27080-0?s=96x96" class="ChallengeCard_participant_image"/>
-                          </span>
-                          <span class="ChallengeCard_participant">
-                              <img alt="participant" srcSet="http://images.munto.kr/production-user/1684331739071-photo-k5fkj-27080-0?s=48x48 1x, http://images.munto.kr/production-user/1684331739071-photo-k5fkj-27080-0?s=96x96 2x" src="http://images.munto.kr/production-user/1684331739071-photo-k5fkj-27080-0?s=96x96" class="ChallengeCard_participant_image"/>
-                          </span>
-                          <span class="ChallengeCard_participant">
-                              <img alt="participant" srcSet="http://images.munto.kr/production-user/1684331739071-photo-k5fkj-27080-0?s=48x48 1x, http://images.munto.kr/production-user/1684331739071-photo-k5fkj-27080-0?s=96x96 2x" src="http://images.munto.kr/production-user/1684331739071-photo-k5fkj-27080-0?s=96x96" class="ChallengeCard_participant_image"/>
-                          </span>
-                          <span class="ChallengeCard_participant">
-                              <img alt="participant" srcSet="http://images.munto.kr/production-user/1684331739071-photo-k5fkj-27080-0?s=48x48 1x, http://images.munto.kr/production-user/1684331739071-photo-k5fkj-27080-0?s=96x96 2x" src="http://images.munto.kr/production-user/1684331739071-photo-k5fkj-27080-0?s=96x96" class="ChallengeCard_participant_image"/>
-                          </span>
-                          <span class="ChallengeCard_participant">
-                              <img alt="participant" srcSet="http://images.munto.kr/production-user/1684331739071-photo-k5fkj-27080-0?s=48x48 1x, http://images.munto.kr/production-user/1684331739071-photo-k5fkj-27080-0?s=96x96 2x" src="http://images.munto.kr/production-user/1684331739071-photo-k5fkj-27080-0?s=96x96" class="ChallengeCard_participant_image"/>
-                              <img alt="more" srcSet="https://images.munto.kr/munto-web/action_more_24px.svg?s=48x48 1x, https://images.munto.kr/munto-web/action_more_24px.svg?s=96x96 2x" src="https://images.munto.kr/munto-web/action_more_24px.svg?s=96x96" class="ChallengeCard_participant_more"/>
-                          </span>
-                       
-                          <div class="ChallengeCard_member">
-                              <img alt="people" srcSet="https://images.munto.kr/munto-web/ic_info_person_14px.svg?s=16x16 1x, https://images.munto.kr/munto-web/ic_info_person_14px.svg?s=32x32 2x" src="https://images.munto.kr/munto-web/ic_info_person_14px.svg?s=32x32"/>
-                              <div class="ChallengeCard_member_count">66
-                              <!-- -->
-                              /
-                              <!-- -->
-                              99</div>
-                          </div>
-                      </div>
-                  </div>
-              </a>
-          </div>
-    
-          <div class="All_content__card__e">
-              <a class="ChallengeCard_card" href="/detail-challenge?id=1676">
-                  <span><figure><img alt="recommemd" srcSet="http://images.munto.kr/socialing-category/cover_category-7_%E1%84%89%E1%85%A5%E1%86%BC%E1%84%8C%E1%85%A1%E1%86%BC%E1%84%8C%E1%85%A1%E1%84%80%E1%85%B5%E1%84%80%E1%85%A8%E1%84%87%E1%85%A1%E1%86%AF_5.png?s=256x256 1x, http://images.munto.kr/socialing-category/cover_category-7_%E1%84%89%E1%85%A5%E1%86%BC%E1%84%8C%E1%85%A1%E1%86%BC%E1%84%8C%E1%85%A1%E1%84%80%E1%85%B5%E1%84%80%E1%85%A8%E1%84%87%E1%85%A1%E1%86%AF_5.png?s=384x384 2x" src="http://images.munto.kr/socialing-category/cover_category-7_%E1%84%89%E1%85%A5%E1%86%BC%E1%84%8C%E1%85%A1%E1%86%BC%E1%84%8C%E1%85%A1%E1%84%80%E1%85%B5%E1%84%80%E1%85%A8%E1%84%87%E1%85%A1%E1%86%AF_5.png?s=384x384" class="ChallengeCard_card_image" /></figure></span>
-                  <div class="ChallengeCard_info">
-                      <div class="ChallengeCard_info__subject">
-                          <div class="ChallengeCard_tag">자존감</div>
-                      </div>
-                      <div class="ChallengeCard_info__title">[감사일기] 매일 감사하고 다행한 일을 찾아 긍정 습관 만들어요💛</div>
-                      <div class="ChallengeCard_info__describe">
-                          챌린지 ·<img alt="info-calender" srcSet="https://images.munto.kr/munto-web/ic_info_calender.svg?s=32x32 1x, https://images.munto.kr/munto-web/ic_info_calender.svg?s=48x48 2x" src="https://images.munto.kr/munto-web/ic_info_calender.svg?s=48x48" class="ChallengeCard_info_calender"/>
-                          5.21(일)
-                          <!-- -->
-                          · 
-                          <!-- -->
-                          3주
-                          <!-- -->
-                          간<img alt="info-check" srcSet="https://images.munto.kr/munto-web/ic_action_check_off_24px.svg?s=32x32 1x, https://images.munto.kr/munto-web/ic_action_check_off_24px.svg?s=48x48 2x" src="https://images.munto.kr/munto-web/ic_action_check_off_24px.svg?s=48x48" class="ChallengeCard_info_check"/>주 
-                          <!-- -->
-                          5
-                          <!-- -->
-                          회
-                      </div>
-                      <div class="ChallengeCard_info_participants">
-                          <span class="ChallengeCard_participant">
-                              <img alt="participant" srcSet="http://images.munto.kr/production-user/1684331739071-photo-k5fkj-27080-0?s=48x48 1x, http://images.munto.kr/production-user/1684331739071-photo-k5fkj-27080-0?s=96x96 2x" src="http://images.munto.kr/production-user/1684331739071-photo-k5fkj-27080-0?s=96x96" class="ChallengeCard_participant_image"/>
-                          </span>
-                          <span class="ChallengeCard_participant">
-                              <img alt="participant" srcSet="http://images.munto.kr/production-user/1684331739071-photo-k5fkj-27080-0?s=48x48 1x, http://images.munto.kr/production-user/1684331739071-photo-k5fkj-27080-0?s=96x96 2x" src="http://images.munto.kr/production-user/1684331739071-photo-k5fkj-27080-0?s=96x96" class="ChallengeCard_participant_image"/>
-                          </span>
-                          <span class="ChallengeCard_participant">
-                              <img alt="participant" srcSet="http://images.munto.kr/production-user/1684331739071-photo-k5fkj-27080-0?s=48x48 1x, http://images.munto.kr/production-user/1684331739071-photo-k5fkj-27080-0?s=96x96 2x" src="http://images.munto.kr/production-user/1684331739071-photo-k5fkj-27080-0?s=96x96" class="ChallengeCard_participant_image"/>
-                          </span>
-                          <span class="ChallengeCard_participant">
-                              <img alt="participant" srcSet="http://images.munto.kr/production-user/1684331739071-photo-k5fkj-27080-0?s=48x48 1x, http://images.munto.kr/production-user/1684331739071-photo-k5fkj-27080-0?s=96x96 2x" src="http://images.munto.kr/production-user/1684331739071-photo-k5fkj-27080-0?s=96x96" class="ChallengeCard_participant_image"/>
-                          </span>
-                          <span class="ChallengeCard_participant">
-                              <img alt="participant" srcSet="http://images.munto.kr/production-user/1684331739071-photo-k5fkj-27080-0?s=48x48 1x, http://images.munto.kr/production-user/1684331739071-photo-k5fkj-27080-0?s=96x96 2x" src="http://images.munto.kr/production-user/1684331739071-photo-k5fkj-27080-0?s=96x96" class="ChallengeCard_participant_image"/>
-                              <img alt="more" srcSet="https://images.munto.kr/munto-web/action_more_24px.svg?s=48x48 1x, https://images.munto.kr/munto-web/action_more_24px.svg?s=96x96 2x" src="https://images.munto.kr/munto-web/action_more_24px.svg?s=96x96" class="ChallengeCard_participant_more"/>
-                          </span>
-                       
-                          <div class="ChallengeCard_member">
-                              <img alt="people" srcSet="https://images.munto.kr/munto-web/ic_info_person_14px.svg?s=16x16 1x, https://images.munto.kr/munto-web/ic_info_person_14px.svg?s=32x32 2x" src="https://images.munto.kr/munto-web/ic_info_person_14px.svg?s=32x32"/>
-                              <div class="ChallengeCard_member_count">66
-                              <!-- -->
-                              /
-                              <!-- -->
-                              99</div>
-                          </div>
-                      </div>
-                  </div>
-              </a>
-          </div>
-    
-          <div class="All_content__card__e" >
-              <a class="ChallengeCard_card" href="/detail-challenge?id=1676">
-                  <span><figure><img alt="recommemd" srcSet="http://images.munto.kr/socialing-category/cover_category-7_%E1%84%89%E1%85%A5%E1%86%BC%E1%84%8C%E1%85%A1%E1%86%BC%E1%84%8C%E1%85%A1%E1%84%80%E1%85%B5%E1%84%80%E1%85%A8%E1%84%87%E1%85%A1%E1%86%AF_5.png?s=256x256 1x, http://images.munto.kr/socialing-category/cover_category-7_%E1%84%89%E1%85%A5%E1%86%BC%E1%84%8C%E1%85%A1%E1%86%BC%E1%84%8C%E1%85%A1%E1%84%80%E1%85%B5%E1%84%80%E1%85%A8%E1%84%87%E1%85%A1%E1%86%AF_5.png?s=384x384 2x" src="http://images.munto.kr/socialing-category/cover_category-7_%E1%84%89%E1%85%A5%E1%86%BC%E1%84%8C%E1%85%A1%E1%86%BC%E1%84%8C%E1%85%A1%E1%84%80%E1%85%B5%E1%84%80%E1%85%A8%E1%84%87%E1%85%A1%E1%86%AF_5.png?s=384x384" class="ChallengeCard_card_image" /></figure></span>
-                  <div class="ChallengeCard_info">
-                      <div class="ChallengeCard_info__subject">
-                          <div class="ChallengeCard_tag">자존감</div>
-                      </div>
-                      <div class="ChallengeCard_info__title">[감사일기] 매일 감사하고 다행한 일을 찾아 긍정 습관 만들어요💛</div>
-                      <div class="ChallengeCard_info__describe">
-                          챌린지 ·<img alt="info-calender" srcSet="https://images.munto.kr/munto-web/ic_info_calender.svg?s=32x32 1x, https://images.munto.kr/munto-web/ic_info_calender.svg?s=48x48 2x" src="https://images.munto.kr/munto-web/ic_info_calender.svg?s=48x48" class="ChallengeCard_info_calender"/>
-                          5.21(일)
-                          <!-- -->
-                          · 
-                          <!-- -->
-                          3주
-                          <!-- -->
-                          간<img alt="info-check" srcSet="https://images.munto.kr/munto-web/ic_action_check_off_24px.svg?s=32x32 1x, https://images.munto.kr/munto-web/ic_action_check_off_24px.svg?s=48x48 2x" src="https://images.munto.kr/munto-web/ic_action_check_off_24px.svg?s=48x48" class="ChallengeCard_info_check"/>주 
-                          <!-- -->
-                          5
-                          <!-- -->
-                          회
-                      </div>
-                      <div class="ChallengeCard_info_participants">
-                          <span class="ChallengeCard_participant">
-                              <img alt="participant" srcSet="http://images.munto.kr/production-user/1684331739071-photo-k5fkj-27080-0?s=48x48 1x, http://images.munto.kr/production-user/1684331739071-photo-k5fkj-27080-0?s=96x96 2x" src="http://images.munto.kr/production-user/1684331739071-photo-k5fkj-27080-0?s=96x96" class="ChallengeCard_participant_image"/>
-                          </span>
-                          <span class="ChallengeCard_participant">
-                              <img alt="participant" srcSet="http://images.munto.kr/production-user/1684331739071-photo-k5fkj-27080-0?s=48x48 1x, http://images.munto.kr/production-user/1684331739071-photo-k5fkj-27080-0?s=96x96 2x" src="http://images.munto.kr/production-user/1684331739071-photo-k5fkj-27080-0?s=96x96" class="ChallengeCard_participant_image"/>
-                          </span>
-                          <span class="ChallengeCard_participant">
-                              <img alt="participant" srcSet="http://images.munto.kr/production-user/1684331739071-photo-k5fkj-27080-0?s=48x48 1x, http://images.munto.kr/production-user/1684331739071-photo-k5fkj-27080-0?s=96x96 2x" src="http://images.munto.kr/production-user/1684331739071-photo-k5fkj-27080-0?s=96x96" class="ChallengeCard_participant_image"/>
-                          </span>
-                          <span class="ChallengeCard_participant">
-                              <img alt="participant" srcSet="http://images.munto.kr/production-user/1684331739071-photo-k5fkj-27080-0?s=48x48 1x, http://images.munto.kr/production-user/1684331739071-photo-k5fkj-27080-0?s=96x96 2x" src="http://images.munto.kr/production-user/1684331739071-photo-k5fkj-27080-0?s=96x96" class="ChallengeCard_participant_image"/>
-                          </span>
-                          <span class="ChallengeCard_participant">
-                              <img alt="participant" srcSet="http://images.munto.kr/production-user/1684331739071-photo-k5fkj-27080-0?s=48x48 1x, http://images.munto.kr/production-user/1684331739071-photo-k5fkj-27080-0?s=96x96 2x" src="http://images.munto.kr/production-user/1684331739071-photo-k5fkj-27080-0?s=96x96" class="ChallengeCard_participant_image"/>
-                              <img alt="more" srcSet="https://images.munto.kr/munto-web/action_more_24px.svg?s=48x48 1x, https://images.munto.kr/munto-web/action_more_24px.svg?s=96x96 2x" src="https://images.munto.kr/munto-web/action_more_24px.svg?s=96x96" class="ChallengeCard_participant_more"/>
-                          </span>
-                       
-                          <div class="ChallengeCard_member">
-                              <img alt="people" srcSet="https://images.munto.kr/munto-web/ic_info_person_14px.svg?s=16x16 1x, https://images.munto.kr/munto-web/ic_info_person_14px.svg?s=32x32 2x" src="https://images.munto.kr/munto-web/ic_info_person_14px.svg?s=32x32"/>
-                              <div class="ChallengeCard_member_count">66
-                              <!-- -->
-                              /
-                              <!-- -->
-                              99</div>
-                          </div>
-                      </div>
-                  </div>
-              </a>
-          </div>
-    
-          <a class="Socialing_more" href="<%=ctxPath%>/challenge/challenge_all"><div class="Socialing_more__text" style="color: black;">더보기<img src="https://images.munto.kr/munto-web/ic_arrow_right_14px.svg"></div></a>
-    
-    
+            
+   
     
           </div>
           </div>
           </div>
           </div>
+                <a class="Socialing_more" href="<%=ctxPath%>/lounge/loungeList"><div class="Socialing_more__text" style="color: black;">더보기<img src="https://images.munto.kr/munto-web/ic_arrow_right_14px.svg"></div></a>
       
     
-
+</div>
   
