@@ -155,5 +155,8 @@ public interface InterMapper {
 	// 챌린지 삭제하기 완료요청
 	int challengedel(Map<String, String> paraMap);
 
+	// 라운지 리스트 불러오기
+	List<LoungeBoardDTO> index_loungeList();
+
 
 }

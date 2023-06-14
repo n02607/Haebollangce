@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.sist.haebollangce.challenge.dto.ChallengeDTO;
+import com.sist.haebollangce.lounge.model.LoungeBoardDTO;
 
 public interface InterChallengeDAO {
 
@@ -47,4 +48,7 @@ public interface InterChallengeDAO {
 
 	// 챌린지 삭제하기 완료요청
 	int challengedel(Map<String, String> paraMap);
+
+	// 라운지 리스트 불러오기
+	List<LoungeBoardDTO> index_loungeList();
 }

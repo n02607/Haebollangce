@@ -10,6 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.sist.haebollangce.challenge.dao.InterChallengeDAO;
 import com.sist.haebollangce.challenge.dao.challengeVO;
 import com.sist.haebollangce.challenge.dto.ChallengeDTO;
+import com.sist.haebollangce.lounge.model.LoungeBoardDTO;
 
 @Service
 public class ChallengeService implements InterChallengeService {
@@ -119,5 +120,14 @@ public class ChallengeService implements InterChallengeService {
 		int n =	dao.challengedel(paraMap);
 		
 		return n;
+	}
+
+	// 라운지 리스트 불러오기
+	@Override
+	public List<LoungeBoardDTO> index_loungeList() {
+		
+		List<LoungeBoardDTO> index_loungeList = dao.index_loungeList();
+		
+		return index_loungeList;
 	}
 }

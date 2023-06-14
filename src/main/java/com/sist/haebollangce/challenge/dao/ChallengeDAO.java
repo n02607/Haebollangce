@@ -8,6 +8,7 @@ import org.springframework.stereotype.Repository;
 
 import com.sist.haebollangce.challenge.dto.ChallengeDTO;
 import com.sist.haebollangce.common.mapper.InterMapper;
+import com.sist.haebollangce.lounge.model.LoungeBoardDTO;
 
 @Repository
 public class ChallengeDAO implements InterChallengeDAO {
@@ -115,5 +116,12 @@ public class ChallengeDAO implements InterChallengeDAO {
 		int n = mapper.challengedel(paraMap);
 		
 		return n;
+	}
+
+	// 라운지 리스트 불러오기
+	@Override
+	public List<LoungeBoardDTO> index_loungeList() {
+		
+		return mapper.index_loungeList();
 	}
 }
