@@ -20,12 +20,12 @@
 							    align-items: center;
 							    flex-direction: column;
 							    border: 1px gray solid; 
-							    max-width: 2000px;
+							    max-width: 1200px;
 							    width: 80%;
 							    height: 90%;
 							    margin: 0 auto;}
 	div {
-		border: 1px gray solid; 
+		border: 0px gray solid; 
 		}
 		
 	.detail_challenge_content {
@@ -66,7 +66,8 @@
 	    width: calc(100% - 28px);
 	    border-radius: 16px;
 	    top: -100px;
-    		height: 250px;
+    		height: 300px;
+    		overflow: inherit;
 	    
 	}
 	
@@ -75,7 +76,7 @@
     		height: auto;
 	    object-fit: cover;
 	    position: relative;
-	    margin-top: -30px;
+	    margin-top: -60px;
 	}
 	
 	.Host_img {
@@ -86,12 +87,13 @@
     		object-fit: cover;
    		border-radius: 50%;
    		margin: auto;
+   		border: solid 1px gray;
 	}
 	
 	.Host_name {
 		font-family: Pretendard;
     		font-weight: bold;
-    		font-size: 14px;
+    		font-size: 20px;
 	    line-height: 12px;
 	    text-align: center;
 	    letter-spacing: -.2px;
@@ -99,7 +101,6 @@
 	    justify-content: center;
 	    align-items: center;
 	    color: #383535;
-	    height: 40px;
 	    white-space: nowrap;
 	    margin-top: 10px;
 	}
@@ -109,13 +110,14 @@
 		width: fit-content;
 	    font-style: normal;
 	    font-weight: 600;
-	    font-size: 25px;
+	    font-size: 35px;
 	    text-align: center;
-	    margin-top: 20px;
+	    margin-top: 40px;
 	}
 	
 	.challenge_frequency {
 		margin-top: 10px;
+		font-size: 20px;
 	}
 	
 	.Commenter_introduce {
@@ -215,6 +217,7 @@
     		line-height: 33px;
     		float: left;
     		color: #242424;
+    		border-bottom: 2px solid;
 	}
 	
 	.Info_notification__detail {
@@ -270,7 +273,6 @@
 		    justify-content: center;
 		    align-items: center;
 		    height: calc(100% - 26px);
-		    border-top: 1px solid #f4f4f4;
 		    
 	}
 	
@@ -278,7 +280,7 @@
 		    display: flex;
 		    justify-content: center;
 		    align-items: center;
-		    width: 100%;
+		    width: 50%;
 		    height: 48px;
 		    background-color: #f43630;
 		    color: #fff;
@@ -294,9 +296,44 @@
 		display: flex;
 	}
 	
+	.square-image-container {
+		border: 1px gray solid; 
+		background-color : #cccccc;
+        position: relative;
+        width: 100%;
+        padding-bottom: 100%;
+        overflow: hidden;
+        border-radius: 12px 12px 0 0;
+    }
+    .square-image-inner {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    .square-image-inner img {
+        max-width: 100%;
+        max-height: 100%;
+        object-fit: contain;
+    }
+    
 	
 
 </style>
+
+<script type="text/javascript">
+
+	function participate() {
+		
+		location.href='<%= ctxPath%>/challenge/join?challenge_code='+${challengedto.challengeCode};
+		
+	}
+
+</script>
 
 <div class="detail_challenge_template">
 		<div class="detail_challenge_content">
@@ -318,6 +355,9 @@
 						<div class="Info_memberCount_info">${challengedto.memberCount} 명</div>
 					</div>
 				</div>
+				<div class="edit_delete"  style="float: right; width:95%;">
+						<button type="button" style="float: right;">삭제</button>
+				</div>
 			</div>
 			<div class="Commenter_introduce">
 				<div class="Commenter_introduce_content">
@@ -337,15 +377,26 @@
 				
 				<div class="row justify-content-around" style="height: auto; display: flex; width: 100%;">
 
-	                 <div class="col-lg-3">
-	                 <img class="img-fluid" src="<%= ctxPath%>/images/${challengedto.successImg}" style=" width: 100%; height: 200px; object-fit: cover; border-radius: 12px 12px 0 0;" alt="인증성공예시" />
-	                 <div style="height: 30px; margin-top: -5px; background-color:green; color:white; text-align:center;  line-height: 30px; font-size:15pt; border-radius: 0 0 12px 12px;">O</div>
-					 </div>
-
-	                 <div class="col-lg-3">
-	                 <img class="img-fluid" src="<%= ctxPath%>/images/${requestScope.challengedto.failImg}" style="width: 100%; height: 200px; object-fit: cover; border-radius: 12px 12px 0 0;" alt="인증실패예시" />
-	                 <div style="height: 30px; margin-top: -5px; background-color:red; color:white; text-align:center;  line-height: 30px; font-size:15pt; border-radius: 0 0 12px 12px;">X</div>
-	                 </div>
+	                 <div class="col-lg-5">
+					    <div class="square-image-container">
+					        <div class="square-image-inner">
+					            <img class="img-fluid" src="<%= ctxPath%>/images/${challengedto.successImg}" alt="인증성공예시" />
+					        </div>
+					    </div>
+					    <div style="height: 30px; margin-top: -5px; background-color:green; color:white; text-align:center; line-height: 30px; font-size:15pt; border-radius: 0 0 12px 12px;">O</div>
+					    <div style="text-align: center; font-weight: bold;">올바른 인증 사진</div>
+					</div>
+					
+					<div class="col-lg-5">
+					    <div class="square-image-container">
+					        <div class="square-image-inner">
+					            <img class="img-fluid" src="<%= ctxPath%>/images/${requestScope.challengedto.failImg}" alt="인증실패예시" />
+					        </div>
+					    </div>
+					    <div style="height: 30px; margin-top: -5px; background-color:red; color:white; text-align:center; line-height: 30px; font-size:15pt; border-radius: 0 0 12px 12px;">X</div>
+					    <div style="text-align: center; font-weight: bold;">잘못된 인증 사진</div>
+					</div>
+	         
   
 			    </div>
 				
@@ -354,20 +405,20 @@
 			<div class="Info_notification">
 				<div class="Info_notification__title">안내사항</div>
 				<div class="Info_notification__introduce">자세한 정보를 알려드릴게요</div>
-				
+				<br>
 				<div class="Info_certifyTime">
-				<i class="far fa-clock" style="color: #db4d4d;"></i>
-				<div class="Info_certifyTime_info">인증가능시간 : ${challengedto.hourStart} ~ ${challengedto.hourEnd}</div>
+				<i class="far fa-clock" style="color: #db4d4d; padding-top:5px;"></i>
+				<div class="Info_certifyTime_info">&nbsp;인증가능시간 : ${challengedto.hourStart} ~ ${challengedto.hourEnd}</div>
 				</div>
 				
 				<div class="Info_startDate">
-				<i class="far fa-clock" style="color: #db4d4d;"></i>
-				<div class="Info_startDate_info">시작일 : ${challengedto.startDate}</div>
+				<i class="fas fa-calendar-day" style="color: #db4d4d; padding-top:5px;"></i>
+				<div class="Info_startDate_info">&nbsp;시작일 : ${challengedto.startDate}</div>
 				</div>
 				
 				<div class="Info_challengeTerm">
-				<i class="far fa-clock" style="color: #db4d4d;"></i>
-				<div class="Info_startDate_info">챌린지 기간 : ${challengedto.startDate} ~ ${challengedto.enddate}</div>
+				<i class="far fa-calendar-alt" style="color: #db4d4d;  padding-top:5px;"></i>
+				<div class="Info_startDate_info">&nbsp;챌린지 기간 : ${challengedto.startDate} ~ ${challengedto.enddate} 까지</div>
 				</div>
 		</div>
 		
@@ -380,7 +431,7 @@
 		<div class="Banner_baner">
 		
 			<div class="banner_content">
-				<button class="challenge_join" type="button">챌린지 참가</button>
+				<button class="challenge_join" type="button" onclick="participate()">챌린지 참가</button>
 			</div>
 			
 		</div>	

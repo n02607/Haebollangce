@@ -1,112 +1,114 @@
 package com.sist.haebollangce.common.mapper;
 
-import com.sist.haebollangce.challenge.dao.challengeVO;
-import com.sist.haebollangce.challenge.dto.CertifyDTO;
-import com.sist.haebollangce.challenge.dto.ChallengeDTO;
-import com.sist.haebollangce.lounge.model.LoungeBoardDTO;
-import com.sist.haebollangce.user.dto.UserDTO;
-
 import java.util.List;
 import java.util.Map;
 
 import org.apache.ibatis.annotations.Mapper;
 
+import com.sist.haebollangce.challenge.dao.challengeVO;
+import com.sist.haebollangce.challenge.dto.ChallengeDTO;
+import com.sist.haebollangce.lounge.model.LoungeBoardDTO;
+import com.sist.haebollangce.lounge.model.LoungeCommentDTO;
+import com.sist.haebollangce.lounge.model.LoungelikeDTO;
+import com.sist.haebollangce.user.dto.UserDTO;
+
 @Mapper
 public interface InterMapper {
- 
-    int test_insert(String userid);
 
-    int fromBoard2(String userid);
-
-    String findById(String id);
-
-    UserDTO getDetail(String userid);
+	UserDTO findByUserid(String userid);
 
     // === #2. 게시판 글쓰기 완료 요청 ===
-	int loungeAdd(LoungeBoardDTO lgboarddto) throws Exception;
+    int loungeAdd(LoungeBoardDTO lgboarddto) throws Exception;
 
-	// --- #3-1. 페이징 처리 안한 검색어 없는 전체 글 목록 보기 --- 
-	List<LoungeBoardDTO> lgboardListNoSearch();
+    // === #2-1. 파일첨부가 있는 게시판 글쓰기 완료 요청 ===
+    int loungeAdd_withFile(LoungeBoardDTO lgboarddto);
 
-	// --- #4-1. 글 조회수 증가와 함께 글 1개를 조회 해주는 것 ---
-	LoungeBoardDTO lggetView(Map<String, String> paraMap);
-	
-	// --- #4-1-1. 글 조회수 1 증가 ---
-	void lgsetAddReadCount(String seq);
+    // --- #3-1. 페이징 처리 한 검색어 있는 전체 글 목록 보기 (1)검색이 있을 때 2)없을 때 다 포함) ---
+    List<LoungeBoardDTO> lgboardListSearch(Map<String, String> paraMap);
+
+    // --- #3-2. 페이징 처리를 위해 총 게시물 건수(totalCount) 구하기 (1)검색이 있을 때 2)없을 때 다 포함) ---
+    int lggetTotalCount(Map<String, String> paraMap);
+
+    // === #11. 검색어 입력시 자동글 완성하기 (Ajax 로 처리) ===
+    List<String> lgwordSearchShow(Map<String, String> paraMap);
+
+    // --- #4-1. 글 조회수 증가와 함께 글 1개를 조회 해주는 것 ---
+    LoungeBoardDTO lggetView(Map<String, String> paraMap);
+
+    // --- #4-1-1. 글 조회수 1 증가 ---
+    void lgsetAddReadCount(String seq);
 
 	// === #6. 라운지 글 수정 페이지 요청 완료 ===
 	int lgedit(LoungeBoardDTO lgboarddto);
 
+	// === #6-1. 파일첨부가 있는 라운지 글 수정 페이지 요청 완료 ===
+	int lgedit_withFile(LoungeBoardDTO lgboarddto);
+
 	// === #8. 라운지 글 삭제 페이지 요청 완료 ===
-	int lgdel(Map<String, String> paraMap); 
-	
-	List<ChallengeDTO> getJoinedChaList(String fk_userid);
-	// 참가중인 챌린지 리스트 가져오기
+	int lgdel(Map<String, String> paraMap);
 
-	// 인증빈도 리스트 가져오기
-	List<ChallengeDTO> getfreq();
+	// --- #9-1. tbl_lounge_comment 댓글쓰기(insert)---
+	int loungeaddComment(LoungeCommentDTO lgcommentdto);
 
-	// 챌린지 기간 가져오기 
-	List<ChallengeDTO> getduring();
+    // --- #9-2. tbl_lounge_board 댓글수증가(update)---
+    int loungeupdateCount(String parentSeq);
 
-	// 챌린지 등록 완료 
-	int addChallenge(ChallengeDTO challengedto);
-	
-	// 인증 가능 시간 등록하기 
-	int addCertifyHour(ChallengeDTO challengedto);
+    // --- #9-3. tbl_lounge_comment 테이블에서 groupno 컬럼의 최대값 알아오기 ---
+    // -> 원댓글쓰기 : groupno 컬럼의 최대값(max)+1 로 해서 insert 해야한다
+    int getGroupno_max();
 
-	// 인증 예시 등록하기
-	int addCertifyExam(ChallengeDTO challengedto);
+    // --- #14-1. tbl_lounge_comment 댓글삭제(delete)---
+    int lgcommentDel(LoungeCommentDTO lgcommentdto);
 
-	// 챌린지 게시글 조회하기
-	ChallengeDTO getview(Map<String, String> paraMap);
+    // --- #14-2. tbl_lounge_board 댓글수증가(update)---
+    int lgcommentDelupdateCount(String parentSeq);
 
-	// 카테고리 리스트 가져오기
-	List<ChallengeDTO> getcategoryList();
+    // === #10. 원 게시물에 딸린 댓글들을 조회 ===
+    List<LoungeCommentDTO> lggetCommentList(String parentSeq);
 
-	ChallengeDTO getOneChallengeInfo(String challenge_code);
-	// 챌린지 코드를 받아  그 챌린지의 정보 가져오기
+    // === #13-0. 라운지 특정글에 대한 좋아요가 눌렸는지 확인하기 ===
+    int loungelikeCheck(LoungelikeDTO lglikedto);
 
-	int joinChallenge(Map<String, String> paraMap);
-	// 유저가 챌린지 참가했을 때 - tbl_challenge_info 에 insert
+    // --- #13-1.tbl_lounge_like 테이블에 좋아요 추가하기(insert) ---
+    int loungelikeAdd(LoungelikeDTO lglikedto);
 
-	Map<String, String> checkJoinedChall(Map<String, String> paraMap);
-	// 이미 참가한 챌린지인지 확인
+    // --- #13-2.tbl_lounge_board 테이블에 likeCount 컬럼이 1 증가 (update) ---
+    int loungeupdatelikeCount(String fk_seq);
 
-	Map<String, String> getCertifyInfo(Map<String, String> paraMap);
-	// 인증하려는 챌린지의 인증예시 데이터 가져오기
+    // --- #13-3.tbl_lounge_like 테이블에 좋아요 취소하기(delete)
+    int loungelikeCancel(LoungelikeDTO lglikedto);
 
-	String getUserDeposit(String fk_userid);
-	// 로그인한 유저의 보유 예치금 알아오기
+    // --- #13-4.tbl_lounge_board 테이블에 likeCount 컬럼이 1 감소 (update)
+    int loungecancellikeCount(String fk_seq);
 
-	int doCertify(Map<String, String> paraMap);
-	// 인증 기록 테이블에 insert
+   // 인증빈도 리스트 가져오기
+   List<ChallengeDTO> getfreq();
 
-	int updateMemberCount(Map<String, String> paraMap);
-	// 챌린지 테이블에 참가인원수 update
+   // 챌린지 기간 가져오기
+   List<ChallengeDTO> getduring();
 
-	Map<String, String> getJoinedChallengeInfo(Map<String, String> paraMap);
-	// 유저아이디와 챌린지 코드를 받아  그 챌린지의 참가중인 정보 가져오기 (챌린지 정보 view용)
+   // 챌린지 등록 완료
+   int addChallenge(ChallengeDTO challengedto);
 
-	List<CertifyDTO> getMyCertifyHistory(Map<String, String> paraMap);
-	// 내 인증기록 가져오기
+   // 인증 가능 시간 등록하기
+   int addCertifyHour(ChallengeDTO challengedto);
 
-	Map<String, String> getUserAchieveCharts(String challenge_code);
-	// 해당 챌린지의 유저들의 달성률 통계 가져오기
+   // 인증 예시 등록하기
+   int addCertifyExam(ChallengeDTO challengedto);
 
-	Map<String, String> getUserAchievePct(Map<String, String> paraMap);
-	// 아이디와 챌린지 코드로 해당 유저의 달성률(%) 가져오기
+   // 챌린지 게시글 조회하기
+   ChallengeDTO getview(Map<String, String> paraMap);
 
-	int updateAchievePct(Map<String, String> paraMap);
-	// 참여중인 챌린지 정보에서 유저의 달성률 update
+   // 카테고리 리스트 가져오기
+   List<ChallengeDTO> getcategoryList();
 
-	int checkTodayCertify(Map<String, String> paraMap);
-	// 오늘 인증하였는지 체크 / return 1이면 오늘 인증 한 것
-    List<challengeVO> challengeList();
-    
-    List<challengeVO> categoryList();
+   void formSignup(UserDTO signupUser);
 
-	List<challengeVO> challengelist();
-	
-	
+   void oauthSignup(UserDTO user);
+
+   List<challengeVO> categoryList();
+
+   List<challengeVO> challengelist();
+
+
 }

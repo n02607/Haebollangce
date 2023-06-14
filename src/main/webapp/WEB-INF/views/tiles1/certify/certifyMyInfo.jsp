@@ -7,6 +7,8 @@
 %>
 
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.6/dist/sweetalert2.all.min.js"></script>
+<link href="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.6/dist/sweetalert2.min.css" rel="stylesheet">
 
 <style type="text/css">
 
@@ -127,7 +129,7 @@
 		opacity: 0;
 		position: absolute;
 		top: 50%;
-		left: 50%;
+		left: 47%;
 		transform: translate(-50%, -50%);
 		-ms-transform: translate(-50%, -50%);
 		text-align: center;
@@ -155,7 +157,7 @@
 		opacity: 0;
 		position: absolute;
 		top: 50%;
-		left: 50%;
+		left: 47%;
 		transform: translate(-50%, -50%);
 		-ms-transform: translate(-50%, -50%);
 		text-align: center;
@@ -206,7 +208,11 @@ const imgInfo = document.querySelector('.img_info');
 		$("div.current_per").text(successPer+"%");
 		$("span#current_per").html("&nbsp;"+successPer+"%");
 		
-		if ( successPer >= 80) {
+		if ( successPer != 0 && successPer < 80 ){
+			const currentReward = Math.floor(Number("${joinedChallInfo.entry_fee}") * successPer / 100);
+			$("span#currentDeposit").html("&nbsp;"+currentReward.toLocaleString('en')+"원"); 
+		}
+		else if ( successPer >= 80) {
 			// 달성률이 80% 이상인 경우 현재 확보예치금은 걸어둔 예치금
 			// 100%인 경우 계산 가능하면 추가하기
 			$("span#currentDeposit").html("&nbsp;"+Number("${joinedChallInfo.entry_fee}").toLocaleString('en')+"원"); 
@@ -223,15 +229,9 @@ const imgInfo = document.querySelector('.img_info');
 					label: '인원 수 (명)',
 				    data: [ Number("${userAchieveCharts.hundredCnt}"), Number("${userAchieveCharts.eighty_up_cnt}"), Number("${userAchieveCharts.eighty_down_cnt}")],
 				    backgroundColor: [
-<<<<<<< HEAD
 				      '#FCEEED',
 				      '#F19E9B',
 				      '#EB534C'
-=======
-				      '#EB534C',
-				      '#F19E9B',
-				      '#FCEEED'
->>>>>>> refs/heads/main
 					],
 					hoverOffset: 4
 				}]
@@ -246,50 +246,51 @@ const imgInfo = document.querySelector('.img_info');
 			config
 		);
 		
+		
+		$("span.report").click(function(){
+			const certifyNo = $(this).parent().next().val();
+			$("input#certifyNo").val(certifyNo);
+		})
+		
+		
 	}); // end ready
 	 
-	// 나의 인증 현황 바 채워지는 함수
-	<%-- 
-	function move() {
-		var elem = document.getElementById("Bar");   
-		var width = 10;
-		var id = setInterval(frame, 10);
-		
-		function frame() {
-			if (width >= 100) {
-				clearInterval(id);
-			} 
-			else {
-				width++; 
-				elem.style.width = width + '%'; 
-				document.getElementById("label").innerHTML = width * 1  + '%';
-			}
-		}
-	}
-	--%>
-	
 	// 상세 페이지로 이동하는 함수
 	function goDetail() {
-			
-		alert("챌린지 "+${joinedChallInfo.challenge_code}+"번 상세페이지로 이동");
-		// location.href='<%= ctxPath%>/challenge/certifyMyInfo?challenge_code='+challenge_code;
+		location.href='<%= ctxPath%>/challenge/challengeView?challengeCode='+'${joinedChallInfo.challenge_code}';
+	}
+	
+	// 유저가 신고했을 때
+	function userReport() {
+
+		if ( $("textarea#report_content").val().trim() == "") {
+			Swal.fire({
+				icon: "warning",
+				title: "신고내용을 입력하세요 !",
+				confirmButtonColor: "#EB534C",
+				confirmButtonText: "확인"
+			});
+			$("textarea#report_content").focus();
+			return;
+		}
+		
+		const frm = document.userReportFrm;
+		frm.action = "<%= ctxPath%>/challenge/userReport";
+		frm.method = "post";
+		frm.submit();
 	}
 
 	
 </script>
 
 
-
-<div class="container" style="width: 70% !important; background-color: white; text-align: center; font-size: 18pt;">
+<div class="container-fluid" style="background-color: #f4f4f4;">
+<div class="container pb-5" style="border-radius: 20px; width: 70% !important; background-color: white; text-align: center; font-size: 18pt;">
 	<br>
 	<h3 style="font-weight: bold;">참가중인 챌린지 인증정보</h3>
 	<br>
-	<div style="height: 300px; width: 50%; margin:auto;">
-<<<<<<< HEAD
+	<div style="height: 500px; width: 95%; margin:auto;">
 		<img src="<%= ctxPath%>/images/${joinedChallInfo.thumbnail}" width="100%" height="100%" style="object-fit: cover; border-radius: 20px;"/>
-=======
-		<img src="${joinedChallInfo.thumbnail}" width="100%" height="100%" style="object-fit: cover; border-radius: 20px;"/>
->>>>>>> refs/heads/main
 	</div>
 	<div class="mt-5" style="display: inline-block; width: 100%;">
 		<p style="display: inline-block; width: 20%; margin:0;"><span style="background-color: rgb(244, 244, 244); display: inline-block; border-radius: 20px; width: 100%; height: 44px; line-height: 48px;">${joinedChallInfo.category_name}</span></p>
@@ -330,7 +331,7 @@ const imgInfo = document.querySelector('.img_info');
 			  	</div>
 			</div>
 			<div class="pt-2" style="display: flex; justify-content: space-between;">
-	  			<span>현재 확보한 예치금</span>
+	  			<span>현재 확보한 상금</span>
 	  			<span>걸어둔 예치금</span>
 	  		</div>
 	  		<div class="pb-5" style="display: flex; justify-content: space-between; font-weight: bold;">
@@ -346,13 +347,15 @@ const imgInfo = document.querySelector('.img_info');
 	  		<table class="my-3" style="width: 100%;"> 
 	  			
 	  			<c:if test="${not empty myCertifyHistory}">
+	  				<c:set var="length" value="${myCertifyHistory.size()}"></c:set>
+	  			
   					<c:forEach var="certifyDTO" items="${myCertifyHistory}" varStatus="status">
   						<c:if test="${status.index % 3 == 0}">
 				  			<tr style="height:250px; width:100%;">
   						</c:if>
-	  							<td class="imgContainer" style="height:300px; width:33%; position: relative;">
-<<<<<<< HEAD
-	  								<img class="my_image" style="width: 100%; height:100%; object-fit: cover;" alt="대체이미지 준비중" src="<%= ctxPath%>/images/certify/${certifyDTO.certifyImg}">
+  							<c:if test="${length == 1}">
+								<td class="imgContainer" style="height:300px; width:33%; position: relative;">
+	  								<img class="my_image" style="width: 100%; height:100%; object-fit: cover;" alt="이미지 로딩중" src="<%= ctxPath%>/images/certify/${certifyDTO.certifyImg}">
 	  								<div class="img_info">
 	  									<div><span data-toggle="modal" data-target="#myImage${status.index }" class="report" style="background-color: gray; opacity:0.8;">사진보기</span></div>
 	  								</div>
@@ -364,9 +367,17 @@ const imgInfo = document.querySelector('.img_info');
 								    <div class="modal-content">
 								      <div class="modal-body">
 									      <button type="button" class="close" data-dismiss="modal">&times;</button>
-									      <img class="my_image mt-5" style="width: 100%; height:100%;" alt="대체이미지 준비중" src="<%= ctxPath%>/images/certify/${certifyDTO.certifyImg}">
-=======
-	  								<img class="my_image" style="width: 100%; height:100%; object-fit: cover;" alt="대체이미지 준비중" src="${certifyDTO.certifyImg}">
+									      <img class="my_image mt-5" style="width: 100%; height:100%;" alt="이미지 로딩중" src="<%= ctxPath%>/images/certify/${certifyDTO.certifyImg}">
+								      </div>
+								    </div>
+								  </div>
+								</div>
+								<td></td>
+  							</c:if>
+  							
+  							<c:if test="${length == 2}">
+								<td class="imgContainer" style="height:300px; width:33%; position: relative;">
+	  								<img class="my_image" style="width: 100%; height:100%; object-fit: cover;" alt="이미지 로딩중" src="<%= ctxPath%>/images/certify/${certifyDTO.certifyImg}">
 	  								<div class="img_info">
 	  									<div><span data-toggle="modal" data-target="#myImage${status.index }" class="report" style="background-color: gray; opacity:0.8;">사진보기</span></div>
 	  								</div>
@@ -374,24 +385,46 @@ const imgInfo = document.querySelector('.img_info');
 	  							
   								<!-- 사진 확대 Modal -->
 								<div class="modal fade" id="myImage${status.index }">
-								  <div class="modal-dialog modal-dialog-centered">
+								  <div class="modal-dialog modal-dialog-centered modal-lg">
 								    <div class="modal-content">
 								      <div class="modal-body">
 									      <button type="button" class="close" data-dismiss="modal">&times;</button>
-									      <img class="my_image mt-5" style="width: 100%; height:100%;" alt="대체이미지 준비중" src="${certifyDTO.certifyImg}">
->>>>>>> refs/heads/main
+									      <img class="my_image mt-5" style="width: 100%; height:100%;" alt="이미지 로딩중" src="<%= ctxPath%>/images/certify/${certifyDTO.certifyImg}">
 								      </div>
 								    </div>
 								  </div>
 								</div>
-									
+  							</c:if>
+  							
+  							<c:if test="${length > 2 }">
+								<td class="imgContainer" style="height:300px; width:33%; position: relative;">
+	  								<img class="my_image" style="width: 100%; height:100%; object-fit: cover;" alt="이미지 로딩중" src="<%= ctxPath%>/images/certify/${certifyDTO.certifyImg}">
+	  								<div class="img_info">
+	  									<div><span data-toggle="modal" data-target="#myImage${status.index }" class="report" style="background-color: gray; opacity:0.8;">사진보기</span></div>
+	  								</div>
+	  							</td>
+	  							
+  								<!-- 사진 확대 Modal -->
+								<div class="modal fade" id="myImage${status.index }">
+								  <div class="modal-dialog modal-dialog-centered modal-lg">
+								    <div class="modal-content">
+								      <div class="modal-body">
+									      <button type="button" class="close" data-dismiss="modal">&times;</button>
+									      <img class="my_image mt-5" style="width: 100%; height:100%;" alt="이미지 로딩중" src="<%= ctxPath%>/images/certify/${certifyDTO.certifyImg}">
+								      </div>
+								    </div>
+								  </div>
+								</div>
+  							</c:if>
 		  				<c:if test="${(status.index+1) % 3 == 0}">
 			  				</tr>
 			  			</c:if>
+			  			
   					</c:forEach>
+  						<c:if test="${length == 2}"><td></td></c:if>
   				</c:if>
   				<c:if test="${empty myCertifyHistory}">
-  					<tr style="border: solid 1px black; height:250px;">
+  					<tr style="border: solid 1px black; height:250px; border-collapse: collapse; border-radius:20px; box-shadow: 0 0 0 1px #000; border-style: hidden;">
 		  				<td style="font-weight: bold; font-size: 20pt;">나의 인증기록이 없어요.&nbsp;&nbsp;<i class="fa-regular fa-face-sad-tear fa-lg" style="color: #000000;"></i></td>
 		  			</tr>
   				</c:if>
@@ -418,22 +451,14 @@ const imgInfo = document.querySelector('.img_info');
 				</div>
 				<div>
 					<p class="mb-1">
-<<<<<<< HEAD
 						<span style="border:solid 2px #D88E8B; border-radius: 20px; background-color: #F19E9B;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
-=======
-						<span style="border:solid 1px #D88E8B; border-radius: 20px; background-color: #F19E9B;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
->>>>>>> refs/heads/main
 						&nbsp;&nbsp;80% 이상
 					</p>
 					<p style="font-weight: bold;">${userAchieveCharts.eighty_up_cnt}명</p>
 				</div>
 				<div>
 					<p class="mb-1">
-<<<<<<< HEAD
 						<span style="border:solid 2px #D34A44; border-radius: 20px; background-color: #EB534C;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
-=======
-						<span style="border:solid 1px #E2D5D5; border-radius: 20px; background-color: #FCEEED;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
->>>>>>> refs/heads/main
 						&nbsp;&nbsp;80% 미만
 					</p>
 					<p style="font-weight: bold;">${userAchieveCharts.eighty_down_cnt}명</p>
@@ -443,15 +468,18 @@ const imgInfo = document.querySelector('.img_info');
 	  		<table class="my-3" style="width: 100%;">
 	  		
 	  			<c:if test="${not empty allCertifyHistory}">
+	  				<c:set var="length" value="${allCertifyHistory.size()}"></c:set>
+	  				
   					<c:forEach var="allcertifyDTO" items="${allCertifyHistory}" varStatus="status">
   						<c:if test="${status.index % 3 == 0}">
 				  			<tr style="height:250px; width:100%;">
   						</c:if>
+  							<c:if test="${length == 1}">
 	  							<td class="imgContainer" style="height:300px; width:33%; position: relative;">
-<<<<<<< HEAD
-	  								<img class="user_image" style="width: 100%; height:100%; object-fit: cover;" alt="대체이미지" src="<%= ctxPath%>/images/certify/${allcertifyDTO.certifyImg}">
+	  								<img class="user_image" style="width: 100%; height:100%; object-fit: cover;" alt="이미지 로딩중" src="<%= ctxPath%>/images/certify/${allcertifyDTO.certifyImg}">
 	  								<div class="user_img_info">
-	  									<div><span class="report">신고하기</span></div>
+	  									<div><span data-toggle="modal" data-target="#report" class="report">신고하기</span></div>
+	  									<input type="hidden" value="${allcertifyDTO.certifyNo}">
 	  									<div class="mt-3"><span data-toggle="modal" data-target="#userImage${status.index }" class="report" style="background-color: gray; opacity:0.8;">사진보기</span></div>
 	  								</div>
 	  							</td>
@@ -462,35 +490,68 @@ const imgInfo = document.querySelector('.img_info');
 								    <div class="modal-content">
 								      <div class="modal-body">
 									      <button type="button" class="close" data-dismiss="modal">&times;</button>
-									      <img class="user_image mt-5" style="width: 100%; height:100%;" alt="대체이미지 준비중" src="<%= ctxPath%>/images/certify/${allcertifyDTO.certifyImg}">
-=======
-	  								<img class="user_image" style="width: 100%; height:100%; object-fit: cover;" alt="대체이미지" src="${allcertifyDTO.certifyImg}">
+									      <img class="user_image mt-5" style="width: 100%; height:100%;" alt="이미지 로딩중" src="<%= ctxPath%>/images/certify/${allcertifyDTO.certifyImg}">
+								      </div>
+								    </div>
+								  </div>
+								</div>
+								<td></td>
+							</c:if>
+							
+							<c:if test="${length == 2}">
+	  							<td class="imgContainer" style="height:300px; width:33%; position: relative;">
+	  								<img class="user_image" style="width: 100%; height:100%; object-fit: cover;" alt="이미지 로딩중" src="<%= ctxPath%>/images/certify/${allcertifyDTO.certifyImg}">
 	  								<div class="user_img_info">
-	  									<div><span class="report">신고하기</span></div>
+	  									<div><span data-toggle="modal" data-target="#report" class="report">신고하기</span></div>
+	  									<input type="hidden" value="${allcertifyDTO.certifyNo}">
 	  									<div class="mt-3"><span data-toggle="modal" data-target="#userImage${status.index }" class="report" style="background-color: gray; opacity:0.8;">사진보기</span></div>
 	  								</div>
 	  							</td>
 	  							
 	  							<!-- 사진 확대 Modal -->
 								<div class="modal fade" id="userImage${status.index }">
-								  <div class="modal-dialog modal-dialog-centered">
+								  <div class="modal-dialog modal-dialog-centered modal-lg">
 								    <div class="modal-content">
 								      <div class="modal-body">
 									      <button type="button" class="close" data-dismiss="modal">&times;</button>
-									      <img class="user_image mt-5" style="width: 100%; height:100%;" alt="대체이미지 준비중" src="${allcertifyDTO.certifyImg}">
->>>>>>> refs/heads/main
+									      <img class="user_image mt-5" style="width: 100%; height:100%;" alt="이미지 로딩중" src="<%= ctxPath%>/images/certify/${allcertifyDTO.certifyImg}">
 								      </div>
 								    </div>
 								  </div>
 								</div>
+							</c:if>
+							
+							<c:if test="${length > 2}">
+	  							<td class="imgContainer" style="height:300px; width:33%; position: relative;">
+	  								<img class="user_image" style="width: 100%; height:100%; object-fit: cover;" alt="이미지 로딩중" src="<%= ctxPath%>/images/certify/${allcertifyDTO.certifyImg}">
+	  								<div class="user_img_info">
+	  									<div><span data-toggle="modal" data-target="#report" class="report">신고하기</span></div>
+	  									<input type="hidden" value="${allcertifyDTO.certifyNo}">
+	  									<div class="mt-3"><span data-toggle="modal" data-target="#userImage${status.index }" class="report" style="background-color: gray; opacity:0.8;">사진보기</span></div>
+	  								</div>
+	  							</td>
+	  							
+	  							<!-- 사진 확대 Modal -->
+								<div class="modal fade" id="userImage${status.index }">
+								  <div class="modal-dialog modal-dialog-centered modal-lg">
+								    <div class="modal-content">
+								      <div class="modal-body">
+									      <button type="button" class="close" data-dismiss="modal">&times;</button>
+									      <img class="user_image mt-5" style="width: 100%; height:100%;" alt="이미지 로딩중" src="<%= ctxPath%>/images/certify/${allcertifyDTO.certifyImg}">
+								      </div>
+								    </div>
+								  </div>
+								</div>
+							</c:if>
 								
 		  				<c:if test="${(status.index+1) % 3 == 0}">
 			  				</tr>
 			  			</c:if>
   					</c:forEach>
+  						<c:if test="${length == 2}"><td></td></c:if>
   				</c:if>
   				<c:if test="${empty allCertifyHistory}">
-  					<tr style="border: solid 1px black; height:250px;">
+  					<tr style="border: solid 1px black; height:250px; border-collapse: collapse; border-radius:20px; box-shadow: 0 0 0 1px #000; border-style: hidden;">
 		  				<td style="font-weight: bold; font-size: 20pt;">참가자 인증기록이 없어요.&nbsp;&nbsp;<i class="fa-regular fa-face-sad-tear fa-lg" style="color: #000000;"></i></td>
 		  			</tr>
   				</c:if>
@@ -500,10 +561,11 @@ const imgInfo = document.querySelector('.img_info');
 	</div>
 	
 </div>
+</div>
 
 
 
-<%-- 모달창 --%>
+<%-- 인증예시 모달창 --%>
 <div class="modal fade" id="exampleModal_certify">
 	<div class="modal-dialog modal-dialog-centered modal-lg">
 		<div class="modal-content">
@@ -518,23 +580,15 @@ const imgInfo = document.querySelector('.img_info');
 				<div style="height: 650px; justify-content: center;">
 					<div id="img_exam">
 						<div style="width: 50%; border-radius: 20px;">
-<<<<<<< HEAD
 							<img class="img_insert" src="<%= ctxPath%>/images/${oneExample.success_img}" width="100%" height="90%" style="object-fit: cover;"/>
-=======
-							<img class="img_insert" src="${oneExample.success_img}" width="100%" height="90%" style="object-fit: cover;"/>
->>>>>>> refs/heads/main
 							<p class="img_OX" style="background-color:#57B585;">○</p>
 						</div>
 						<div style="width: 50%; border-radius: 20px;">
-<<<<<<< HEAD
 							<img class="img_insert" src="<%= ctxPath%>/images/${oneExample.fail_img}" width="100%" height="90%" style="object-fit: cover;"/>
-=======
-							<img class="img_insert" src="${oneExample.fail_img}" width="100%" height="90%" style="object-fit: cover;"/>
->>>>>>> refs/heads/main
 							<p class="img_OX" style="background-color:#AF2317;">✕</p>
 						</div>
 					</div>
-					<div class="my-3" style="font-size: 18pt; font-weight: bold;">${oneExample.example}</div>
+					<div class="my-3" style="font-size: 18pt; font-weight: bold;">인증 예시) - ${oneExample.example}</div>
 					<div class="my-3" style="font-size: 18pt; font-weight: bold;">꼭 알아주세요 !</div>
 					<div>
 						<div class="examInfo my-2">
@@ -555,6 +609,38 @@ const imgInfo = document.querySelector('.img_info');
 			<div class="modal-footer" style="justify-content: center;">
 				<button type="button" class="btn btn-danger btn-lg" data-dismiss="modal">확인</button>
 			</div>
+		</div>
+	</div>
+</div>
+
+<%-- 신고하기 모달창 --%>
+<div class="modal fade" id="report">
+	<div class="modal-dialog modal-dialog-centered">
+		<div class="modal-content">
+     
+			<!-- Modal header -->
+			<div class="modal-header">
+				<img style="width:30px;" src="<%= ctxPath%>/images/certify/siren.png">&nbsp;&nbsp;
+				<h5 class="modal-title" style="margin-top: 5px;">신고하기</h5>
+				<button type="button" class="close" data-dismiss="modal">&times;</button>
+			</div>
+     
+			<!-- Modal body -->
+			<div class="modal-body">
+				<form name="userReportFrm">
+					<textarea id="report_content" name="report_content" rows="5" cols="54" placeholder="정확한 처리를 위해 신고하시는 구체적인 사유를 적어주세요. (최소 10자 이상)" style="outline-color: #FE6B8B;"></textarea>
+					<input id="certifyNo" type="hidden" name="certifyNo" value="" readonly="readonly">
+					<input name="challenge_code" type="hidden" value="${joinedChallInfo.challenge_code}">
+					<input name="userid" type="hidden" value="${joinedChallInfo.fk_userid}">
+				</form>
+			</div>
+     
+			<!-- Modal footer -->
+			<div class="modal-footer">
+			 	<button type="button" class="btn btn-secondary" onclick="userReport();" style="background-color: #EB534C !important;">신고하기</button> 
+				<button type="button" class="btn btn-secondary" data-dismiss="modal">닫기</button>
+			</div>
+			
 		</div>
 	</div>
 </div>

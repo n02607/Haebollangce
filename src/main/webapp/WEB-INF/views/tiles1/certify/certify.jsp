@@ -141,30 +141,23 @@
 	
 </script>
 
-<div class="container" style="width: 70% !important; background-color: white; text-align: center;">
+<div class="container-fluid" style="background-color: #f4f4f4;">
+<div class="container" style="border-radius: 20px; width: 70% !important; background-color: white; text-align: center;">
 	<br>
 	<h3 style="font-weight: bold;">인증하기</h3>
 	<br>
 	<div style="height: 783px; justify-content: center;">
 		<div id="img_exam">
 			<div style="width: 50%; border-radius: 20px;">
-<<<<<<< HEAD
 				<img class="img_insert" src="<%= ctxPath%>/images/${oneExample.success_img}" width="100%" height="90%" style="object-fit: cover;"/>
-=======
-				<img class="img_insert" src="${oneExample.success_img}" width="100%" height="90%" style="object-fit: cover;"/>
->>>>>>> refs/heads/main
 				<p class="img_OX" style="background-color:#57B585;">○</p>
 			</div>
 			<div style="width: 50%; border-radius: 20px;">
-<<<<<<< HEAD
 				<img class="img_insert" src="<%= ctxPath%>/images/${oneExample.fail_img}" width="100%" height="90%" style="object-fit: cover;"/>
-=======
-				<img class="img_insert" src="${oneExample.fail_img}" width="100%" height="90%" style="object-fit: cover;"/>
->>>>>>> refs/heads/main
 				<p class="img_OX" style="background-color:#AF2317;">✕</p>
 			</div>
 		</div>
-		<div class="my-3" style="font-size: 18pt; font-weight: bold;">${oneExample.example}</div>
+		<div class="my-3" style="font-size: 18pt; font-weight: bold;">인증 예시) - ${oneExample.example}</div>
 		<div class="my-3" style="font-size: 18pt; font-weight: bold;">꼭 알아주세요 !</div>
 		<div>
 			<div class="examInfo my-2">
@@ -186,9 +179,9 @@
 		<br>
 		<form name="certifyform" enctype="multipart/form-data">
 			<label id="label_file" for="input_file" class="mx-3 my-3">사진 선택</label>
-			<input id="input_file" name="certify_img" type="file" accept="image/*" capture="camera" style="display: none;">
-			<input name="fk_userid" type="text" value="${paraMap.fk_userid}">
-			<input name="fk_challenge_code" type="text" value="${paraMap.challenge_code}">
+			<input id="input_file" name="certify_img" type="file" accept="image/*" capture="camera" <%-- readonly="readonly" --%> style="display: none;">
+			<input name="fk_userid" type="text" value="${paraMap.fk_userid}" <%-- readonly="readonly" --%>>
+			<input name="fk_challenge_code" type="text" value="${paraMap.challenge_code}" <%-- readonly="readonly" --%>>
 		</form>
 		<br>
 	</div>
@@ -196,4 +189,5 @@
 	    <button type="button" class="btn btn-secondary btn-md mb-3" id="btn_certify">인증하기</button>
 	</div>
         
+</div>
 </div>
