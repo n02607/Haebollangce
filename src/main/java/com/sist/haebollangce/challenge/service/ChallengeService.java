@@ -102,4 +102,22 @@ public class ChallengeService implements InterChallengeService {
 		
 		
 	}
+	
+	// 챌린지 삭제하기
+	@Override
+	public challengeVO challViewWithNoAddCount(Map<String, String> paraMap) {
+		
+		challengeVO challViewWithNoAddCount = dao.challViewWithNoAddCount(paraMap);
+		
+		return challViewWithNoAddCount;
+	}
+	
+	// 챌린지 삭제하기 완료요청
+	@Override
+	public int challengedel(Map<String, String> paraMap) {
+		
+		int n =	dao.challengedel(paraMap);
+		
+		return n;
+	}
 }

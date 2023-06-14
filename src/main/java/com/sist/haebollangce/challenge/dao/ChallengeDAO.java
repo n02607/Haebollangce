@@ -100,4 +100,20 @@ public class ChallengeDAO implements InterChallengeDAO {
 		return mapper.challengelist();
 	}
 	
+	// 챌린지 삭제하기
+	@Override
+	public challengeVO challViewWithNoAddCount(Map<String, String> paraMap) {
+		
+		
+		return mapper.challViewWithNoAddCount(paraMap);
+	}
+
+	// 챌린지 삭제하기 완료요청
+	@Override
+	public int challengedel(Map<String, String> paraMap) {
+		
+		int n = mapper.challengedel(paraMap);
+		
+		return n;
+	}
 }

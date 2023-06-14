@@ -41,4 +41,10 @@ public interface InterChallengeDAO {
 
 	// 카테고리별 챌린지 불러오기
 	List<challengeVO> challengelist();
+	
+	// 챌린지 삭제하기
+	challengeVO challViewWithNoAddCount(Map<String, String> paraMap);
+
+	// 챌린지 삭제하기 완료요청
+	int challengedel(Map<String, String> paraMap);
 }
