@@ -16,11 +16,6 @@
 		width: 100%;
 	}
 	
-	div#plzCha,
-	div#notice {
-		margin-bottom: 50px;
-	}
-	
 	img#promainimg {
 		height: 103px;
 		border-radius: 50%;
@@ -43,15 +38,24 @@
 		margin-right: 20px;
 	}
 	
-	button.go_cite {
-		width: 91%;
-		height: 42px;
+	div.card_padding {
+		padding: 1.25rem 3rem;
+	}
+	
+	button.go_detail {
+		background-color: #e6e1e1;
 		border: none;
-		border-radius: 40px;
+		color: black;
+		padding: 7px 12px;
+		text-align: center;
+		font-size: 13pt;
+		transition: 0.3s;
+		border-radius: 35px;
+	}
+	
+	button.go_detail:hover {
 		background-color: #f43630;
 		color: white;
-		font-size: 10pt;
-		font-weight: bold;
 	}
 	
 	button#go_deposit,
@@ -60,10 +64,16 @@
 		height: 35px;
 		border: none;
 		border-radius: 40px;
-		background-color: #f43630;
-		color: white;
+		background-color: #e6e1e1;
+		color: black;
 		font-size: 10pt;
 		font-weight: bold;
+	}
+	
+	button#go_deposit:hover,
+	button#go_reward:hover {
+		background-color: #f43630;
+		color: white;
 	}
 	
 	td.td_width_25 {
@@ -72,6 +82,14 @@
 	
 	td.td_width_30 {
 		width: 30%;
+	}
+	
+	td.td_width_33 {
+		width: 33%;
+	}
+	
+	td.no_identify {
+		padding: 30% 31% 30% 36%;
 	}
 	
 	span#span_userid {
@@ -87,6 +105,10 @@
 	div.bar_size {
 		width: 31%;
 		height: 20px;
+	}
+	
+	div.bar_size_2 {
+		width: 80%;
 	}
 	
 	td.td_width_33 {
@@ -106,6 +128,16 @@
 		font-size: 15pt;
 		font-weight: bold;
 		margin-bottom: 8%;
+	}
+	
+	div.height_px_ide {
+		height: 507px;
+		overflow: auto;
+	}
+	
+	div.height_px {
+		height: 534px;
+		overflow: auto;
 	}
 	
 	/* 하이차트 css 시작 */
@@ -327,7 +359,7 @@
                 		 + "	<div class='h5 mb-0 mr-3 font-weight-bold text-gray-800'>" + json.result + "%</div>"
                 		 + "</div>"
                 		 + "<div class='col'>"
-                		 + "	<div class='progress progress-sm mr-2'>"
+                		 + "	<div class='progress progress-sm mr-2 bar_size_2'>"
                 		 + "		<div class='progress-bar bg-info' role='progressbar' style='width:" + json.result + "%;' aria-valuenow='50' aria-valuemin='0' aria-valuemax='100'></div>"
                 		 + "	</div>"
                 		 + "</div>";
@@ -378,17 +410,17 @@
 		               		        	 +	"		<div class='div_info'>인증빈도: " + json[i].frequency + "</div>"
 		               		        	 +	"		<div class='div_info'>인증시간: " + json[i].hour_start + " ~ " + json[i].hour_end + "</div>"
 		               		        	 +	"	</td>"
-		               		        	 +  "	<td><button class='go_cite'>인증하러가기</button></td>"
+		               		        	 +  "	<td><button type='button' class='go_detail' onclick='go_certify();'>인증하러가기</button></td>"
 		               		        	 +  "</tr>";
 								  	 
 							}
-		            		else {
-								// json 은 있으나, 요일, 시간 등등이 안 맞을 경우
-								html = "<tr><td class='td_width_33'>인증이 필요한 챌린지가 없습니다.</td></tr>";
-			                }
+		            		
                		        
             		   } // end of if(resultToday < json[i].finish_day) -----
-            		   
+            		   else {
+							// json 은 있으나, 요일, 시간 등등이 안 맞을 경우
+							html = "<tr><td class='no_identify'>인증이 필요한 챌린지가 없습니다.</td></tr>";
+		                }
             		    
             	   } // end of for(var i=0; i<json.length; i++) -----
             	   
@@ -434,21 +466,21 @@
 						
 							cnt++;
 							
-							if(cnt > 2) {
+							if(cnt > 3) {
 								break;
 							}
 							
 							html += "<tr>"
-								 +	"	<td class='td_width_30'>"
+								 +	"	<td class='td_width_33'>"
 								 +  "		<img class='img-fluid px-3 px-sm-4 mt-3 mb-4 cha_img' src='" + json[i].thumbnail + "' alt='챌린지이미지'>"
 								 +	"	</td>"
 								 +	"	<td>"
 								 +	"		<div class='div_info div_title'>" + json[i].challenge_name + " 챌린지</div>"
-								 +	"		<div class='div_info'>챌린지 시작일자:" + json[i].startdate + "</div>"
-								 +	"		<div class='div_info'>개설자:" + json[i].fk_userid +"</div>"
+								 +	"		<div class='div_info'>챌린지 시작일자 : " + json[i].startdate + "</div>"
+								 +	"		<div class='div_info'>개설자 :" + json[i].fk_userid +"</div>"
 								 +	"	</td>"
 								 +	"	<td>"
-								 +	"		<button type='button' class='go_cite'>상세보기</button>"
+								 +	"		<button type='button' class='go_detail' onclick='go_detail();'>상세보기</button>"
 								 +  "	</td>"
 								 + 	"</tr>";
 								
@@ -470,8 +502,6 @@
 		
 		
 		<%-- 챌린지 그래프 시작 --%>
-	
-		
 		$.ajax({
 			url: "/mypage/chart_challenging",
 			data:{
@@ -484,41 +514,36 @@
 				
 				let month_challenging_arr = []; // 월별 참여한 챌린지
 				
-				let category_arr = []; // 참여한 챌린지별 태그 비율
-				
-				var ajaxCounter = 0;
-				var totalAjaxCalls = json1.length;
-				
 				$.each(json1, function(index, item){
 					month_challenging_arr.push({
 						 					name: item.month,
-		                 					cnt: item.count,
+						 					y: Number(item.count),
 		                 					drilldown: item.month
 										});
 				}); // end of $.each(json, function(index, item){}) -----
+				
+				let category_arr = []; // 참여한 챌린지별 태그 비율
 				
 				$.each(json1, function(index1, item1){
 					
 					$.ajax({
 						url:"/mypage/chart_category",
-						type:"get",
 						data:{
 							"userid":"jisu",
 							"month":item1.month
 						},
 						dataType:"json",
-						async: false,
 						success: function(json2){
 							// 달 별 참여한 챌린지 태그 비율
 							
-							// console.log(JSON.stringify(json2));
+							//console.log(JSON.stringify(json1));
 							
-							// console.log(item1.month);
+							//console.log(item1.month +"  " + JSON.stringify(json2));
 							
 							let subArr = [];
 							
 							$.each(json2, function(index2, item2){
-								subArr.push([item2.category_name+"("+item2.percentage+" %)",
+								subArr.push([item2.category_name,
 				                        	 Number(item2.percentage)]);
 							}); // end of $.each(json2, function(index2, item2){}) -----
 							
@@ -528,85 +553,78 @@
 					                			data: subArr
 											});
 							
-							ajaxCounter++; // 호출이 완료될 때마다 카운터 증가
-							
-							if (ajaxCounter === totalAjaxCalls) {
-				                
-								Highcharts.chart('chart_container', {
-								    chart: {
-								        type: 'column'
-								    },
-								    title: {
-								        align: 'left',
-								        text: '올 해 챌린지 참여 횟수'
-								    },
-								    subtitle: {
-								        align: 'left',
-								        text: 'Click the columns to view versions. Source: <a href="http://statcounter.com" target="_blank">statcounter.com</a>'
-								    },
-								    accessibility: {
-								        announceNewData: {
-								            enabled: true
-								        }
-								    },
-								    xAxis: {
-								        type: 'category'
-								    },
-								    yAxis: {
-								        title: {
-								            text: '참여했던 챌린지 수(개)'
-								        }
+							Highcharts.chart('chart_container', {
+							    chart: {
+							        type: 'column'
+							    },
+							    title: {
+							        align: 'left',
+							        text: '올 해 챌린지 참여 횟수'
+							    },
+							    subtitle: {
+							        align: 'left',
+							        text: ''
+							    },
+							    accessibility: {
+							        announceNewData: {
+							            enabled: true
+							        }
+							    },
+							    xAxis: {
+							        type: 'category'
+							    },
+							    yAxis: {
+							        title: {
+							            text: '참여했던 챌린지 수(개)'
+							        }
 
-								    },
-								    legend: {
-								        enabled: false
-								    },
-								    plotOptions: {
-								        series: {
-								            borderWidth: 0,
-								            dataLabels: {
-								                enabled: true,
-								                format: '{point.y}'
-								            }
-								        }
-								    },
+							    },
+							    legend: {
+							        enabled: false
+							    },
+							    plotOptions: {
+							        series: {
+							            borderWidth: 0,
+							            dataLabels: {
+							                enabled: true,
+							                format: '{point.y}'
+							            }
+							        }
+							    },
 
-								    tooltip: {
-								        headerFormat: '<span style="font-size:11px">{series.name}</span><br>',
-								        pointFormat: '<span style="color:{point.color}">{point.name}</span>: <b>{point.y}</b> of total<br/>'
-								    },
+							    tooltip: {
+							        headerFormat: '<span style="font-size:11px">{series.name}</span><br>',
+							        pointFormat: '<span style="color:{point.color}">{point.name}</span>: <b>{point.y}</b> of total<br/>'
+							    },
 
-								    series: [
-								        {
-								            name: '챌린지명',
-								            colorByPoint: true,
-								            data:month_challenging_arr
-								        }
-								    ],
-								    drilldown: {
-								        breadcrumbs: {
-								            position: {
-								                align: 'right'
-								            }
-								        },
-								        series: category_arr
-								    }
-								}); // end of chart
-								////////////////////////
-								
-				            }
+							    series: [
+							        {
+							            name: '챌린지명',
+							            colorByPoint: true,
+							            data:month_challenging_arr
+							        }
+							    ],
+							    drilldown: {
+							        breadcrumbs: {
+							            position: {
+							                align: 'right'
+							            }
+							        },
+							        series: category_arr
+							    }
+							}); // end of chart
+							////////////////////////
 							
-						},
-						error: function(request, status, error){
-							alert("code: "+request.status+"\n"+"message: "+request.responseText+"\n"+"error: "+error);
-			            }
-					}); // end of ajax json2
-					
-				}); // end of each
-							
-				///////////////////////////////////////////////////////////////
+					},
+					error: function(request, status, error){
+						alert("code: "+request.status+"\n"+"message: "+request.responseText+"\n"+"error: "+error);
+		            }
+				}); // end of ajax json2
 				
-				
+			}); // end of each
+						
+			///////////////////////////////////////////////////////////////
+			
 			},
 			error: function(request, status, error){
 				alert("code: "+request.status+"\n"+"message: "+request.responseText+"\n"+"error: "+error);
@@ -616,6 +634,18 @@
 		<%-- 챌린지 그래프 끝 --%>
 		
 	}); // end of document.ready -----
+	
+	function go_certify() {
+		
+		location.href = "/challenge/certify"
+		
+	} // end of function go_certify() {} -----
+	
+	function go_detail() {
+		
+		location.href = "/challenge/certify"
+		
+	} // end of function go_detail() {} -----
 	
 </script>
 
@@ -637,19 +667,14 @@
 				</div>
 			</div>
 		
-		<!-- index 상단 제목 시작 -->
- 		<div class="d-sm-flex align-items-center justify-content-between mb-4">
-			<h1 class="h3 mb-0 text-gray-800">사용자 코인 현황</h1>
-		</div>
-		<!-- index 상단 제목 끝 -->
 		
 		<!-- index 메인 시작 -->
 		<div class="row">
 		
 			<!-- 코인보유량 시작 -->
-			<div class="col-lg-3 col-md-6 mb-4">
+			<div class="col-lg-4 col-md-6 mb-4">
  				<div class="card border-left-primary shadow h-100 py-2">
-					<div class="card-body">
+					<div class="card-body card_padding">
 						<div class="row no-gutters align-items-center">
 							<div class="col mr-2">
 								<div class="text-xs font-weight-bold text-primary text-uppercase mb-1">보유 예치금</div>
@@ -657,7 +682,7 @@
 							</div>
 							<div class="col-auto">
 								<button type="button" id="go_deposit" onClick="location.href='<%=ctxPath%>/mypage/depositPurchase'">
-									<i class="fas fa-won-sign" style="color: #4b9156;"></i>
+									<i class="fas fa-won-sign" style="color: #4b9156; margin-right: 7%;"></i>
 									충전
 								</button>
 							</div>
@@ -668,9 +693,9 @@
 			<!-- 코인보유량 끝 -->
 
 			<!-- 보유상금 시작 -->
-			<div class="col-lg-3 col-md-6 mb-4">
+			<div class="col-lg-4 col-md-6 mb-4">
 				<div class="card border-left-success shadow h-100 py-2">
-					<div class="card-body">
+					<div class="card-body card_padding">
 						<div class="row no-gutters align-items-center">
 							<div class="col mr-2">
 								<div class="text-xs font-weight-bold text-success text-uppercase mb-1">보유 상금</div>
@@ -678,7 +703,7 @@
 							</div>
 							<div class="col-auto">
 								<button type="button" id="go_reward" onClick="location.href='<%=ctxPath%>/mypage/change_reward'">
-									<i class="fas fa-coins" style="color: #fff700;"></i>
+									<i class="fas fa-coins" style="color: #fff700; margin-right: 7%;"></i>
 									상금전환
 								</button>
 							</div>
@@ -690,23 +715,14 @@
 			
 			<!-- 인증 성공률 시작 -->
 			<!-- 총 인증한 챌린지/총 참여챌린지 최대 인증횟수 -->
-			<div class="col-lg-3 col-md-6 mb-4">
+			<div class="col-lg-4 col-md-6 mb-4">
 				<div class="card border-left-info shadow h-100 py-2">
-					<div class="card-body">
+					<div class="card-body card_padding">
 						<div class="row no-gutters align-items-center">
 							<div class="col mr-2">
 								<div class="text-xs font-weight-bold text-info text-uppercase mb-1">100% 인증성공률</div>
    								<div id="certify_percent_position" class="row no-gutters align-items-center">
-   								<!-- 
-									<div class="col-auto">
-										<div class="h5 mb-0 mr-3 font-weight-bold text-gray-800">10%</div>
-									</div>
-									<div class="col">
-										<div class="progress progress-sm mr-2">
- 											<div class="progress-bar bg-info" role="progressbar" style="width: 10%" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>
-										</div>
-									</div>
-									 -->
+   								
 								</div>
 							</div>
 							<div class="col-auto">
@@ -718,7 +734,7 @@
 			</div>
 			<!-- 인증 성공률 끝 -->
 
-			<!-- 알림 시작 -->
+			<!-- 알림 시작
 			<div class="col-lg-3 col-md-6 mb-4">
 				<div class="card border-left-warning shadow h-100 py-2">
 					<div class="card-body">
@@ -734,13 +750,13 @@
 					</div>
 				</div>
 			</div>
-			<!-- 알림 끝 -->
+			알림 끝 -->
            </div>
            
 			<!-- 인증이 필요한 챌린지 시작 -->
 			<div class="row">
 				<div class="col-lg-6 mb-4">
-					<div id="plzCha" class="card shadow mb-4">
+					<div class="card shadow mb-4 height_px_ide">
 						<div class="card-header py-3">
 							<h5 class="m-0 font-weight-bold">인증이 필요한 챌린지</h5>
 						</div>
@@ -756,7 +772,7 @@
 					</div>
 				</div>
 				
-				<div class="col-lg-6 mb-4">
+				<div class="col-lg-6 mb-4 height_px">
 					<div id="notice" class="card shadow mb-4">
 						<div class="card-header py-3">
 							<h5 class="m-0 font-weight-bold">새로운 챌린지 추천</h5>
@@ -813,10 +829,6 @@
 			</div>
 			<!-- 두번째문단 끝 -->
 				
-			
-			
-			
-			
 			<!-- 챌린지 리포트 시작-->
 			<div class="row">
 				<div class="col-lg-12 mb-8">
@@ -828,8 +840,7 @@
 							<div id="chart_container" class="chart-bar">
 							</div>
 							<hr>
-							Styling for the bar chart can be found in the
-							<code>/js/demo/chart-bar-demo.js</code> file.
+							올 해 챌린지 참여 횟수에는 진행중인 챌린지와 완료된 챌린지 모두 포함된 횟수입니다.
 						</div>
 					</div>
 				</div>

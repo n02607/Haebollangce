@@ -1,6 +1,9 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%
+	String ctxPath = request.getContextPath();
+%>
 
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.6/dist/sweetalert2.all.min.js"></script>
 <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.6/dist/sweetalert2.min.css" rel="stylesheet">
@@ -135,21 +138,19 @@
 	$(document).ready(function(){
 		
 		const str_startDate = "${chaDTO.startDate}";
-		
 		const startDate = new Date(str_startDate);
 		const today = new Date();
-
+		
 		if (startDate <= today) {
 			// 챌린지가 이미 시작되었을 경우
 			
 			Swal.fire({
 				icon: "error",
-				// title: "주의",
 				html : "<div style='font-weight: bold; font-size: 16pt;'>이미 시작된 챌린지로<br>참여가 불가합니다.</div>",
 				confirmButtonColor: "#EB534C",
 				confirmButtonText: "확인"
 			}).then(function(){
-				location.href="<%= request.getContextPath()%>/challenge/certifyList";
+				javascript:history.back();
 			});
 		}
 		
@@ -253,7 +254,6 @@
 			
 			// insert 할 form 전송
 			
-			
 			// 팝업창 띄우기
 			const url = "<%= request.getContextPath()%>/challenge/joinEnd";
 			
@@ -275,6 +275,23 @@
 			
 		});
 		
+		
+		// 예치금 충전 클릭시 
+		$("div#point_charge").click(function(){
+			Swal.fire({
+				icon: "info",
+				title: "결제페이지로 이동합니다",
+				confirmButtonColor: "#EB534C",
+				confirmButtonText: "확인",
+				showCancelButton: true,
+				cancelButtonText: '취소',
+				cancelButtonColor: '#999999'
+			}).then(function(result){
+				if(result.isConfirmed){
+					location.href="<%= ctxPath%>/mypage/depositPurchase";
+				}
+			})
+		})
 		
 		
 	}); // end $(document).ready
@@ -302,14 +319,16 @@
 	}
 	
 </script>
-<div class="container" style="background-color: white; width: 70% !important; padding: 0; text-align: center;"> 
+
+<div class="container-fluid" style="background-color: #f4f4f4;">
+<div class="container pb-5" style="border-radius: 20px; background-color: white; width: 70% !important; padding: 0; text-align: center;"> 
 	<br>
 	<h3 style="font-weight: bold;">챌린지 참가하기</h3>
 	<br>
 	<div id="challenge_join_header" class="mx-5" style="height: 250px;">
 		<div class="join_body" style="box-shadow: 0px 0px 10px 1px gray; display: flex; justify-content: center; align-items:center; width: 100%; height: 100%; border-radius: 20px; font-size: 16pt;">
 			<div style="height: 100%; width: 30%;">
-	  			<img src="${chaDTO.thumbnail}" style="object-fit: cover; height:90%; width: 90%; margin-top:12px; border-radius: 20px;"/>
+	  			<img src="<%= ctxPath%>/images/${chaDTO.thumbnail}" style="object-fit: cover; height:90%; width: 90%; margin-top:12px; border-radius: 20px;"/>
   			</div>
   			<div style="text-align: left; width: 70%;">
   				<div style="display: flex; justify-content: space-between;">
@@ -359,7 +378,7 @@
 		<div id="explain_price" class="join_body">최소 1만원 ~ 최대 20만원 (1만원 단위 가능)</div>
 	</div> 
 	 
-	<div id="challenge_join_guide" class="px-5" style="height: 300px; background-color: #F5F5F5;">
+	<div id="challenge_join_guide" class="px-5" style="height: 300px; background-color: #FBECEA;">
 		<div class="join_body basic px-5" style="height: 20%;"><span>100% 성공</span><span id="success_price"></span></div>
 		<div class="join_body basic px-5" style="height: 20%;"><span>80% 이상 성공</span><span id="join_price"></span></div>
 		<div class="join_body basic px-5" style="height: 20%;"><span>80% 미만 성공</span><span>예치금 일부 환급 (성공률 만큼)</span></div>
@@ -388,7 +407,6 @@
 							<ul style="padding-left: 20px; text-align: left;">
 								<li class="my-1">상금은 80% 미만 성공한 참가자들의 벌금으로 마련돼요.</li>
 								<li class="my-1">최종 상금은 내가 건 돈에 비례해서 정해져요. 그래서 예치금이 많을수록 상금도 높아져요!</li>
-								<li class="my-1">인증을 놓쳤을 때는 인증패스를 사용해서 만회할 수 있어요. 단, 인증패스를 사용해서 100% 성공한 경우 공정성을 위해 상금은 받을 수 없어요.</li>
 							</ul>
 			      		</div>
 			      		<div class="modal-footer">
@@ -415,10 +433,11 @@
 		<div id="join_challenge" class="ml-3 challenge_join_btn" style="display: flex;">참가하기</div>
 	</div>
 </div>
+</div>
 
 <form name="challenge_info">
-	<input type="text" id="userid" name="fk_userid" value="${userid}">
-	<input type="number" id="price" name="entry_fee" value="">
-	<input type="text" id="challenge_code" name="fk_challenge_code" value="${chaDTO.challengeCode}">
-	<input type="text" id="after_deposit" name="after_deposit" value="">
+	<input type="text" id="userid" name="fk_userid" value="${userid}" <%-- readonly="readonly" --%>>
+	<input type="number" id="price" name="entry_fee" value="" <%-- readonly="readonly" --%>>
+	<input type="text" id="challenge_code" name="fk_challenge_code" value="${chaDTO.challengeCode}" <%-- readonly="readonly" --%>>
+	<input type="text" id="after_deposit" name="after_deposit" value="" <%-- readonly="readonly" --%>>
 </form>
