@@ -368,13 +368,13 @@ public class ChallengeController {
 			for(LoungeBoardDTO dto : loungeList) {
 				
 				JSONObject jsonObj = new JSONObject(); 
-				jsonObj.put("", ); 
-				jsonObj.put("", ); 
-				jsonObj.put("", ); 
-				jsonObj.put("", );
-				jsonObj.put("", );
-				jsonObj.put("", );
-				jsonObj.put("", );
+				jsonObj.put("name", dto.getName()); 
+				jsonObj.put("subject", dto.getSubject()); 
+				jsonObj.put("content", dto.getContent()); 
+				jsonObj.put("readCount", dto.getReadCount());
+				jsonObj.put("thumbnail", dto.getThumbnail());
+				jsonObj.put("likeCount", dto.getLikeCount());
+				jsonObj.put("commentCount", dto.getCommentCount());
 				
 				jsonArr.put(jsonObj); 
 			}
