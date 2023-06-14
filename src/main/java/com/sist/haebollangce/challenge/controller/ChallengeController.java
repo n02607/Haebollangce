@@ -360,7 +360,7 @@ public class ChallengeController {
     @RequestMapping(value="/main_b", method=RequestMethod.GET)
     public String mainpage_b() {
        
-        List<LoungeBoardDTO> loungeList = service.loungeList();
+        List<LoungeBoardDTO> loungeList = service.index_loungeList();
 		
 		JSONArray jsonArr = new JSONArray(); 
 		
