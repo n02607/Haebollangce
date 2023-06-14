@@ -91,5 +91,10 @@
 	    WHERE challenge_code = #{challengeCode}
 	</delete>
 	
+	<select id="loungeList" resultType="com.sist.haebollangce.lounge.model.LoungeBoardDTO">
+		select fk_userid, content, subject, name, readcount, likeCount, commentCount, readCount, thumbnail
+		from TBL_LOUNGE_BOARD
+	</select>
+	
 	
 </mapper>
