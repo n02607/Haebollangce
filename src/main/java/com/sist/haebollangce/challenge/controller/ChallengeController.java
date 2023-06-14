@@ -486,6 +486,7 @@ public class ChallengeController {
  		mav.setViewName("msg");
  		
  		return mav;
+ 		
  	}
     
 }
