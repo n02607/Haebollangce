@@ -26,6 +26,8 @@ import com.sist.haebollangce.challenge.dao.challengeVO;
 import com.sist.haebollangce.challenge.dto.ChallengeDTO;
 import com.sist.haebollangce.challenge.service.InterChallengeService;
 import com.sist.haebollangce.common.FileManager;
+import com.sist.haebollangce.config.token.CookieUtil;
+import com.sist.haebollangce.config.token.JwtTokenizer;
 
 @Controller
 @RequestMapping("/challenge")
@@ -36,13 +38,27 @@ public class ChallengeController {
     
     @Autowired // 파일 업로드
 	private FileManager fileManager;
+    
+    @Autowired
+    private JwtTokenizer jwtTokenizer;
 
     
     // =====================================================================================================
     
     
     @RequestMapping(value="/add_challenge")
-    public ModelAndView add_challenge(ModelAndView mav) {
+    public ModelAndView add_challenge(ModelAndView mav, HttpServletRequest request) {
+    	
+	    	// 쿠키에서 accessToken (jWT 형식)을 가져옵니다. 
+	    	String accessToken = CookieUtil.getToken(request,"accessToken");
+	
+	    	String userid = "";
+	    	
+	    	// 로그인 되어있다면 정상적으로 토큰에 접근 가능하며 아래와 같이 userid를 얻을  수 있습니다.
+	    	// (로그아웃을 한 경우 null)
+	    	if(accessToken != null) {
+	    	   userid = jwtTokenizer.getUseridFromToken(accessToken);
+	    	}
     	
     		List<ChallengeDTO> categoryList = null;
     		
@@ -61,6 +77,7 @@ public class ChallengeController {
     		mav.addObject("categoryList", categoryList);
     		mav.addObject("freqList", freqList);
     		mav.addObject("duringList" ,duringList);
+    		mav.addObject("userid", userid);
     		
     		mav.setViewName("challenge/add_challenge.tiles1");
     	
@@ -271,7 +288,7 @@ public class ChallengeController {
    // 	System.out.println("확인용 n : "  + n);
     		
     		if(n == 3) {
-    			mav.setViewName("redirect:/lounge/loungeList");
+    			mav.setViewName("redirect:/challenge/join");
     		}
     		else {
     			mav.setViewName("lounge/error/add_arror.tiles1");
@@ -286,6 +303,17 @@ public class ChallengeController {
     @RequestMapping(value="/challengeView")
     public ModelAndView challengeView(ModelAndView mav, HttpServletRequest request) {
     		
+	    	// 쿠키에서 accessToken (jWT 형식)을 가져옵니다. 
+	    	String accessToken = CookieUtil.getToken(request,"accessToken");
+	
+	    	String userid = "";
+	    	
+	    	// 로그인 되어있다면 정상적으로 토큰에 접근 가능하며 아래와 같이 userid를 얻을  수 있습니다.
+	    	// (로그아웃을 한 경우 null)
+	    	if(accessToken != null) {
+	    	   userid = jwtTokenizer.getUseridFromToken(accessToken);
+	    	}
+    	
     		// 조회하고자 하는 카테고리 코드 
     		String challengeCode = request.getParameter("challengeCode");
     		
@@ -296,6 +324,7 @@ public class ChallengeController {
     			
     			Map<String, String> paraMap = new HashMap<>();
     			paraMap.put("challengeCode", challengeCode);
+    			paraMap.put("userid", userid);
     			
     			challengedto = service.getview(paraMap);
     			
@@ -304,11 +333,59 @@ public class ChallengeController {
     		}
     		
     		
+    		int n = 0;
     		
+    		if(userid != "" ) {
+    			
+    			Map<String, String> paraMap = new HashMap<>();
+    			paraMap.put("userid", userid);
+    			paraMap.put("challengeCode", challengeCode);
+    			
+    			n = service.checkLike(paraMap);
+    			
+    			
+    		}
+    		
+    		// System.out.println("likecount : "+ n);
+    		
+    		
+    		mav.addObject("userid", userid);
     		mav.addObject("challengedto", challengedto);
+    		mav.addObject("likecount", n);
     		
     		mav.setViewName("challenge/challengeView.tiles1");
     		return mav;
+    }
+    
+    // 챌린지 게시글 북마크 추가 
+    @ResponseBody
+    @RequestMapping(value="/challengelikeadd")
+    public int challengelikeadd(ChallengeDTO challengedto) {
+    		
+    		int n = 0;
+    		
+    		// 챌린지 북마크(관심)등록
+    		n = service.challengelikeadd(challengedto);
+    		
+    	//	System.out.println("controller 확인용 : "+ n);
+    	
+    		return n;
+    }
+    
+    
+    // 챌린지 게시글 북마크 해제
+    @ResponseBody
+    @RequestMapping(value="/likedelete")
+    public int likedelete(ChallengeDTO challengedto) {
+    		
+    		int n = 0;
+    		
+    		// 챌린지 북마크(관심)해제
+    		n = service.likedelete(challengedto);
+    		
+    		System.out.println("controller 확인용 : "+ n);
+    	
+    		return n;
     }
     
     

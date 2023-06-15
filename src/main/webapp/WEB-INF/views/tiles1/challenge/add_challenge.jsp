@@ -275,8 +275,7 @@
 		    	<tr>
 	        		<th>성명</th>
 	         	<td>
-	            	<input type="text" name="fkUserid" />
-	           <!--  	<input type="hidden" name="fk_userid" value="${sessionScope.loginuser.userid}" readonly/> -->
+	            	<input type="text" name="fkUserid" value="${userid}" readonly/>
 	         	</td>
 	      	</tr>
 	      	

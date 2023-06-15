@@ -61,6 +61,9 @@ public class SecurityConfig {
                     .and()
                     .defaultSuccessUrl("/user/tiles-test")
                 .and()
+                .headers()
+                    .frameOptions().sameOrigin() // X-Frame-Options 설정
+                .and()
                 .build();
     }
 

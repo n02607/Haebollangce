@@ -41,4 +41,14 @@ public interface InterChallengeDAO {
 
 	// 카테고리별 챌린지 불러오기
 	List<challengeVO> challengelist();
+
+	
+	// 좋아요 되어 있는지 안 되어 있는지 확인  
+	int checkLike(Map<String, String> paraMap);
+
+	// 챌린지 북마크(관심)등록
+	int challengelikeadd(ChallengeDTO challengedto);
+
+	// 챌린지 북마크(관심)해제
+	int likedelete(ChallengeDTO challengedto);
 }
