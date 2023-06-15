@@ -332,6 +332,7 @@
 			
 		
 		
+<<<<<<< HEAD
 	});
 
 	
@@ -353,6 +354,10 @@
 		
 		
 
+=======
+	}
+
+>>>>>>> refs/heads/main
 </script>
 
 <div class="detail_challenge_template">
@@ -476,7 +481,14 @@
 					<button class="challenge_join" type="button" onclick="location.href='<%=ctxPath%>/challenge/certify?challenge_code=${challengedto.challengeCode}'">챌린지 인증하기</button>
 				</c:if>
 			</div>
+<<<<<<< HEAD
 
+=======
+			<span>
+			<i class="fa-regular fa-trash-can btn btnDelete" style="color:gray;" onclick="javascript:location.href='<%= ctxPath%>/challenge/challengedel?challengeCode=${challengedto.challengeCode}'">&nbsp;글 삭제하기</i>
+			</span>
+			
+>>>>>>> refs/heads/main
 		</div>	
 	</div>
   </div>

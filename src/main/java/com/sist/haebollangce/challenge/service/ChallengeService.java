@@ -10,6 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.sist.haebollangce.challenge.dao.InterChallengeDAO;
 import com.sist.haebollangce.challenge.dao.challengeVO;
 import com.sist.haebollangce.challenge.dto.ChallengeDTO;
+import com.sist.haebollangce.lounge.model.LoungeBoardDTO;
 
 @Service
 public class ChallengeService implements InterChallengeService {
@@ -103,6 +104,7 @@ public class ChallengeService implements InterChallengeService {
 		
 	}
 	
+<<<<<<< HEAD
 	// 좋아요 되어 있는지 안 되어 있는지 확인 
 	@Override
 	public int checkLike(Map<String, String> paraMap) {
@@ -132,5 +134,32 @@ public class ChallengeService implements InterChallengeService {
 		System.out.println("service 확인용 : "+ n);
 		
 		return n;
+=======
+	// 챌린지 삭제하기
+	@Override
+	public challengeVO challViewWithNoAddCount(Map<String, String> paraMap) {
+		
+		challengeVO challViewWithNoAddCount = dao.challViewWithNoAddCount(paraMap);
+		
+		return challViewWithNoAddCount;
+	}
+	
+	// 챌린지 삭제하기 완료요청
+	@Override
+	public int challengedel(Map<String, String> paraMap) {
+		
+		int n =	dao.challengedel(paraMap);
+		
+		return n;
+	}
+
+	// 라운지 리스트 불러오기
+	@Override
+	public List<LoungeBoardDTO> index_loungeList() {
+		
+		List<LoungeBoardDTO> index_loungeList = dao.index_loungeList();
+		
+		return index_loungeList;
+>>>>>>> refs/heads/main
 	}
 }

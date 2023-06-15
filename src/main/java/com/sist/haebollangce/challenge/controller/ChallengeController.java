@@ -12,8 +12,11 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -26,8 +29,7 @@ import com.sist.haebollangce.challenge.dao.challengeVO;
 import com.sist.haebollangce.challenge.dto.ChallengeDTO;
 import com.sist.haebollangce.challenge.service.InterChallengeService;
 import com.sist.haebollangce.common.FileManager;
-import com.sist.haebollangce.config.token.CookieUtil;
-import com.sist.haebollangce.config.token.JwtTokenizer;
+import com.sist.haebollangce.lounge.model.LoungeBoardDTO;
 
 @Controller
 @RequestMapping("/challenge")
@@ -38,27 +40,13 @@ public class ChallengeController {
     
     @Autowired // 파일 업로드
 	private FileManager fileManager;
-    
-    @Autowired
-    private JwtTokenizer jwtTokenizer;
 
     
     // =====================================================================================================
     
     
     @RequestMapping(value="/add_challenge")
-    public ModelAndView add_challenge(ModelAndView mav, HttpServletRequest request) {
-    	
-	    	// 쿠키에서 accessToken (jWT 형식)을 가져옵니다. 
-	    	String accessToken = CookieUtil.getToken(request,"accessToken");
-	
-	    	String userid = "";
-	    	
-	    	// 로그인 되어있다면 정상적으로 토큰에 접근 가능하며 아래와 같이 userid를 얻을  수 있습니다.
-	    	// (로그아웃을 한 경우 null)
-	    	if(accessToken != null) {
-	    	   userid = jwtTokenizer.getUseridFromToken(accessToken);
-	    	}
+    public ModelAndView add_challenge(ModelAndView mav) {
     	
     		List<ChallengeDTO> categoryList = null;
     		
@@ -77,7 +65,6 @@ public class ChallengeController {
     		mav.addObject("categoryList", categoryList);
     		mav.addObject("freqList", freqList);
     		mav.addObject("duringList" ,duringList);
-    		mav.addObject("userid", userid);
     		
     		mav.setViewName("challenge/add_challenge.tiles1");
     	
@@ -97,13 +84,13 @@ public class ChallengeController {
   		// WAS 의 webapp 의 절대경로를 알아와야 한다.
   		HttpSession session = request.getSession();
   		String root = session.getServletContext().getRealPath("/").substring(0, 40);
-  		System.out.println(root);
+  //		System.out.println(root);
 
   		
   		// path 가 첨부파일들을 저장할 WAS(톰캣)의 폴더가 된다.
   		String path = root + "resources" + File.separator + "static" + File.separator +"photo_upload";
   		
-  		System.out.println("~~~~ 확인용 스마트 에디터 path => " + path);
+  //		System.out.println("~~~~ 확인용 스마트 에디터 path => " + path);
   		// ~~~~ 확인용  스마트 에디터  path => 
   		
   		File dir = new File(path);
@@ -165,7 +152,7 @@ public class ChallengeController {
 			HttpSession session = mrequest.getSession();
 			String root = session.getServletContext().getRealPath("/").substring(0, 40); 
 			
-		    System.out.println("~~~~~~ 썸네일 확인용 webapp 의 절대경로=> " + root);
+	//	    System.out.println("~~~~~~ 썸네일 확인용 webapp 의 절대경로=> " + root);
 		 //  ~~~~~~ 확인용 webapp 의 절대경로=> C:/Users/user/git/Haebollangce/src/main/
 			
 		    String path = root + "resources" + File.separator + "static" + File.separator + "images";
@@ -198,7 +185,7 @@ public class ChallengeController {
 				newFileName = fileManager.doFileUpload(bytes, originalFilename, path);
 				
 				
-				System.out.println(">>> 확인용 newFileName => " + newFileName);
+		//		System.out.println(">>> 확인용 newFileName => " + newFileName);
 				// >>> 확인용 newFileName => 20230522103648816893054943800.JPG
 				// >>> 확인용 newFileName => 20230522103856817021097001000.JPG
 				
@@ -288,7 +275,7 @@ public class ChallengeController {
    // 	System.out.println("확인용 n : "  + n);
     		
     		if(n == 3) {
-    			mav.setViewName("redirect:/challenge/join");
+    			mav.setViewName("redirect:/lounge/loungeList");
     		}
     		else {
     			mav.setViewName("lounge/error/add_arror.tiles1");
@@ -303,17 +290,6 @@ public class ChallengeController {
     @RequestMapping(value="/challengeView")
     public ModelAndView challengeView(ModelAndView mav, HttpServletRequest request) {
     		
-	    	// 쿠키에서 accessToken (jWT 형식)을 가져옵니다. 
-	    	String accessToken = CookieUtil.getToken(request,"accessToken");
-	
-	    	String userid = "";
-	    	
-	    	// 로그인 되어있다면 정상적으로 토큰에 접근 가능하며 아래와 같이 userid를 얻을  수 있습니다.
-	    	// (로그아웃을 한 경우 null)
-	    	if(accessToken != null) {
-	    	   userid = jwtTokenizer.getUseridFromToken(accessToken);
-	    	}
-    	
     		// 조회하고자 하는 카테고리 코드 
     		String challengeCode = request.getParameter("challengeCode");
     		
@@ -324,7 +300,6 @@ public class ChallengeController {
     			
     			Map<String, String> paraMap = new HashMap<>();
     			paraMap.put("challengeCode", challengeCode);
-    			paraMap.put("userid", userid);
     			
     			challengedto = service.getview(paraMap);
     			
@@ -332,60 +307,10 @@ public class ChallengeController {
     			
     		}
     		
-    		
-    		int n = 0;
-    		
-    		if(userid != "" ) {
-    			
-    			Map<String, String> paraMap = new HashMap<>();
-    			paraMap.put("userid", userid);
-    			paraMap.put("challengeCode", challengeCode);
-    			
-    			n = service.checkLike(paraMap);
-    			
-    			
-    		}
-    		
-    		// System.out.println("likecount : "+ n);
-    		
-    		
-    		mav.addObject("userid", userid);
     		mav.addObject("challengedto", challengedto);
-    		mav.addObject("likecount", n);
     		
     		mav.setViewName("challenge/challengeView.tiles1");
     		return mav;
-    }
-    
-    // 챌린지 게시글 북마크 추가 
-    @ResponseBody
-    @RequestMapping(value="/challengelikeadd")
-    public int challengelikeadd(ChallengeDTO challengedto) {
-    		
-    		int n = 0;
-    		
-    		// 챌린지 북마크(관심)등록
-    		n = service.challengelikeadd(challengedto);
-    		
-    	//	System.out.println("controller 확인용 : "+ n);
-    	
-    		return n;
-    }
-    
-    
-    // 챌린지 게시글 북마크 해제
-    @ResponseBody
-    @RequestMapping(value="/likedelete")
-    public int likedelete(ChallengeDTO challengedto) {
-    		
-    		int n = 0;
-    		
-    		// 챌린지 북마크(관심)해제
-    		n = service.likedelete(challengedto);
-    		
-    		System.out.println("controller 확인용 : "+ n);
-    	
-    		return n;
     }
     
     
@@ -393,36 +318,97 @@ public class ChallengeController {
     
  // 메인페이지
     @RequestMapping(value="/main")
-   public String mainpage(HttpServletRequest request) {
+	public String mainpage(HttpServletRequest request) {
+
+    	return "main_page.tiles1";
+    	// /WEB-INF/views/tiles1/main_page.jsp 페이지를 만들어야 한다.
+    }
+    
+    
+    // 메인페이지 챌린지(Ajax)
+    @ResponseBody
+    @RequestMapping(value="/main_a", method=RequestMethod.GET)
+    public String mainpage_a() {
        
-       
-       
-       return "main_page.tiles1";
-       // /WEB-INF/views/tiles1/main_page.jsp 페이지를 만들어야 한다.
+        List<challengeVO> challengeList = service.challengeList();
+		
+		JSONArray jsonArr = new JSONArray(); 
+		
+		if(challengeList != null) {
+			for(challengeVO vo : challengeList) {
+				
+				JSONObject jsonObj = new JSONObject(); 
+				jsonObj.put("challengeName", vo.getChallengeName()); 
+				jsonObj.put("categoryName", vo.getCategoryName()); 
+				jsonObj.put("startDate", vo.getStartDate()); 
+				jsonObj.put("setDate", vo.getSetDate());
+				jsonObj.put("fkDuringType", vo.getfkDuringType());
+				jsonObj.put("memberCount", vo.getMemberCount());
+				jsonObj.put("thumbnail", vo.getThumbnail());
+				jsonObj.put("fkUserid", vo.getfkUserid());
+				
+				jsonArr.put(jsonObj); 
+			}
+		}
+		
+		return jsonArr.toString();
+
     }
 
+    // 메인페이지 라운지(Ajax)
+    @ResponseBody
+    @RequestMapping(value="/main_b", method=RequestMethod.GET)
+    public String mainpage_b() {
+       
+        List<LoungeBoardDTO> loungeList = service.index_loungeList();
+		
+		JSONArray jsonArr = new JSONArray(); 
+		
+		if(loungeList != null) {
+			for(LoungeBoardDTO dto : loungeList) {
+				
+				JSONObject jsonObj = new JSONObject(); 
+				jsonObj.put("name", dto.getName()); 
+				jsonObj.put("subject", dto.getSubject()); 
+				jsonObj.put("content", dto.getContent()); 
+				jsonObj.put("readCount", dto.getReadCount());
+				jsonObj.put("thumbnail", dto.getThumbnail());
+				jsonObj.put("likeCount", dto.getLikeCount());
+				jsonObj.put("commentCount", dto.getCommentCount());
+				
+				jsonArr.put(jsonObj); 
+			}
+		}
+		
+		return jsonArr.toString();
+
+    }
+    
     
     // 챌린지 불러오기
     @RequestMapping(value="/challenge_all")
     public ModelAndView challenge_all(ModelAndView mav, HttpServletRequest request) {
-
+    	
+    	
        List<challengeVO> challengeList = null;
        List<challengeVO> categoryList = null;
+       
        
        challengeList = service.challengeList();
        categoryList = service.categoryList();
        
+       
        mav.addObject("challengeList", challengeList);
        mav.addObject("categoryList", categoryList);
        
-      mav.setViewName("board/challenge_all.tiles1");
-      
-       return mav;
        
+       mav.setViewName("board/challenge_all.tiles1");
+       
+       return mav;
+            
     }
     
-    
- 
+
     // 카테고리별 챌린지 불러오기
     @ResponseBody
     @RequestMapping(value="/challengelist", method=RequestMethod.GET)
@@ -452,5 +438,55 @@ public class ChallengeController {
 
         return categoryMap;
     }
+    
+    // 챌린지 삭제하기
+    @RequestMapping(value="/challengedel")
+    public ModelAndView challengedel(ModelAndView mav, HttpServletRequest request) {
+		
+		// 삭제하고자 하는 글번호 받아오기 
+		String challengeCode = request.getParameter("challengeCode");
+		// 삭제하고자 하는 글내용 가져오기 (이 안에 작성자 정보고 포함되어있음 - 남이 쓴 글 삭제를 막기위해 필요)
+		
+		Map<String,String> paraMap = new HashMap<>();
+		paraMap.put("challengeCode", challengeCode);
+		
+		// 글조회수(readCount) 증가 없이 단순히 글 1개만 조회
+		challengeVO challenge = service.challViewWithNoAddCount(paraMap);
+		
+	    mav.addObject("pw", challenge.getPw());
+	    mav.addObject("challengeCode", challengeCode); // 삭제하려는 글의 번호
+	    mav.setViewName("challenge/del_challenge.tiles1");
+	    // => /WEB-INF/views/tiles1/lounge/loungeDel.jsp view 단을 보여준다.
+		
+		return mav;
+	}	
+    
+    // 챌린지 삭제 페이지 요청 완료
+ 	@PostMapping(value = "/challengedelend")
+ 	public ModelAndView challengedelend(ModelAndView mav, HttpServletRequest request) {
+ 		
+ 		// 삭제하고자 하는 글번호 받아오기 
+ 		String challengeCode = request.getParameter("challengeCode");
+
+ 		// 삭제하고자 하는 글내용 가져오기 (이 안에 작성자 정보도 포함되어있음 - 남이 쓴 글 삭제를 막기위해 필요)
+ 		Map<String,String> paraMap = new HashMap<>();
+ 		paraMap.put("challengeCode", challengeCode);
+ 				
+ 		int n = service.challengedel(paraMap);
+
+ 		if(n==1) {
+ 			mav.addObject("message", "챌린지 삭제 완료");
+ 			mav.addObject("loc", request.getContextPath()+"/challenge/challenge_all");
+ 		}
+ 		else {
+ 			mav.addObject("message", "챌린지 삭제 실패");
+ 			mav.addObject("loc", "javascript:history.back()"); 
+ 		}
+ 		
+ 		mav.setViewName("msg");
+ 		
+ 		return mav;
+ 		
+ 	}
     
 }
