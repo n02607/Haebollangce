@@ -387,7 +387,7 @@ public class ChallengeController {
     		// 챌린지 북마크(관심)해제
     		n = service.likedelete(challengedto);
     		
-    		System.out.println("controller 확인용 : "+ n);
+    //	System.out.println("controller 확인용 : "+ n);
     	
     		return n;
     }

@@ -147,7 +147,7 @@ public class ChallengeDAO implements InterChallengeDAO {
 	public int likedelete(ChallengeDTO challengedto) {
 		int n = mapper.likedelete(challengedto);
 			
-		System.out.println("dao 확인용 : "+ n);
+	//	System.out.println("dao 확인용 : "+ n);
 		return n;
 	}
 }

@@ -130,7 +130,7 @@ public class ChallengeService implements InterChallengeService {
 		
 		int n = dao.likedelete(challengedto);
 		
-		System.out.println("service 확인용 : "+ n);
+	//	System.out.println("service 확인용 : "+ n);
 		
 		return n;
 	}
