@@ -851,7 +851,7 @@
 		
 	} // end of function go_create() -----
 	
-	function go_certify() {
+	function go_certify(e) {
 		
 		location.href = "<%=ctxPath%>/challenge/certifyList";
 		
