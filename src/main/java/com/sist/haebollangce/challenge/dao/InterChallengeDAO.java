@@ -42,18 +42,6 @@ public interface InterChallengeDAO {
 
 	// 카테고리별 챌린지 불러오기
 	List<challengeVO> challengelist();
-<<<<<<< HEAD
-
-	
-	// 좋아요 되어 있는지 안 되어 있는지 확인  
-	int checkLike(Map<String, String> paraMap);
-
-	// 챌린지 북마크(관심)등록
-	int challengelikeadd(ChallengeDTO challengedto);
-
-	// 챌린지 북마크(관심)해제
-	int likedelete(ChallengeDTO challengedto);
-=======
 	
 	// 챌린지 삭제하기
 	challengeVO challViewWithNoAddCount(Map<String, String> paraMap);
@@ -63,5 +51,13 @@ public interface InterChallengeDAO {
 
 	// 라운지 리스트 불러오기
 	List<LoungeBoardDTO> index_loungeList();
->>>>>>> refs/heads/main
+	
+	// 좋아요 되어 있는지 안 되어 있는지 확인  
+	int checkLike(Map<String, String> paraMap);
+
+	// 챌린지 북마크(관심)등록
+	int challengelikeadd(ChallengeDTO challengedto);
+
+	// 챌린지 북마크(관심)해제
+	int likedelete(ChallengeDTO challengedto);
 }

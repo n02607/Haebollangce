@@ -103,8 +103,7 @@ public class ChallengeService implements InterChallengeService {
 		
 		
 	}
-	
-<<<<<<< HEAD
+
 	// 좋아요 되어 있는지 안 되어 있는지 확인 
 	@Override
 	public int checkLike(Map<String, String> paraMap) {
@@ -134,7 +133,8 @@ public class ChallengeService implements InterChallengeService {
 		System.out.println("service 확인용 : "+ n);
 		
 		return n;
-=======
+	}
+	
 	// 챌린지 삭제하기
 	@Override
 	public challengeVO challViewWithNoAddCount(Map<String, String> paraMap) {
@@ -160,6 +160,5 @@ public class ChallengeService implements InterChallengeService {
 		List<LoungeBoardDTO> index_loungeList = dao.index_loungeList();
 		
 		return index_loungeList;
->>>>>>> refs/heads/main
 	}
 }

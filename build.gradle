@@ -67,17 +67,12 @@ dependencies {
 	compileOnly 'org.projectlombok:lombok'
 	annotationProcessor 'org.projectlombok:lombok'
 
-<<<<<<< HEAD
-//	thumbnailator
-	implementation 'net.coobird:thumbnailator:0.4.19'
-=======
 // 비밀번호 비교
 	implementation 'org.springframework.boot:spring-boot-starter-websocket'
 	implementation 'org.springframework.boot:spring-boot-starter-data-redis'
 
-
->>>>>>> refs/heads/main
-
+//	thumbnailator
+	implementation 'net.coobird:thumbnailator:0.4.19'
 }
 
 tasks.named('test') {
