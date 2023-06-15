@@ -435,6 +435,9 @@
 				<button class="challenge_join" type="button" onclick="participate()">챌린지 참가</button>
 
 			</div>
+			<span>
+			<i class="fa-regular fa-trash-can btn btnDelete" style="color:gray;" onclick="javascript:location.href='<%= ctxPath%>/challenge/challengedel?challengeCode=${challengedto.challengeCode}'">&nbsp;글 삭제하기</i>
+			</span>
 			
 		</div>	
 	</div>
