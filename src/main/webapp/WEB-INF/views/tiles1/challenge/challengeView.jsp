@@ -343,11 +343,7 @@
 		      location.href='<%= ctxPath%>/challenge/challengedel?challengeCode='+${challengedto.challengeCode};
 		      
 		} 
-<<<<<<< HEAD
 		
-=======
-		
->>>>>>> branch 'SSH' of https://github.com/n02607/Haebollangce.git
 
 </script>
 
@@ -455,11 +451,6 @@
 			<input type="hidden" id="userid" value="${userid}">
 			<input type="hidden" id="challengeCode" value="${challengedto.challengeCode}">
 		</div>
-		<div class="RecommendSwipe_template">
-		
-		
-		
-		</div>
 		
 		<div class="Banner_baner">
 		
@@ -470,44 +461,11 @@
 				
 				<c:if test="${userid != '' && challengedto.checkJoinUser != 0}">
 					<button class="challenge_join" type="button" onclick="location.href='<%=ctxPath%>/challenge/certify?challenge_code=${challengedto.challengeCode}'">챌린지 인증하기</button>
-<<<<<<< HEAD
 				</c:if>
-			<div class="banner_content">
-				<button class="challenge_join" type="button" onclick="participate()">챌린지 참가</button>
-
-				<c:if test="${userid == '' || challengedto.checkJoinUser != 1}">
-					<button class="challenge_join" type="button" onclick="participate()">챌린지 참가</button>
-				</c:if>
-				
-				<c:if test="${userid != '' && challengedto.checkJoinUser != 0}">
-					<button class="challenge_join" type="button" onclick="location.href='<%=ctxPath%>/challenge/certify?challenge_code=${challengedto.challengeCode}'">챌린지 인증하기</button>
-				</c:if>
-
-=======
-				</c:if>
-			<div class="banner_content">
-				<button class="challenge_join" type="button" onclick="participate()">챌린지 참가</button>
-
-				<c:if test="${userid == '' || challengedto.checkJoinUser != 1}">
-					<button class="challenge_join" type="button" onclick="participate()">챌린지 참가</button>
-				</c:if>
-				
-				<c:if test="${userid != '' && challengedto.checkJoinUser != 0}">
-					<button class="challenge_join" type="button" onclick="location.href='<%=ctxPath%>/challenge/certify?challenge_code=${challengedto.challengeCode}'">챌린지 인증하기</button>
-				</c:if>
-
->>>>>>> branch 'SSH' of https://github.com/n02607/Haebollangce.git
-			</div>
-
-		</div>	
-	</div>
-<<<<<<< HEAD
-  	</div>
-	</div>   
-=======
+			</div>	
+	   </div>
   </div>
 </div>   
->>>>>>> branch 'SSH' of https://github.com/n02607/Haebollangce.git
 </div>
 <script>
 
