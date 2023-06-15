@@ -13,6 +13,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
+
 @RestController
 @RequestMapping("/api/v1/user")
 @RequiredArgsConstructor
@@ -23,7 +25,7 @@ public class EntryPointApiController {
     private final CookieUtil cookieUtil;
 
     @PostMapping("/login")
-    public ResponseEntity login(@RequestBody UserDTO.UserLoginDTO loginUser) {
+    public ResponseEntity login(@RequestBody UserDTO.UserLoginDTO loginUser, HttpServletRequest request) {
 
         UserDTO user = service.formLogin(loginUser);
 
@@ -34,9 +36,10 @@ public class EntryPointApiController {
         TokenDTO tokens = service.getTokens(user);
         ResponseCookie cookie = cookieUtil.saveAccessToken("accessToken", tokens.getAccessToken());
 
+        String redirectUrl = request.getHeader("custom-from");
         HttpHeaders headers = new HttpHeaders();
         headers.add(HttpHeaders.SET_COOKIE, String.valueOf(cookie));
-        headers.add("Location", "/user/tiles-test");
+        headers.add(HttpHeaders.LOCATION, redirectUrl+"?xduTvAAQVxq=true");
 
         return new ResponseEntity(headers,HttpStatus.FOUND);
     }
@@ -47,7 +50,7 @@ public class EntryPointApiController {
 
         HttpHeaders headers = new HttpHeaders();
         headers.add("Set-Cookie", String.valueOf(cookie));
-        headers.add("Location", "/user/login");
+        headers.add("Location", "/challenge/main");
 
         return new ResponseEntity(headers,HttpStatus.FOUND);
     }

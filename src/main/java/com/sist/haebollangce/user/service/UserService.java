@@ -46,16 +46,13 @@ public class UserService implements InterUserService{
     public TokenDTO getTokens(UserDTO loginUser) {
 
 
-        TokenDTO tokens = null;
         String accessToken = jwtTokenizer.createAccessToken(loginUser.getUserid(),loginUser.getName(),
                                                             loginUser.getEmail(),loginUser.getRoleId());
 
         String refreshToken = jwtTokenizer.createRefreshToken(loginUser.getUserid(),loginUser.getName(),
                                                               loginUser.getEmail(),loginUser.getRoleId());
-        tokens.setAccessToken(accessToken);
-        tokens.setAccessToken(refreshToken);
 
-        return tokens;
+        return new TokenDTO(accessToken, refreshToken);
     }
 
 }
