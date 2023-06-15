@@ -217,7 +217,7 @@ font-weight: 400;
 }
 
 .All_content__card__c {
-  width: 100%;
+  width: 1536px;
   margin-right: 100px;
   height: auto;
   display: flex;
@@ -263,7 +263,7 @@ font-weight: 400;
 }
 
 .All_content__card__h {
-  width: 100%;
+  width: 1536px;
   margin-right: 100px;
   height: auto;
   display: flex;
@@ -338,7 +338,6 @@ a:hover { text-decoration: none;}
   font-weight: 600;
   text-align: center;
   margin-right: 6px;
-  overflow: hidden;
 }
 
 .ChallengeCard_info__title {
@@ -355,17 +354,19 @@ a:hover { text-decoration: none;}
 }
 
 
+
+
 .ChallengeCard_info__describe {
-	font-size: 15px;
-    line-height: 24px;
-    letter-spacing: -.4px;
-    font-weight: 600;
-    color: #999696;
-    display: flex;
-    margin-bottom: 20px;
-    text-overflow: ellipsis;
-    overflow: hidden;
-    white-space: nowrap;
+  font-size: 20px;
+  line-height: 24px;
+  letter-spacing: -.4px;
+  font-weight: 400;
+  color: #999696;
+  display: flex;
+  margin-bottom: 20px;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
 }
 
 .ChallengeCard_info_calender {
@@ -376,7 +377,7 @@ a:hover { text-decoration: none;}
   margin-right: 3px;
   aspect-ratio: auto 20 / 20;
   overflow-clip-margin: content-box;
-  overflow: hidden;
+  overflow: clip;
 }
 
 .ChallengeCard_info_check {
@@ -387,7 +388,7 @@ a:hover { text-decoration: none;}
   margin-right: 3px;
   aspect-ratio: auto 20 / 20;
   overflow-clip-margin: content-box;
-  overflow: hidden;
+  overflow: clip;
 }
 
 .ChallengeCard_info_participants {
@@ -405,15 +406,15 @@ a:hover { text-decoration: none;}
   position: relative;
   border-radius: 100%;
   flex-shrink: 0;
-  
 }
 
 .ChallengeCard_participant_image {
    font-size: 16px;
+    line-height: 19px;
     font-family: Pretendard;
-    font-weight: 600;
+    font-weight: 400;
     letter-spacing: -.4px;
-    color: black;
+    color: #999696;
   
   
 }
@@ -513,7 +514,7 @@ a:hover { text-decoration: none;}
   letter-spacing: -.4px;
   margin-top: 25px;
   text-decoration: none;
-  margin-left: 678px;
+  margin-left: 649px;
   color: inherit;
 
 }
@@ -638,12 +639,12 @@ a:hover { text-decoration: none;}
 		                 var daysOfWeek = ['일', '월', '화', '수', '목', '금', '토'];
 		                 var dayString = daysOfWeek[dayOfWeek];
 						
-						console.log(item.challengeCode);
+						console.log(item.challengeName);
 						html += `
 							<div class="All_content__card__e">
-								<a class="ChallengeCard_card" onclick="javascript:location.href='/challenge/challengeView?challengeCode=\${item.challengeCode}'">
+								<a class="ChallengeCard_card">
 						            <span><img src="/images/`+item.thumbnail+`" class="ChallengeCard_card_image"/></span>
-									<div class="ChallengeCard_info" >
+									<div class="ChallengeCard_info">
 										<div class="ChallengeCard_info__subject">
 											<div class="ChallengeCard_tag">`+item.categoryName+`</div>
 										</div>
@@ -651,9 +652,9 @@ a:hover { text-decoration: none;}
 										<div class="ChallengeCard_info__describe">
 										     챌린지 ·&nbsp;<img alt="info-calender" class="ChallengeCard_info_calender" src="/images/캘린더.png"/>
 		        	                      <div style="font-size:18px;">` + month + `.` + day + `(`+dayString+`)</div> `+ `&nbsp;· `+ item.setDate +` 
-		        	                      <img alt="info-check" src="https://images.munto.kr/munto-web/ic_action_check_off_24px.svg?s=48x48" class="ChallengeCard_info_check"/>
-		        	                      <div>` + item.frequency + `</div>
-		        	                                                 
+		        	                      <img alt="info-check" src="https://images.munto.kr/munto-web/ic_action_check_off_24px.svg?s=48x48" class="ChallengeCard_info_check"/>주
+		        	                      <div>` + item.fkDuringType + `</div>
+		        	                                                 회
 										</div>
 										<div class="ChallengeCard_info_participants">
 		        	                     <div class="ChallengeCard_participant_image"> 개설자ID`+ `&nbsp; : `+ item.fkUserid + `</div>	        	                      
@@ -691,12 +692,11 @@ a:hover { text-decoration: none;}
 				// 데이터가 존재하는 경우
 				
 				$.each(json, function(index, item) {
-					
 					var contentWithoutTags = item.content.replace(/<p>/g, '').replace(/<\/p>/g, '').replace(/<span[^>]*>/g, '').replace(/<\/span>/g, '');					
 					console.log(json);
 					html += `
-						<div class="All_content__card__e" >
-						<a class="ChallengeCard_card" onclick="javascript:location.href='/lounge/loungeView?seq=\${item.seq}'">
+						<div class="All_content__card__e">
+						<a class="ChallengeCard_card">
 				            <span><img src="/images/lgthumFiles/`+item.thumbnail+`" class="ChallengeCard_card_image"/></span>
 							<div class="ChallengeCard_info">
 								<div class="ChallengeCard_info__subject">
@@ -711,17 +711,14 @@ a:hover { text-decoration: none;}
         	                                                 회
 								</div>
 								<div class="ChallengeCard_info_participants">
-								<img src="https://images.munto.kr/munto-web/ic_action_like-empty-black_30px.svg?s=32x32" />
-        	                     <div class="ChallengeCard_participant_image" style="padding-top:2px">`+ item.likeCount + `&nbsp;</div>	        	                      
-	                        		<img src="https://images.munto.kr/munto-web/ic_action_comment_30px.svg?s=32x32"/>
-	                        		<div class="ChallengeCard_participant_image" style="padding-top:2px">`+ item.commentCount + `&nbsp;</div>
-		                        	<img src="https://images.munto.kr/munto-web/info_group.svg?s=32x32"/>
-	                        		<div class="ChallengeCard_participant_image" style="padding-top:2px">`+ item.readCount + `</div>
+        	                     <div class="ChallengeCard_participant_image"> 개설자ID`+ `&nbsp; : `+ item.likeCount + `</div>	        	                      
 
- 
-        	                     </div>
+									<div class="ChallengeCard_member">
+	        	                    &nbsp;&nbsp;<img alt="people" srcSet="https://images.munto.kr/munto-web/ic_info_person_14px.svg?s=16x16 1x, https://images.munto.kr/munto-web/ic_info_person_14px.svg?s=32x32 2x" src="https://images.munto.kr/munto-web/ic_info_person_14px.svg?s=32x32"/>
+	        	                    <div class="ChallengeCard_member_count">` + item.commentCount + `명</div>
+	        	                     </div>
 								</div>
-							
+							</div>
 						</a>
 					</div>
 					`;
@@ -735,18 +732,12 @@ a:hover { text-decoration: none;}
             alert("code: "+request.status+"\n"+"message: "+request.responseText+"\n"+"error: "+error);
         }
 	});
-		
+
 		
 	});
 		
 	
-	function goView(challengeCode) {
-		 location.href = "<%= ctxPath%>/challenge/challengeView?challengeCode="+challengeCode; 
-	}	
-	
-	function goView_a(seq) {
-		 location.href = "<%= ctxPath%>/lounge/loungeView?seq="+seq; 
-	}
+		
 	
 
 
@@ -754,8 +745,8 @@ a:hover { text-decoration: none;}
 </script>
 
     
-<div style="background-color: #f4f4f4">    
-<section class="Main_section__rShmE" >
+    
+<section class="Main_section__rShmE">
                  <div class="Main_template__J5p3A">
                      <div class="Main_content__UPjHs">
                          <div class="Main_content__title__erjlR">
@@ -768,22 +759,39 @@ a:hover { text-decoration: none;}
                              관심사 기반 커뮤니티, <b>&nbsp;Heabollangce</b>
                          </div>
                      
-                     <img alt="people" src="<%= ctxPath%>/images/메인페이지.png" width="800" height="566" data-nimg="1" class="Main_people__qOdFR" style="color:transparent"/>
+                     <img alt="people" src="<%= ctxPath%>/images/메인페이지.png" width="800" height="566" decoding="async" data-nimg="1" class="Main_people__qOdFR" style="color:transparent"/>
                  </div>
 </section>     
     
+    
+<div style="background-color: #f4f4f4">
+<div class="carousel">
+  <div class="carousel-container">
+    <div class="carousel-item">
+      <img src="https://images.munto.kr/munto-web/ic_info_challengeleader_16px.svg" alt="Image 1">
+    </div>
+    <div class="carousel-item">
+      <img src="https://images.munto.kr/munto-web/ic_info_challengeleader_16px.svg" alt="Image 2">
+    </div>
+    <div class="carousel-item">
+      <img src="https://images.munto.kr/munto-web/ic_info_challengeleader_16px.svg" alt="Image 3">
+    </div>
+  </div>
+</div>
 
-<div class="challenge_title_e" >
+
+
+<div class="challenge_title_e">
     <div class="challenge_title_f" style="margin-top: 20px;">
-        <img alt="challenge-mark" src="https://images.munto.kr/munto-web/ic_info_challengeleader_16px.svg" width="18" height="18"  data-nimg="1" class="challenge_title__icon__f3gEi"  style="color:transparent"/>챌린지
+        <img alt="challenge-mark" src="https://images.munto.kr/munto-web/ic_info_challengeleader_16px.svg" width="18" height="18" decoding="async" data-nimg="1" class="challenge_title__icon__f3gEi" loading="lazy" style="color:transparent"/>챌린지
     </div>
     <div class="challenge_title_g">같은 목표를 가진<br/>멤버들과 함께 도전해요</div>
   </div>
 
-<div class="All_content__card__a" >
+<div class="All_content__card__a">
   <div class="All_content__card__b">
       <div class="All_content__card__c">
-      <div class="All_content__card__d">
+      <div class="All_content__card__d" >
 
 
 
@@ -791,9 +799,8 @@ a:hover { text-decoration: none;}
       </div>
       </div>
       </div>
-		       
           <a class="Socialing_more" href="<%=ctxPath%>/challenge/challenge_all"><div class="Socialing_more__text" style="color: black;">더보기<img src="https://images.munto.kr/munto-web/ic_arrow_right_14px.svg"></div></a>
-		 
+
       <div class="challenge_title_e">
         <div class="challenge_title_h">
             <img alt="lounge-mark" src="https://images.munto.kr/munto-web/ic_info_lounge-fill_24px.svg" width="18" height="18" decoding="async" data-nimg="1" class="Lounge_title__icon__UV95I" loading="lazy" style="color:transparent"/>라운지
@@ -801,7 +808,7 @@ a:hover { text-decoration: none;}
         <div class="challenge_title_g">비슷한 관심사를 가진<br/>멤버들의 취향 피드 구독하기</div>
       </div>
     
-    <div class="All_content__card__f" style="overflow-x:hidden" >
+    <div class="All_content__card__f">
       <div class="All_content__card__g">
           <div class="All_content__card__h">
           <div class="All_content__card__j">
