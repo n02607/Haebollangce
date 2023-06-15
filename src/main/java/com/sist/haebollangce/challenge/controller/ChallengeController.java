@@ -411,8 +411,8 @@ public class ChallengeController {
     @ResponseBody
     @RequestMapping(value="/main_a", method=RequestMethod.GET)
     public String mainpage_a() {
-    	
-      List<challengeVO> challengeList = service.challengeList();
+       
+        List<challengeVO> challengeList = service.challengeList();
       
       JSONArray jsonArr = new JSONArray(); 
       
@@ -562,7 +562,6 @@ public class ChallengeController {
          }
        
     }
-
     
     // 챌린지 삭제 페이지 요청 완료
     @PostMapping(value = "/challengedelend")
