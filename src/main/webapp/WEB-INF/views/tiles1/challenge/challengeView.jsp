@@ -344,6 +344,7 @@
 		      
 		} 
 		
+
 </script>
 
 <div class="detail_challenge_template">
