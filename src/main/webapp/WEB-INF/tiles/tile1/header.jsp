@@ -267,8 +267,6 @@ String ctxPath = request.getContextPath();
 
 		if(isLogined === 'true') {
 			document.getElementById('islogin').innerHTML=login_true;
-			const rUrl = document.location.href.split("?");
-			// location.href = rUrl[0];
 		}
 
 		$(document).on("click", "button#logout", function () {
