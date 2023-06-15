@@ -250,7 +250,7 @@
 	         }
 	         
 	         
-	         if (confirm("챌린지 등록시 인증관련 사진은 수정이 불가합니다. 정말로 등록하시겠습니까?")) {
+	         if (confirm("챌린지 등록시 수정이 불가합니다. 정말로 등록하시겠습니까?")) {
 	             const frm = document.addFrm;
 	             frm.method = "POST";
 	             frm.action = "<%= ctxPath %>/challenge/addEnd";
