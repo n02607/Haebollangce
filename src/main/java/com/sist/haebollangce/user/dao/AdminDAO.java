@@ -5,6 +5,8 @@ import com.sist.haebollangce.user.dto.ReportDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 @RequiredArgsConstructor
 @Repository
 public class AdminDAO implements InterAdminDAO {
@@ -13,5 +15,5 @@ public class AdminDAO implements InterAdminDAO {
 
 
     @Override
-    public ReportDTO getReports() { return mapper.getReports(); }
+    public List<ReportDTO> getReports() { return mapper.getReports(); }
 }

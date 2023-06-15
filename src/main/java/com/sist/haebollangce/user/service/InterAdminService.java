@@ -4,8 +4,10 @@ import com.sist.haebollangce.user.dto.ReportDTO;
 import com.sist.haebollangce.user.dto.TokenDTO;
 import com.sist.haebollangce.user.dto.UserDTO;
 
+import java.util.List;
+
 public interface InterAdminService {
 
-    public ReportDTO getReports();
+    public List<ReportDTO> getReports();
 
 }

@@ -132,6 +132,6 @@ public interface InterMapper {
 	// 라운지 리스트 불러오기
 	List<LoungeBoardDTO> index_loungeList();
 
-    ReportDTO getReports();
+    List<ReportDTO> getReports();
 
 }

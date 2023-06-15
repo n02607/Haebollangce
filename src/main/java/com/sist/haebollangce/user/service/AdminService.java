@@ -5,11 +5,13 @@ import com.sist.haebollangce.user.dto.ReportDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @RequiredArgsConstructor
 @Service
 public class AdminService implements InterAdminService {
 
     private final InterAdminDAO adminDAO;
     @Override
-    public ReportDTO getReports() { return adminDAO.getReports(); }
+    public List<ReportDTO> getReports() { return adminDAO.getReports(); }
 }
