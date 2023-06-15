@@ -562,6 +562,7 @@ public class ChallengeController {
          }
        
     }
+
     
     // 챌린지 삭제 페이지 요청 완료
     @PostMapping(value = "/challengedelend")
