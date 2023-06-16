@@ -42,8 +42,8 @@
 	
 	/* 이미지 시작 */
 	img#second_img_button {
-		height: 61%;
-		width: 94%;
+		height: 300px;
+		width: 300px;
 		border: solid 1px gray;
 		border-radius: 50%; 
 		object-fit: cover;
