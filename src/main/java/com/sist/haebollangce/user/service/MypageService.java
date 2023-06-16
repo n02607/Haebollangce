@@ -574,7 +574,7 @@ public class MypageService implements InterMypageService {
 				jsonObj.addProperty("commentCount", (String) map.get("commentCount"));
 				jsonObj.addProperty("readCount", (String) map.get("readCount"));
 				jsonObj.addProperty("profile_pic", (String) map.get("profile_pic"));
-				jsonObj.addProperty("filename", (String) map.get("filename"));
+				jsonObj.addProperty("thumbnail", (String) map.get("thumbnail"));
 				
 				jsonArr.add(jsonObj);
 			}
@@ -946,6 +946,18 @@ public class MypageService implements InterMypageService {
 		// System.out.println("암호화 후 비밀번호 : " + udto.getPw());
 		
 		dao.modifyPw(udto);
+	}
+
+	@Override
+	public String image(String userid) {
+
+		String obj = dao.image(userid);
+		
+		JsonObject jsonObj = new JsonObject();
+		
+		jsonObj.addProperty("obj", obj);
+		
+		return jsonObj.toString();
 	}
 
 }

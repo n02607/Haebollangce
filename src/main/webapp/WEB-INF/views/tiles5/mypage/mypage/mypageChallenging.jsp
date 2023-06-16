@@ -308,7 +308,7 @@
 								html += "<table class='col-lg-6 table_margin'>"
 									 +  "	<tr>"
 									 +  "		<td class='td_width_36'>"
-									 +  "			<img class='img-fluid px-3 px-sm-4 mt-3 mb-4 cha_img' src='" + json[i].thumbnail + "' alt='챌린지이미지'>"
+									 +  "			<img class='img-fluid px-3 px-sm-4 mt-3 mb-4 cha_img' src='<%=ctxPath%>/images/" + json[i].thumbnail + "' alt='챌린지이미지'>"
 									 +  "		</td>"
 									 +	"		<td>"
 									 +	"			<div class='div_title'>" + json[i].challenge_name + " 챌린지</div>"
@@ -316,8 +316,7 @@
 									 +	"			<div class='div_info'>인증시간 : " + json[i].hour_start + " ~ " + json[i].hour_end + "</div>"
 									 +  " 		</td>"
 									 +	"		<td class='td_width_22'>"
-									 +	"			<div class='go_button' onclick='go_certify();'>인증하러가기</div>"
-									 +	"			<div class='go_button' onclick='location.href='#''>게시판가기</div>"
+									 +	"			<div type='button' class='go_button' onclick='go_certify(" +json[i].fk_challenge_code ");'>인증하러가기</div>"
 									 +  "		</td>"
 									 +  "	</tr>"
 									 +	"</table>";
@@ -390,7 +389,7 @@
 								html  += "<table class='col-lg-6 table_margin'>"
 									  +  "		<tr>"
 									  +  "			<td class='td_width_36'>"
-									  +  "				<img class='img-fluid px-3 px-sm-4 mt-3 mb-4 cha_img' src='" + json[i].thumbnail + "' alt='챌린지이미지'>"
+									  +  "				<img class='img-fluid px-3 px-sm-4 mt-3 mb-4 cha_img' src='<%=ctxPath%>/images/" + json[i].thumbnail + "' alt='챌린지이미지'>"
 								  	  +  "			</td>"
 									  +	 "			<td>"
 									  +  "				<div class='div_title'>" + json[i].challenge_name + "</div>"
@@ -399,7 +398,6 @@
 									  +  " 			</td>"
 									  +	 "			<td class='td_width_22'>"
 									  +	 "				<div class='go_button' onclick='go_certify();'>인증하러가기</div>"
-									  +  "				<div class='go_button' onclick='location.href='#''>게시판가기</div>"
 									  +  "			</td>"
 									  +  "		</tr>"
 									  +	 "</table>";
@@ -523,7 +521,7 @@
 								html += "<table class='col-lg-6 table_margin'>"
 									 +  "	<tr>"
 									 +  "		<td class='td_width_36'>"
-									 +  "			<img class='img-fluid px-3 px-sm-4 mt-3 mb-4 cha_img' src='" + json[i].thumbnail + "' alt='챌린지이미지'>"
+									 +  "			<img class='img-fluid px-3 px-sm-4 mt-3 mb-4 cha_img' src='<%=ctxPath%>/images/" + json[i].thumbnail + "' alt='챌린지이미지'>"
 									 +  "		</td>"
 									 +	"		<td>"
 									 +	"			<div class='div_title'>" + json[i].challenge_name + " 챌린지</div>"
@@ -531,7 +529,7 @@
 									 +	" 			<div class='div_info'>달성률: " + json[i].achievement_pct + "%</div>"
 									 +  " 		</td>"
 									 +	"		<td class='td_width_22'>"
-									 +	"			<div class='go_button' onclick='location.href='#''>후기쓰러가기</div>"
+									 +	"			<div class='go_button' onclick='go_lounge();'>후기쓰러가기</div>"
 									 +  "		</td>"
 									 +  "	</tr>"
 									 +  "</table>";
@@ -581,7 +579,7 @@
 								html += "<table class='col-lg-6 table_margin'>"
 									 +	"	<tr>"
 									 +  "		<td class='td_width_36'>"
-									 +  "			<img class='img-fluid px-3 px-sm-4 mt-3 mb-4 cha_img' src='" + json[i].thumbnail + "' alt='챌린지이미지'>"
+									 +  "			<img class='img-fluid px-3 px-sm-4 mt-3 mb-4 cha_img' src='<%=ctxPath%>/images/" + json[i].thumbnail + "' alt='챌린지이미지'>"
 									 +  "		</td>"
 									 +	"		<td>"
 									 +	"			<div class='div_title'>" + json[i].challenge_name + " 챌린지</div>"
@@ -589,7 +587,7 @@
 									 +	" 			<div class='div_info'>달성률: " + json[i].achievement_pct + "%</div>"
 									 +  " 		</td>"
 									 +	"		<td class='td_width_22'>"
-									 +	"			<div class='go_button' onclick='location.href='#''>후기쓰러가기</div>"
+									 +	"			<div class='go_button' onclick='go_lounge();'>후기쓰러가기</div>"
 									 +  "		</td>"
 									 +  "	</tr>"
 									 +	"</table>";
@@ -696,7 +694,7 @@
 									html += "<table class='col-lg-6 table_margin'>"
 										 +  "	<tr>"
 										 +  "		<td class='td_width_36'>"
-										 +  "			<img class='img-fluid px-3 px-sm-4 mt-3 mb-4 cha_img' src='" + json[i].thumbnail + "' alt='챌린지이미지'>"
+										 +  "			<img class='img-fluid px-3 px-sm-4 mt-3 mb-4 cha_img' src='<%=ctxPath%>/images/" + json[i].thumbnail + "' alt='챌린지이미지'>"
 										 +  "		</td>"
 										 +	"		<td>"
 										 +	"			<div class='div_title'>" + json[i].challenge_name + "</div>"
@@ -705,7 +703,7 @@
 										 +	" 			<div class='div_info'>개설자: " + json[i].fk_userid + "</div>"
 										 +  " 		</td>"
 										 +	"		<td class='td_width_22'>"
-										 +	"			<div class='go_button' onclick='location.href='#''>후기쓰러가기</div>"
+										 +	"			<div class='go_button' onclick='go_lounge();'>후기쓰러가기</div>"
 										 +  "		</td>"
 										 +  "	</tr>"
 										 +	"</table>";
@@ -715,7 +713,7 @@
 									html += "<table class='col-lg-6 table_margin'>"
 										 +	"	<tr>"
 										 +  "		<td class='td_width_36'>"
-										 +  "			<img class='img-fluid px-3 px-sm-4 mt-3 mb-4 cha_img' src='" + json[i].thumbnail + "' alt='챌린지이미지'>"
+										 +  "			<img class='img-fluid px-3 px-sm-4 mt-3 mb-4 cha_img' src='<%=ctxPath%>/images/" + json[i].thumbnail + "' alt='챌린지이미지'>"
 										 +  "		</td>"
 										 +	"		<td>"
 										 +	"			<div class='div_title'>" + json[i].challenge_name + "</div>"
@@ -724,7 +722,6 @@
 										 +  " 		</td>"
 										 +	"		<td class='td_width_22'>"
 										 +	"			<div class='go_button' onclick='go_certify();'>인증하러가기</div>"
-										 +	"			<div class='go_button' onclick='location.href='#''>게시판가기</div>"
 										 +  "		</td>"
 										 +  "	</tr>"
 										 +	"</table>";
@@ -771,7 +768,7 @@
 							 + "		<td>개설한 챌린지가 없습니다.</td>"
 							 + "	</tr>"
 							 + "	<tr>"
-							 + "		<td><button type='button' class='go_button_style' onclick='go_create();'>개설하러가기</button></td>"
+							 + "		<td><div class='go_button_style' onclick='go_create();'>개설하러가기</button></td>"
 							 + "	</tr>"	
 							 + "</table>";
 					
@@ -790,7 +787,7 @@
 									html += "<table class='col-lg-6 table_margin'>"
 										 +  "	<tr>"
 										 +  "		<td class='td_width_36'>"
-										 +  "			<img class='img-fluid px-3 px-sm-4 mt-3 mb-4 cha_img' src='" + json[i].thumbnail + "' alt='챌린지이미지'>"
+										 +  "			<img class='img-fluid px-3 px-sm-4 mt-3 mb-4 cha_img' src='<%=ctxPath%>/images/" + json[i].thumbnail + "' alt='챌린지이미지'>"
 										 +  "		</td>"
 										 +	"		<td>"
 										 +	"			<div class='div_title'>" + json[i].challenge_name + "</div>"
@@ -799,7 +796,7 @@
 										 +	" 			<div class='div_info'>개설자: " + json[i].fk_userid + "</div>"
 										 +  " 		</td>"
 										 +	"		<td class='td_width_22'>"
-										 +	"			<div class='go_button' onclick='location.href='#''>후기쓰러가기</div>"
+										 +	"			<div class='go_button' onclick='go_lounge();'>후기쓰러가기</div>"
 										 +  "		</td>"
 										 +  "	</tr>"
 										 +	"</table>";
@@ -809,7 +806,7 @@
 									html += "<table class='col-lg-6 table_margin'>"
 										 +	"	<tr>"
 										 +  "		<td class='td_width_36'>"
-										 +  "			<img class='img-fluid px-3 px-sm-4 mt-3 mb-4 cha_img' src='" + json[i].thumbnail + "' alt='챌린지이미지'>"
+										 +  "			<img class='img-fluid px-3 px-sm-4 mt-3 mb-4 cha_img' src='<%=ctxPath%>/images/" + json[i].thumbnail + "' alt='챌린지이미지'>"
 										 +  "		</td>"
 										 +	"		<td>"
 										 +	"			<div class='div_title'>" + json[i].challenge_name + "</div>"
@@ -818,7 +815,6 @@
 										 +  " 		</td>"
 										 +	"		<td class='td_width_22'>"
 										 +	"			<div class='go_button' onclick='go_certify();'>인증하러가기</div>"
-										 +	"			<div class='go_button' onclick='location.href='#''>게시판가기</div>"
 										 +  "		</td>"
 										 +  "	</tr>"
 										 +	"</table>";
@@ -855,11 +851,17 @@
 		
 	} // end of function go_create() -----
 	
-	function go_certify() {
-		
-		location.href = "/challenge/certify";
+	function go_certify(e) {
+    
+		location.href = "<%=ctxPath%>/challenge/certify?challenge_code=e";
 		
 	} // end of function go_certify() -----
+	
+	function go_lounge() {
+		
+		location.href = "/lounge/loungeAdd";
+		
+	} // end of function go_lounge() -----
 	
 </script>
 

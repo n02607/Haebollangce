@@ -21,6 +21,7 @@ import org.apache.poi.ss.usermodel.HorizontalAlignment;
 import org.apache.poi.ss.usermodel.IndexedColors;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.VerticalAlignment;
+import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.ss.util.CellRangeAddress;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
@@ -683,13 +684,13 @@ public class MypageController {
 			
 			if(n==1) {
 				request.setAttribute("message", "회원탈퇴에 성공했습니다.\\n지금까지 이용해주셔서 감사합니다.");
-				request.setAttribute("loc", "/challenge/main");
+				request.setAttribute("loc", "/api/v1/user/logout");
 			}
 			else {
 				request.setAttribute("message", "회원탈퇴에 실패했습니다.\\n고객센터에 문의해주세요.");
 				request.setAttribute("loc", "/challenge/main");
 			}
-			
+			 
 			return "msg";
 		}
 	}
@@ -780,6 +781,9 @@ public class MypageController {
 		
 		String profile_pic_file = mtp_request.getParameter("profile_pic_file");
 		
+		System.out.println("확인용 pw : " + pw);
+		System.out.println("확인용 pro : " + profile_pic_file);
+		
 		Map<String, String> dtoMap = new HashMap<>();
 		dtoMap.put("userid", userid);
 		
@@ -812,57 +816,56 @@ public class MypageController {
 		
 		String newFileName = "";
 		
-		if (profile_pic_file != null) {
-			try {
-				MultipartFile mtfile = mtp_request.getFile("profile_pic_file");
+		try {
+			MultipartFile mtfile = mtp_request.getFile("profile_pic_file");
+		
+			// System.out.println(mtfile);
 			
-				// System.out.println(mtfile);
-				
-				byte[] bytes = null;
-				// 첨부파일의 내용물을 담는 것
-				
-				long fileSize = 0;
-				// 첨부파일의 크기
-				
-				// 첨부파일의 내용물을 읽어오는 것
-				bytes = mtfile.getBytes();
-				
-				originalFilename = mtfile.getOriginalFilename();
-				
-				// System.out.println("originalFilename : " + originalFilename);
-				
-				newFileName = fileManager.doFileUpload(bytes, originalFilename, path);
-				
-				// System.out.println("newFileName : " + newFileName);
-				
-			} catch (IllegalStateException | IOException e) {
-				e.printStackTrace();
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
+			byte[] bytes = null;
+			// 첨부파일의 내용물을 담는 것
+			
+			long fileSize = 0;
+			// 첨부파일의 크기
+			
+			// 첨부파일의 내용물을 읽어오는 것
+			bytes = mtfile.getBytes();
+			
+			originalFilename = mtfile.getOriginalFilename();
+			
+			// System.out.println("originalFilename : " + originalFilename);
+			
+			newFileName = fileManager.doFileUpload(bytes, originalFilename, path);
+			
+			// System.out.println("newFileName : " + newFileName);
+			
+		} catch (IllegalStateException | IOException e) {
+			e.printStackTrace();
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
-		else {
-			newFileName = udto.getProfilePic();
-		}
+		
 		// System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!1 확인용 : " + newFileName);
 		
-		if( !passwordEncoder.matches(pw, udto.getPw() )) {
-			// System.out.println("다르다");
-        	// 비번이 다를 때
-			
-			udto.setUserid(userid);
-			udto.setPw(pw);
-			
-			service.modifyPw(udto);
-			
-        }
+		
+		if(!pw.isEmpty()) {
+			if( !passwordEncoder.matches(pw, udto.getPw() )) {
+				// System.out.println("다르다");
+	        	// 비번이 다를 때
+				
+				udto.setUserid(userid);
+				udto.setPw(pw);
+				
+				service.modifyPw(udto);
+				
+	        }
+		}
 		
 		
 		Map<String, Object> paraMap = new HashMap<>();
 		paraMap.put("userid", userid);
 		paraMap.put("mobile", mobile);
 		paraMap.put("email", email);
-		paraMap.put("pw", pw);
+		// paraMap.put("pw", pw);
 		paraMap.put("acct", acct);
 		paraMap.put("profilePic", newFileName);
 		
@@ -1023,6 +1026,18 @@ public class MypageController {
 	}
 	/* 마이페이지 홈화면 충전도 알아오기 끝 */
 	
+	@ResponseBody
+	@RequestMapping(value = "/image", method = {RequestMethod.POST}, produces = "text/plain;charset=UTF-8")
+	public String image(HttpServletRequest request){
+		
+		String userid = request.getParameter("userid");
+		 
+		String json = service.image(userid);
+		
+		return json;
+	}
+	
+	
 	
 	/* 마이페이지 인증 필요한 챌린지 불러오기 시작 */
 	@ResponseBody
@@ -1092,6 +1107,7 @@ public class MypageController {
 		return json;
 	}
 	/* 마이페이지 홈 챌린지 그래프 끝*/
+	
 	
 	@PostMapping(value="/make_excel")
 	public void make_excel(HttpServletRequest request, HttpServletResponse response) throws IOException {
