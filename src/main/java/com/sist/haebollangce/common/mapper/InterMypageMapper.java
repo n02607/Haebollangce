@@ -136,5 +136,7 @@ public interface InterMypageMapper {
 
 	String image(String userid);
 
+	List<Map<String, Object>> selectList(Map<String, Object> paramMap);
+
 
 }
