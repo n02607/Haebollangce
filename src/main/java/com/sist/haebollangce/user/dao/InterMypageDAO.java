@@ -131,6 +131,5 @@ public interface InterMypageDAO {
 	int user_deposit(String userid);
 
 	List<Map<String, Object>> selectList(Map<String, Object> paramMap);
-
 	
 }

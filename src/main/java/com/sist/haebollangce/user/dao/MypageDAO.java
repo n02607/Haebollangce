@@ -400,7 +400,6 @@ public class MypageDAO implements InterMypageDAO {
 		
 		return jsonobj;
 	}
-
 	
 	@Override
 	public int user_deposit(String userid) {
