@@ -16,4 +16,7 @@ public class AdminDAO implements InterAdminDAO {
 
     @Override
     public List<ReportDTO> getReports() { return mapper.getReports(); }
+
+    @Override
+    public void delete(String dels) { mapper.deleteReports(dels); }
 }

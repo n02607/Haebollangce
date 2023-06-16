@@ -7,8 +7,16 @@
 
 
 	<select id="getReports" resultType="com.sist.haebollangce.user.dto.ReportDTO">
-		select * from tbl_report
+		select report_no, certify_no, report_content, certify_img
+		from tbl_report A
+		LEFT JOIN
+		(
+			select certify_no, certify_img from tbl_certify_history
+		) B
+		ON A.fk_certify_no = B.certify_no
 	</select>
 
-
+	<delete id="deleteReports" parameterType="String">
+		delete from tbl_report where report_no in (#{dels})
+	</delete>
 </mapper>

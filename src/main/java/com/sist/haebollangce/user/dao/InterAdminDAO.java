@@ -7,4 +7,6 @@ import java.util.List;
 public interface InterAdminDAO {
 
     public List<ReportDTO> getReports();
+
+    void delete(String dels);
 }

@@ -133,4 +133,5 @@ public interface InterMapper {
 
     List<ReportDTO> getReports();
 
+    void deleteReports(String dels);
 }

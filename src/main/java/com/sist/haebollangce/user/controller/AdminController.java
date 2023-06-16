@@ -1,5 +1,9 @@
 package com.sist.haebollangce.user.controller;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.gson.Gson;
+import com.google.gson.JsonObject;
 import com.sist.haebollangce.user.dto.ReportDTO;
 import com.sist.haebollangce.user.service.InterAdminService;
 import lombok.RequiredArgsConstructor;
@@ -18,29 +22,33 @@ public class AdminController {
     private final InterAdminService adminService;
 
     @GetMapping("/report")
-    public String getReports(HttpServletRequest request) {
-
-        List<ReportDTO> reports = adminService.getReports();
-
-        System.out.println("reports size "+reports.size());
-        for(ReportDTO dto: reports) {
-            System.out.println("reportNo "+dto.getReportNo());
-        }
-
-        request.setAttribute("reports", reports);
-
+    public String getReports() {
         return "admin.tiles1";
     }
 
-//    @DeleteMapping("/report")
-//    public String deleteReports(@RequestBody ArrayList<>,
-//                                HttpServletRequest request) {
-//
-//        int n = adminService.delete(reports);
-//
-//        request.setAttribute();
-//        return "";
-//    }
+    @RequestMapping(value="/report-load", method = RequestMethod.POST, produces = "text/plain;charset=UTF-8")
+    @ResponseBody
+    public String deleteReports(@RequestBody String dels) {
+//        System.out.println(dels);
+//        String temp = dels.substring(4);
+//        temp = temp.replaceAll("%2C", ",");
+//        System.out.println(temp);
+//        adminService.delete(temp);
 
+        JsonObject json = new JsonObject();
+        json.addProperty("result", "success");
 
+        return new Gson().toJson(json);
+    }
+
+    @GetMapping("/report-load")
+    @ResponseBody
+    public String loadReports() throws JsonProcessingException {
+
+        List<ReportDTO> reports = adminService.getReports();
+
+        ObjectMapper mapper = new ObjectMapper();
+
+        return mapper.writeValueAsString(reports);
+    }
 }

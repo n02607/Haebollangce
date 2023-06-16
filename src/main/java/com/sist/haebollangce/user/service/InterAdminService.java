@@ -10,4 +10,5 @@ public interface InterAdminService {
 
     public List<ReportDTO> getReports();
 
+    void delete(String dels);
 }

@@ -14,4 +14,7 @@ public class AdminService implements InterAdminService {
     private final InterAdminDAO adminDAO;
     @Override
     public List<ReportDTO> getReports() { return adminDAO.getReports(); }
+
+    @Override
+    public void delete(String dels) { adminDAO.delete(dels); }
 }

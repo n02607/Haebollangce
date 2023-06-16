@@ -12,6 +12,7 @@ import lombok.Setter;
 public class ReportDTO {
 
     private String reportNo;
-    private String fkCertifyNo;
+    private String certifyNo;
     private String reportContent;
+    private String certifyImg;
 }
