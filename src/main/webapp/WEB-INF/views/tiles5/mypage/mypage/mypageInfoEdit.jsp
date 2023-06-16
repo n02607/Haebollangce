@@ -344,6 +344,7 @@
 		
 		$("div.error").hide();  // 모든 에러 숨기기
 		
+		
 		let randomStr = ""; // 비번 및 모바일 변경시 인증번호
 		
 		<%-- 관심태그 시작 --%>
@@ -560,6 +561,8 @@
 			else {
         		// 정규표현식에 위배되지 않았을 경우 이메일 버튼과 수정 버튼을 활성화시켜준다.
 				$("div.email_error").hide();
+        		
+        		$("table#email_identify_table").show();
         		
 				$("button#email_button").prop("disabled", false);
 				
@@ -1186,12 +1189,13 @@
 	                
 	    </table>
 	    
-	     <div id="timer" class="identify_div_position"></div>
-         <div id="go_identify" class="error identify_div_position" style="color:blue;">인증번호를 발송했습니다.</div>
-         <div id="identify_error" class="error identify_div_position">인증번호가 틀렸습니다.</div>
-         <div id="timer_error" class="error identify_div_position">5분이 지났습니다. 다시 인증번호를 받아주세요.</div>
-         <div id="plz_identify_error" class="error identify_div_position">인증번호를 입력해주시기 바랍니다.</div>
+		<div id="timer" class="identify_div_position"></div>
+        <div id="go_identify" class="error identify_div_position" style="color:blue;">인증번호를 발송했습니다.</div>
+        <div id="identify_error" class="error identify_div_position">인증번호가 틀렸습니다.</div>
+        <div id="timer_error" class="error identify_div_position">5분이 지났습니다. 다시 인증번호를 받아주세요.</div>
+        <div id="plz_identify_error" class="error identify_div_position">인증번호를 입력해주시기 바랍니다.</div>
 	   
+	    
 	  </div>
 
 </div>
