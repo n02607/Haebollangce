@@ -781,8 +781,11 @@ public class MypageController {
 		
 		String profile_pic_file = mtp_request.getParameter("profile_pic_file");
 		
+		String test = mtp_request.getParameter("test");
+		
 		System.out.println("확인용 pw : " + pw);
 		System.out.println("확인용 pro : " + profile_pic_file);
+		System.out.println("확인용 originalFilename : " + originalFilename);
 		
 		Map<String, String> dtoMap = new HashMap<>();
 		dtoMap.put("userid", userid);
@@ -816,7 +819,7 @@ public class MypageController {
 		
 		String newFileName = "";
 		
-		if (profile_pic_file != null) {
+		if (test != null) {
 			try {
 				MultipartFile mtfile = mtp_request.getFile("profile_pic_file");
 			
