@@ -124,7 +124,7 @@ font-weight: 400;
  justify-content: center;
  align-items: center;
  margin: 0;
- overflow-x: auto;
+ overflow-x: hidden;
  overflow-y: hidden;
  scroll-behavior: smooth;
  position:sticky;
@@ -748,7 +748,7 @@ a:hover { text-decoration: none;}
               for (var key in data) {
                 if (data.hasOwnProperty(key)) {
                   var items = data[key];
-                  console.log(items);
+                  
                   
                   
                   items.forEach(function(item) {

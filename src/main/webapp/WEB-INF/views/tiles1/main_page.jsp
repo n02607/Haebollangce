@@ -238,6 +238,7 @@ font-weight: 400;
   row-gap: 24px;
   justify-content: center;
   padding-top: 40px;
+  overflow: hidden;
   
   
 }
@@ -284,6 +285,7 @@ font-weight: 400;
   row-gap: 24px;
   justify-content: center;
   padding-top: 40px;
+  overflow: hidden;
   
   
 }
@@ -638,7 +640,7 @@ a:hover { text-decoration: none;}
                        var daysOfWeek = ['일', '월', '화', '수', '목', '금', '토'];
                        var dayString = daysOfWeek[dayOfWeek];
                   
-                  console.log(item.challengeCode);
+                  
                   html += `
                      <div class="All_content__card__e">
                         <a class="ChallengeCard_card" onclick="javascript:location.href='/challenge/challengeView?challengeCode=\${item.challengeCode}'">
@@ -693,7 +695,7 @@ a:hover { text-decoration: none;}
             $.each(json, function(index, item) {
                
                var contentWithoutTags = item.content.replace(/<p>/g, '').replace(/<\/p>/g, '').replace(/<span[^>]*>/g, '').replace(/<\/span>/g, '');               
-               console.log(json);
+               
                html += `
                   <div class="All_content__card__e" >
                   <a class="ChallengeCard_card" onclick="javascript:location.href='/lounge/loungeView?seq=\${item.seq}'">
